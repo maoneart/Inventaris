@@ -99,20 +99,17 @@ $nextNum = $stmtNext->fetchColumn();
 $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
 ?>
 
-<!-- Header: Cuma Tombol Back Saja -->
-<div class="ios-nav-header-simple">
-  <a href="index.php" class="ios-back-btn">
-    <i class="bi bi-chevron-left"></i> Kembali
+<!-- iOS Minimalist Header Ala iPhone (Exact Screenshot) -->
+<div class="ios-top-bar">
+  <a href="index.php" class="ios-circle-back" title="Kembali ke Dashboard">
+    <i class="bi bi-chevron-left"></i>
   </a>
-  <button type="button" class="btn-pill-action btn-pill-amber" onclick="document.getElementById('modalSatuan').style.display='flex'">
-    <i class="bi bi-tag-fill"></i> + Satuan
-  </button>
-</div>
-
-<!-- Judul di Dalam Konten -->
-<div class="page-title-box">
-  <h1 class="page-title">Data Barang</h1>
-  <p class="page-subtitle">Pendaftaran barang, part number & stok fisik gudang</p>
+  <h1 class="ios-bar-title">Data Barang</h1>
+  <div class="ios-bar-action">
+    <button type="button" class="btn-pill-action btn-pill-amber" onclick="document.getElementById('modalSatuan').style.display='flex'">
+      <i class="bi bi-tag-fill"></i> + Satuan
+    </button>
+  </div>
 </div>
 
 <form action="barang.php" method="POST" id="formBarang">

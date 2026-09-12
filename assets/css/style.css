@@ -976,7 +976,82 @@ body {
   gap: 12px;
 }
 
-/* iOS Simple Back Header (Header Cuma Tombol Back Saja) */
+/* ==========================================================================
+   IPHONE / IOS MINIMALIST TOP BAR (EXACT SCREENSHOT REFERENCE)
+   - Left: Circular back button with clean chevron <
+   - Center: Simple centered title
+   - Right: Action button or balanced spacer
+   ========================================================================== */
+.ios-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 95;
+  background: var(--bg-page);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  min-height: 56px;
+  margin-bottom: 14px;
+  box-sizing: border-box;
+  border-bottom: none;
+}
+
+.ios-circle-back {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 1.25rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.ios-circle-back:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+  color: #60a5fa;
+}
+
+.ios-circle-back:active {
+  transform: scale(0.92);
+}
+
+.ios-bar-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.015em;
+  text-align: center;
+  flex: 1;
+  margin: 0;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ios-bar-action {
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+/* iOS Simple Back Header (Legacy fallback) */
 .ios-nav-header-simple {
   display: flex;
   align-items: center;
@@ -1333,6 +1408,25 @@ body.theme-light {
 [data-theme="light"] .form-label {
   color: #1e293b !important;
   font-weight: 700 !important;
+}
+
+[data-theme="light"] .ios-top-bar {
+  background: var(--bg-page) !important;
+}
+
+[data-theme="light"] .ios-circle-back {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .ios-circle-back:hover {
+  background: #cbd5e1 !important;
+  color: #2563eb !important;
+}
+
+[data-theme="light"] .ios-bar-title {
+  color: #0f172a !important;
 }
 
 [data-theme="light"] .ios-back-btn {

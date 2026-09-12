@@ -75,17 +75,13 @@ $currAlamat       = getSetting('alamat_kantor', 'Kawasan Industri Mandiri, Jl. W
 $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
 ?>
 
-<!-- Header: Cuma Tombol Back Saja -->
-<div class="ios-nav-header-simple">
-  <a href="index.php" class="ios-back-btn">
-    <i class="bi bi-chevron-left"></i> Kembali
+<!-- iOS Minimalist Header Ala iPhone (Exact Screenshot) -->
+<div class="ios-top-bar">
+  <a href="index.php" class="ios-circle-back" title="Kembali ke Dashboard">
+    <i class="bi bi-chevron-left"></i>
   </a>
-</div>
-
-<!-- Judul di Dalam Konten -->
-<div class="page-title-box">
-  <h1 class="page-title">Pengaturan</h1>
-  <p class="page-subtitle">Tampilan, server kantor, AI Gemini & profil gudang</p>
+  <h1 class="ios-bar-title">Pengaturan</h1>
+  <div class="ios-bar-action"></div>
 </div>
 
 <!-- Group 0: Tema Tampilan Sistem (Light & Dark Mode) -->

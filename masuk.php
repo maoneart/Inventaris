@@ -139,17 +139,13 @@ $recentMasuk = $pdo->query("
 ")->fetchAll();
 ?>
 
-<!-- Header: Cuma Tombol Back Saja -->
-<div class="ios-nav-header-simple">
-  <a href="index.php" class="ios-back-btn">
-    <i class="bi bi-chevron-left"></i> Kembali
+<!-- iOS Minimalist Header Ala iPhone (Exact Screenshot) -->
+<div class="ios-top-bar">
+  <a href="index.php" class="ios-circle-back" title="Kembali ke Dashboard">
+    <i class="bi bi-chevron-left"></i>
   </a>
-</div>
-
-<!-- Judul di Dalam Konten -->
-<div class="page-title-box">
-  <h1 class="page-title">Barang Masuk</h1>
-  <p class="page-subtitle">Penerimaan dari supplier & nomor surat jalan</p>
+  <h1 class="ios-bar-title">Barang Masuk</h1>
+  <div class="ios-bar-action"></div>
 </div>
 
 <form action="masuk.php" method="POST" id="formMasuk">

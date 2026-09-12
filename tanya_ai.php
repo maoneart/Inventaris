@@ -4,20 +4,17 @@ $pageTitle = "Tanya Si-nya (AI Gudang)";
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- Header: Cuma Tombol Back Saja -->
-<div class="ios-nav-header-simple">
-  <a href="index.php" class="ios-back-btn">
-    <i class="bi bi-chevron-left"></i> Kembali
+<!-- iOS Minimalist Header Ala iPhone (Exact Screenshot) -->
+<div class="ios-top-bar">
+  <a href="index.php" class="ios-circle-back" title="Kembali ke Dashboard">
+    <i class="bi bi-chevron-left"></i>
   </a>
-  <button type="button" id="btnOpenTokenModal" class="btn-pill-action btn-pill-purple">
-    <i class="bi bi-key-fill text-warning"></i> <span id="tokenStatusText">Atur Token</span>
-  </button>
-</div>
-
-<!-- Judul di Dalam Konten -->
-<div class="page-title-box">
-  <h1 class="page-title">Tanya Si-nya</h1>
-  <p class="page-subtitle">Asisten AI logistik & konsultasi stok realtime</p>
+  <h1 class="ios-bar-title">Tanya Si-nya</h1>
+  <div class="ios-bar-action">
+    <button type="button" id="btnOpenTokenModal" class="btn-pill-action btn-pill-purple">
+      <i class="bi bi-key-fill text-warning"></i> <span id="tokenStatusText">Atur Token</span>
+    </button>
+  </div>
 </div>
 
 <!-- Modal Atur Token Gemini Manual (Aman, Tidak Masuk Kodingan / GitHub) -->

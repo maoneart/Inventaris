@@ -62,17 +62,13 @@ $nextCount = count($suppliers) + 1;
 $saranKodeSup = 'SUP-' . str_pad($nextCount, 3, '0', STR_PAD_LEFT);
 ?>
 
-<!-- Header: Cuma Tombol Back Saja -->
-<div class="ios-nav-header-simple">
-  <a href="index.php" class="ios-back-btn">
-    <i class="bi bi-chevron-left"></i> Kembali
+<!-- iOS Minimalist Header Ala iPhone (Exact Screenshot) -->
+<div class="ios-top-bar">
+  <a href="index.php" class="ios-circle-back" title="Kembali ke Dashboard">
+    <i class="bi bi-chevron-left"></i>
   </a>
-</div>
-
-<!-- Judul di Dalam Konten -->
-<div class="page-title-box">
-  <h1 class="page-title">Data Supplier</h1>
-  <p class="page-subtitle">Vendor & rekanan pemasok material gudang</p>
+  <h1 class="ios-bar-title">Data Supplier</h1>
+  <div class="ios-bar-action"></div>
 </div>
 
 <form action="supplier.php" method="POST" id="formSupplier">

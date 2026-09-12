@@ -419,15 +419,15 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       {
         'title': 'Barang',
-        'icon': Icons.layers_rounded,
-        'color': const Color(0xFF0081A0), // Gojek Blue
+        'icon': Icons.inventory_2_rounded,
+        'color': const Color(0xFF0284C7), // Blue
         'target': 'barang.php',
         'targetTitle': 'Data Barang',
       },
       {
         'title': 'Supplier',
-        'icon': Icons.local_shipping_rounded,
-        'color': const Color(0xFFDF6B00), // Gojek Orange
+        'icon': Icons.business_rounded,
+        'color': const Color(0xFFDF6B00), // Orange
         'target': 'supplier.php',
         'targetTitle': 'Data Supplier',
       },

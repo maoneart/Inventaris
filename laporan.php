@@ -42,22 +42,15 @@ $totalQtyKeluar = array_sum(array_column($listKeluar, 'total_qty'));
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- Header: Cuma Tombol Back Saja -->
-<div class="ios-nav-header-simple">
-  <a href="index.php" class="ios-back-btn">
-    <i class="bi bi-chevron-left"></i> Kembali
+<!-- iOS Minimalist Header Ala iPhone (Exact Screenshot) -->
+<div class="ios-top-bar">
+  <a href="index.php" class="ios-circle-back" title="Kembali ke Dashboard">
+    <i class="bi bi-chevron-left"></i>
   </a>
-</div>
-
-<!-- Judul di Dalam Konten -->
-<div class="page-title-box" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;">
-  <div>
-    <h1 class="page-title">Laporan Mutasi</h1>
-    <p class="page-subtitle">Rekapitulasi arus barang masuk & keluar</p>
-  </div>
-  <div style="display: flex; gap: 6px;">
+  <h1 class="ios-bar-title">Laporan Mutasi</h1>
+  <div class="ios-bar-action" style="gap: 6px;">
     <a href="export.php?type=laporan_excel&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" class="btn-pill-action btn-pill-green" title="Ekspor Excel">
-      <i class="bi bi-file-earmark-excel-fill"></i> Excel
+      <i class="bi bi-file-earmark-excel-fill"></i> XLS
     </a>
     <a href="export.php?type=laporan_pdf&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" target="_blank" class="btn-pill-action btn-pill-red" title="Cetak PDF">
       <i class="bi bi-printer-fill"></i> PDF

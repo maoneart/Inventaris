@@ -148,8 +148,8 @@ try {
 
       <!-- 3. GoBarang -->
       <a href="barang.php" class="gojek-service-item-web" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; gap: 6px;">
-        <div class="gojek-circle-icon-web" style="background: #0081a0; color: #ffffff;">
-          <i class="bi bi-boxes"></i>
+        <div class="gojek-circle-icon-web" style="background: #0284c7; color: #ffffff;">
+          <i class="bi bi-box-seam-fill"></i>
         </div>
         <div class="service-title" style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); text-align: center;">Barang</div>
       </a>
@@ -157,7 +157,7 @@ try {
       <!-- 4. GoSupplier -->
       <a href="supplier.php" class="gojek-service-item-web" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; gap: 6px;">
         <div class="gojek-circle-icon-web" style="background: #df6b00; color: #ffffff;">
-          <i class="bi bi-truck"></i>
+          <i class="bi bi-building-fill"></i>
         </div>
         <div class="service-title" style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); text-align: center;">Supplier</div>
       </a>

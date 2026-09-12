@@ -89,11 +89,11 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
     <div>
       <div class="sidebar-section-title">Master Data & Supplier</div>
       <a href="barang.php" class="sidebar-link <?= $currPage === 'barang' ? 'active' : '' ?>">
-        <i class="bi bi-boxes text-info"></i>
+        <i class="bi bi-box-seam-fill text-info"></i>
         <span>Data Barang</span>
       </a>
       <a href="supplier.php" class="sidebar-link <?= $currPage === 'supplier' ? 'active' : '' ?>">
-        <i class="bi bi-truck text-warning"></i>
+        <i class="bi bi-building-fill text-warning"></i>
         <span>Data Rekanan Supplier</span>
       </a>
       <a href="pic.php" class="sidebar-link <?= $currPage === 'pic' ? 'active' : '' ?>">
@@ -168,10 +168,10 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
         <i class="bi bi-box-arrow-up-right text-danger"></i> Keluar
       </a>
       <a href="barang.php" class="nav-pill <?= $currPage === 'barang' ? 'active' : '' ?>">
-        <i class="bi bi-boxes text-info"></i> Barang
+        <i class="bi bi-box-seam-fill text-info"></i> Barang
       </a>
       <a href="supplier.php" class="nav-pill <?= $currPage === 'supplier' ? 'active' : '' ?>">
-        <i class="bi bi-truck text-warning"></i> Supplier
+        <i class="bi bi-building-fill text-warning"></i> Supplier
       </a>
       <a href="pic.php" class="nav-pill <?= $currPage === 'pic' ? 'active' : '' ?>">
         <i class="bi bi-people-fill text-purple"></i> PIC

@@ -506,7 +506,7 @@ $recentActivity = $pdo->query("
     <!-- 3. GoBarang -->
     <a href="barang.php" class="gojek-service-item">
       <div class="gojek-circle-icon icon-gobarang">
-        <i class="bi bi-boxes"></i>
+        <i class="bi bi-box-seam-fill"></i>
       </div>
       <div class="service-title">Barang</div>
     </a>
@@ -514,7 +514,7 @@ $recentActivity = $pdo->query("
     <!-- 4. GoSupplier -->
     <a href="supplier.php" class="gojek-service-item">
       <div class="gojek-circle-icon icon-gosupplier">
-        <i class="bi bi-truck"></i>
+        <i class="bi bi-building-fill"></i>
       </div>
       <div class="service-title">Supplier</div>
     </a>
