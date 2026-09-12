@@ -66,7 +66,7 @@ try {
     ];
 
 } catch (Exception $e) {
-    echo json_encode(['success' => false, 'reply' => 'Gagal membaca database inventaris: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'reply' => 'Gagal membaca database inventory: ' . $e->getMessage()]);
     exit;
 }
 

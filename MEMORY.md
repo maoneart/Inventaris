@@ -1,11 +1,11 @@
-# MEMORY & SPESIFIKASI PROYEK: INVENTARIS & GUDANG
+# MEMORY & SPESIFIKASI PROYEK: INVENTORY & GUDANG PABRIK
 
 ## 📌 Deskripsi Proyek
-Sistem Manajemen Stok & Inventaris Gudang Berbasis Web Base & Mobile APK Android (MaoneArt) dengan AI Assistant (Tanya Si-nya) dan ekspor PDF/Excel.
+Sistem Manajemen Stok & Inventory Gudang Pabrik Berbasis Web Base & Mobile APK Android (MaoneArt) dengan AI Assistant (Tanya Si-nya) dan ekspor PDF/Excel.
 
 ## 🛠️ Stack Teknologi
 - **Backend Web**: PHP Native 8.x
-- **Database**: MariaDB / MySQL (`db_inventaris.sql`)
+- **Database**: MariaDB / MySQL (`db_inventory.sql`)
 - **Frontend**: HTML5, Tailwind CSS, Glassmorphic Design, Bootstrap Icons CDN
 - **Modal System**: MaoneArt Glassmorphism Modal (`showConfirmModal` / `showAlertModal`) dengan 2-kolom grid simetris (`grid grid-cols-2 gap-3`)
 - **AI Engine**: Google Gemini API via Secure Client-side Storage (Manual input token)

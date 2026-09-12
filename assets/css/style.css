@@ -982,6 +982,10 @@ body {
    - Center: Simple centered title
    - Right: Action button or balanced spacer
    ========================================================================== */
+body:not(.page-index) .main-wrapper {
+  padding-top: 0 !important;
+}
+
 .ios-top-bar {
   display: flex;
   align-items: center;

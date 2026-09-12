@@ -38,7 +38,7 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
     })();
   </script>
 </head>
-<body>
+<body class="page-<?= htmlspecialchars($currPage ?: 'index') ?>">
 
 <!-- Backdrop Overlay Sidebar -->
 <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
@@ -136,7 +136,8 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
   </div>
 </aside>
 
-<!-- Top Glass Navbar -->
+<?php if (in_array($currPage, ['index', ''])): ?>
+<!-- Top Glass Navbar (Hanya Tampil di Dashboard Utama) -->
 <header class="top-navbar">
   <div class="top-nav-inner">
     <div style="display: flex; align-items: center; gap: 12px;">
@@ -192,5 +193,6 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
     </div>
   </div>
 </header>
+<?php endif; ?>
 
 <main class="main-wrapper">

@@ -1,8 +1,8 @@
-# 📦 MaoneArt Inventaris & Gudang (Warehouse Management System)
+# 📦 MaoneArt Inventory & Gudang Pabrik (Warehouse Management System)
 
-Sistem Informasi Manajemen Stok & Inventaris Pergudangan Berbasis **Web Base Realtime** & **Aplikasi Mobile (APK Android)** yang dilengkapi fitur asisten pintar **🤖 Tanya Si-nya (AI Logistics Assistant)** serta Ekspor Dokumen Resmi (PDF & Excel).
+Sistem Informasi Manajemen Stok & Inventory Pergudangan Berbasis **Web Base Realtime** & **Aplikasi Mobile (APK Android)** yang dilengkapi fitur asisten pintar **🤖 Tanya Si-nya (AI Logistics Assistant)** serta Ekspor Dokumen Resmi (PDF & Excel).
 
-Diciptakan oleh **Hermawan (MaoneArt)** untuk operasional kantor & pergudangan modern.
+Diciptakan oleh **Hermawan (MaoneArt)** untuk operasional pabrik, perusahaan & pergudangan modern.
 
 ---
 
@@ -19,7 +19,7 @@ Diciptakan oleh **Hermawan (MaoneArt)** untuk operasional kantor & pergudangan m
    - **Input Barang Keluar (Stock Out)**: Pilih PIC Pengambil, divisi kerja, jenis pemakaian (habis pakai / pinjam tools), proteksi batas stok fisik.
 
 3. **🤖 Fitur "Tanya Si-nya" (AI Assistant Gudang)**:
-   - Terhubung langsung dengan database inventaris realtime.
+   - Terhubung langsung dengan database inventory realtime.
    - Cek stok dengan percakapan bahasa manusia: *"Berapa sisa baut M10 dan oli Tellus sekarang?"*.
    - Analisa restock otomatis: *"Barang apa saja yang stoknya sudah kritis?"*.
    - Minta draf laporan instan dan tautan sekali klik untuk unduh **Excel (.xls)** dan cetak **PDF**.
@@ -39,17 +39,17 @@ Diciptakan oleh **Hermawan (MaoneArt)** untuk operasional kantor & pergudangan m
 
 ---
 
-## 🚀 Setup & Instalasi di Kantor
+## 🚀 Setup & Instalasi di Kantor / Pabrik
 
 ### 1. Di Komputer Kantor (Server Pusat)
 - Pasang XAMPP / Laragon di Windows.
-- Salin folder `Inventaris` ke `C:\xampp\htdocs\`.
-- Buka phpMyAdmin (`http://localhost/phpmyadmin`), buat database `db_inventaris`, lalu impor `db_inventaris.sql`.
-- Buka dashboard di `http://localhost/Inventaris/`.
+- Salin folder `Inventory` ke `C:\xampp\htdocs\`.
+- Buka phpMyAdmin (`http://localhost/phpmyadmin`), buat database `db_inventory`, lalu impor `db_inventory.sql`.
+- Buka dashboard di `http://localhost/Inventory/`.
 
 ### 2. Di HP Petugas Lapangan (APK / PWA)
 - Hubungkan HP ke **WiFi kantor yang sama** dengan komputer kantor.
-- Buka browser ke `http://<IP_KOMPUTER_KANTOR>/Inventaris/app.php`.
+- Buka browser ke `http://<IP_KOMPUTER_KANTOR>/Inventory/app.php`.
 - Atau download file APK `MaoneArt-Gudang-Release.apk` dari menu Releases di GitHub ini!
 
 ---

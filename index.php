@@ -326,7 +326,7 @@ try {
   <div class="stats-grid">
     <div class="stat-box">
       <div class="stat-icon blue">
-        <i class="bi bi-boxes"></i>
+        <i class="bi bi-box-seam-fill"></i>
       </div>
       <div class="stat-info">
         <div class="stat-label">Jenis Barang</div>
@@ -421,7 +421,7 @@ try {
                 </td>
                 <td>
                   <?php if ($b['nama_supplier']): ?>
-                    <span class="badge badge-success"><i class="bi bi-truck"></i> <?= htmlspecialchars($b['nama_supplier']) ?></span>
+                    <span class="badge badge-success"><i class="bi bi-building-fill"></i> <?= htmlspecialchars($b['nama_supplier']) ?></span>
                   <?php else: ?>
                     <span style="font-size: 0.72rem; color: var(--text-dim);">-</span>
                   <?php endif; ?>

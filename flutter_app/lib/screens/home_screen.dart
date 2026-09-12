@@ -11,7 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String _serverUrl = 'http://192.168.1.100:8085/Inventaris';
+  String _serverUrl = 'http://192.168.1.100:8085/Inventory';
   static const String _prefKey = 'server_base_url';
 
   late final PageController _pageController;
@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _loadSavedServerUrl() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _serverUrl = prefs.getString(_prefKey) ?? 'http://192.168.1.100:8085/Inventaris';
+      _serverUrl = prefs.getString(_prefKey) ?? 'http://192.168.1.100:8085/Inventory';
     });
   }
 
@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
             TextField(
               controller: controller,
               decoration: InputDecoration(
-                hintText: 'http://192.168.1.50:8085/Inventaris',
+                hintText: 'http://192.168.1.50:8085/Inventory',
                 hintStyle: const TextStyle(fontSize: 12, color: Color(0xFF64748B)),
                 filled: true,
                 fillColor: const Color(0xFF0F172A),

@@ -54,7 +54,7 @@ jobs:
           tag_name: v1.0.0
           name: 'MaoneArt Gudang v1.0.0 (Flutter Release)'
           body: |
-            ## 📦 MaoneArt Inventaris & Gudang - Android APK
+            ## 📦 MaoneArt Inventory & Gudang Pabrik - Android APK
             
             Aplikasi mobile petugas lapangan berbasis **Flutter** dengan tampilan minimalis, bersih, dan cepat.
             

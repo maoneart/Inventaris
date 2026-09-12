@@ -8,11 +8,14 @@ $namaGudang = getSetting('nama_gudang', 'Gudang Pusat & Workshop Logistik');
 
 // 0. Backup Database SQL
 if ($type === 'backup_db') {
-    $sqlFile = __DIR__ . '/db_inventaris.sql';
+    $sqlFile = __DIR__ . '/db_inventory.sql';
+    if (!file_exists($sqlFile)) {
+        $sqlFile = __DIR__ . '/db_inventaris.sql';
+    }
     if (file_exists($sqlFile)) {
         header('Content-Description: File Transfer');
         header('Content-Type: application/sql');
-        header('Content-Disposition: attachment; filename="Backup_db_inventaris_' . date('Ymd_His') . '.sql"');
+        header('Content-Disposition: attachment; filename="Backup_db_inventory_' . date('Ymd_His') . '.sql"');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
@@ -220,7 +223,7 @@ $items = $pdo->query("
 <div class="header">
   <h2><?= htmlspecialchars($namaKantor) ?></h2>
   <p><?= htmlspecialchars(getSetting('alamat_kantor', 'Kawasan Industri')) ?> | Telp: <?= htmlspecialchars(getSetting('telepon_kantor', '-')) ?></p>
-  <p><strong>DOKUMEN INVENTARISASI: AKTUAL STOK LOGISTIK GUDANG</strong></p>
+  <p><strong>DOKUMEN INVENTORY: AKTUAL STOK LOGISTIK GUDANG PABRIK</strong></p>
   <p style="font-size: 8.5pt;">Tanggal Cetak: <?= date('d/m/Y H:i') ?> | Oleh: <?= htmlspecialchars(getUserName()) ?></p>
 </div>
 

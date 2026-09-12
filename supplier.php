@@ -133,7 +133,7 @@ $saranKodeSup = 'SUP-' . str_pad($nextCount, 3, '0', STR_PAD_LEFT);
 <div class="ios-form-card" style="padding: 18px;">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 12px; flex-wrap: wrap;">
     <div class="ios-group-title" style="margin-bottom: 0;">
-      <i class="bi bi-truck"></i> DAFTAR REKANAN SUPPLIER (<?= count($suppliers) ?> VENDOR)
+      <i class="bi bi-building-fill"></i> DAFTAR REKANAN SUPPLIER (<?= count($suppliers) ?> VENDOR)
     </div>
     <input type="text" id="tableSearchInput" class="ios-input" placeholder="🔍 Cari supplier / PIC / telepon..." style="max-width: 280px; padding: 8px 12px; font-size: 0.8rem;">
   </div>

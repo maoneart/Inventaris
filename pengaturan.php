@@ -156,13 +156,13 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
 
     <div>
       <label class="ios-label">Alamat Akses Saat Ini</label>
-      <input type="text" class="ios-input" value="http://<?= htmlspecialchars($serverHost) ?>/Inventaris" readonly>
+      <input type="text" class="ios-input" value="http://<?= htmlspecialchars($serverHost) ?>/Inventory" readonly>
     </div>
 
     <div>
       <label class="ios-label">Database MySQL / MariaDB</label>
       <div class="db-status-box">
-        <i class="bi bi-database-check text-primary"></i> db_inventaris (Port 3306)
+        <i class="bi bi-database-check text-primary"></i> db_inventory (Port 3306)
       </div>
     </div>
   </div>
@@ -171,7 +171,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
     💡 <strong>Cara Pakai di Komputer & WiFi Kantor:</strong><br>
     1. Pastikan Komputer Kantor dan HP terhubung pada WiFi yang sama.<br>
     2. Cek IP Komputer Kantor (misal: <code>192.168.1.100</code>).<br>
-    3. Di HP atau aplikasi APK, ganti Server URL menjadi: <code>http://192.168.1.100:8085/Inventaris</code>.<br>
+    3. Di HP atau aplikasi APK, ganti Server URL menjadi: <code>http://192.168.1.100:8085/Inventory</code>.<br>
     4. Seluruh mutasi stok otomatis tersinkronisasi realtime ke server kantor!
   </div>
 </div>
@@ -263,7 +263,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
       <div>
         <div style="font-weight: 700; color: var(--text-main); font-size: 0.88rem;">Download Backup SQL</div>
-        <div style="font-size: 0.72rem; color: var(--text-muted);">Cadangan database db_inventaris</div>
+        <div style="font-size: 0.72rem; color: var(--text-muted);">Cadangan database db_inventory</div>
       </div>
     </a>
 
@@ -334,7 +334,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       <!-- App Overview -->
       <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 0.8rem; color: var(--text-muted); line-height: 1.6;">
         <p style="margin-bottom: 8px;">
-          <strong>MaoneArt Stock & Inventory</strong> adalah sistem pergudangan modern berarsitektur <em>Hybrid Local-First</em> yang dirancang untuk kecepatan operasional inventaris, pencatatan Part Number pabrik, nomor surat jalan supplier, dan pengeluaran material ke PIC teknisi secara realtime.
+          <strong>MaoneArt Stock & Inventory</strong> adalah sistem pergudangan modern berarsitektur <em>Hybrid Local-First</em> yang dirancang untuk kecepatan operasional inventory pabrik, pencatatan Part Number pabrik, nomor surat jalan supplier, dan pengeluaran material ke PIC teknisi secara realtime.
         </p>
         <p style="margin: 0;">
           Dapat berjalan mandiri di smartphone (Android Termux) maupun jaringan WiFi kantor (PC/Server lokal) tanpa ketergantungan hosting berbayar.

@@ -65,7 +65,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'hapus' && isset($_GET['id']))
     try {
         $stmt = $pdo->prepare("DELETE FROM barang WHERE id = ?");
         $stmt->execute([$id]);
-        setFlash('success', 'Data Dihapus', 'Data barang berhasil dihapus dari master inventaris.');
+        setFlash('success', 'Data Dihapus', 'Data barang berhasil dihapus dari master inventory.');
     } catch (PDOException $e) {
         if ($e->errorInfo[1] == 1451) {
             setFlash('danger', 'Tidak Bisa Dihapus', 'Barang ini sudah memiliki riwayat transaksi masuk/keluar. Tidak dapat dihapus demi integritas audit.');
@@ -265,7 +265,7 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
 <div class="ios-form-card" style="padding: 18px;">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 12px; flex-wrap: wrap;">
     <div class="ios-group-title" style="margin-bottom: 0;">
-      <i class="bi bi-boxes"></i> DAFTAR BARANG (<?= count($barangs) ?> ITEM)
+      <i class="bi bi-box-seam-fill"></i> DAFTAR BARANG (<?= count($barangs) ?> ITEM)
     </div>
     <input type="text" id="tableSearchInput" class="ios-input" placeholder="🔍 Cari barang..." style="max-width: 280px; padding: 8px 12px; font-size: 0.8rem;">
   </div>
@@ -303,7 +303,7 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
               </td>
               <td>
                 <?php if ($b['nama_supplier']): ?>
-                  <span class="badge badge-success"><i class="bi bi-truck"></i> <?= htmlspecialchars($b['nama_supplier']) ?></span>
+                  <span class="badge badge-success"><i class="bi bi-building-fill"></i> <?= htmlspecialchars($b['nama_supplier']) ?></span>
                 <?php else: ?>
                   <span style="font-size: 0.72rem; color: var(--text-dim);">-</span>
                 <?php endif; ?>

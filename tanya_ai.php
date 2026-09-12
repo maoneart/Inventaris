@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
     appendMessage('user', text);
     aiInput.value = '';
 
-    const typingIndicator = appendMessage('ai', '<i class="bi bi-three-dots"></i> <em>Si-nya sedang memeriksa inventaris gudang...</em>');
+    const typingIndicator = appendMessage('ai', '<i class="bi bi-three-dots"></i> <em>Si-nya sedang memeriksa inventory gudang...</em>');
     const token = localStorage.getItem('maoneart_gemini_token') || '';
 
     try {

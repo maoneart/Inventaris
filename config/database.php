@@ -1,7 +1,7 @@
 <?php error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE); ?>
 <?php
 // config/database.php
-// Konfigurasi Database & Helper Sistem Inventaris MaoneArt
+// Konfigurasi Database & Helper Sistem Inventory MaoneArt
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $host     = '127.0.0.1'; // 127.0.0.1 (TCP/IP) kompatibel di Termux & Komputer Kantor (XAMPP/Laragon)
 $port     = '3306';
-$dbname   = 'db_inventaris';
+$dbname   = 'db_inventory';
 $username = 'root';
 $password = '';
 
@@ -27,7 +27,16 @@ try {
             PDO::ATTR_EMULATE_PREPARES => false,
         ]);
     } catch (PDOException $e2) {
-        $db_error = $e->getMessage() . " (127.0.0.1) | " . $e2->getMessage() . " (localhost)";
+        // Fallback coba db_inventaris bila db_inventory belum diimpor
+        try {
+            $pdo = new PDO("mysql:host=$host;port=$port;dbname=db_inventaris;charset=utf8mb4", $username, $password, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
+            ]);
+        } catch (PDOException $e3) {
+            $db_error = $e->getMessage() . " | " . $e2->getMessage() . " | " . $e3->getMessage();
+        }
     }
 }
 
