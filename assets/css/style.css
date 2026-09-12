@@ -470,31 +470,48 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-decoration: none;
-  color: var(--text-dim);
+  color: var(--text-muted);
   font-size: 0.68rem;
   font-weight: 600;
   gap: 3px;
-  transition: all 0.2s;
-  padding: 6px 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 6px 8px;
   border-radius: var(--radius-sm);
+  flex: 1;
+  text-align: center;
 }
 
 .dock-item i {
   font-size: 1.25rem;
+  transition: transform 0.15s ease;
+}
+
+.dock-item:active i {
+  transform: scale(0.9);
 }
 
 .dock-item.active {
-  color: #60a5fa;
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.dock-item.active i {
+  color: #38bdf8;
 }
 
 .dock-item.dock-highlight {
   background: linear-gradient(135deg, #2563eb, #8b5cf6);
-  color: #ffffff;
+  color: #ffffff !important;
   box-shadow: var(--shadow-glow);
-  transform: translateY(-10px);
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: var(--radius-md);
+}
+
+.dock-item.dock-highlight i,
+.dock-item.dock-highlight span {
+  color: #ffffff !important;
 }
 
 /* ==========================================================================
@@ -823,12 +840,26 @@ body {
   }
   .mobile-gojek-view {
     display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   .top-navbar {
     display: none !important;
   }
   .main-wrapper {
-    padding: 0 16px 80px 16px !important;
+    padding: 0 0 85px 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  /* Form pages retain standard 16px edge padding on mobile */
+  .ios-nav-header-simple,
+  .page-title-box,
+  .ios-form-card,
+  .modern-table-card,
+  .glass-card:not(.mobile-gojek-view .glass-card) {
+    margin-left: 16px !important;
+    margin-right: 16px !important;
   }
 }
 
@@ -841,22 +872,36 @@ body {
   }
 }
 
-/* Gojek Styling Shared Tokens */
+/* Gojek Styling Shared Tokens - 100% Full Screen Fluid Responsive */
 .gojek-wrapper {
-  max-width: 440px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 .gojek-header-fixed {
   position: sticky;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 90;
   background: rgba(15, 23, 42, 0.96);
   backdrop-filter: blur(14px);
-  padding: 12px 0 10px 0;
-  margin-bottom: 12px;
+  -webkit-backdrop-filter: blur(14px);
+  padding: 12px 16px 12px 16px;
+  margin-bottom: 14px;
   display: flex;
   align-items: center;
   gap: 10px;
+  box-sizing: border-box;
+  border-bottom: none;
+}
+.gojek-body-content {
+  padding: 0 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .gojek-search-pill-web {
   flex: 1;
@@ -1613,6 +1658,12 @@ body.theme-light {
 
 [data-theme="light"] .gojek-bottom-nav .nav-tab.active i {
   color: #00aa13 !important;
+}
+
+[data-theme="light"] .dock-item.dock-highlight,
+[data-theme="light"] .dock-item.dock-highlight i,
+[data-theme="light"] .dock-item.dock-highlight span {
+  color: #ffffff !important;
 }
 
 /* Light MaoneArt Glassmorphism Modals */

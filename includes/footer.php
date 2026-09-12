@@ -16,7 +16,7 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
     <i class="bi bi-box-arrow-in-down"></i>
     <span>Masuk</span>
   </a>
-  <a href="tanya_ai.php" class="dock-item <?= $currPage === 'tanya_ai' ? 'active' : '' ?> dock-highlight" title="Tanya Si-nya">
+  <a href="tanya_ai.php" class="dock-item <?= $currPage === 'tanya_ai' ? 'active' : '' ?>" title="Tanya Si-nya">
     <i class="bi bi-robot"></i>
     <span>Tanya AI</span>
   </a>

@@ -186,8 +186,8 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
       <a href="app.php" class="btn btn-secondary btn-sm" title="Mode APK Petugas">
         <i class="bi bi-phone-fill text-info"></i> <span style="display: inline-block;">APK</span>
       </a>
-      <a href="tanya_ai.php" class="btn btn-primary btn-sm" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
-        <i class="bi bi-robot"></i> <span>Tanya AI</span>
+      <a href="tanya_ai.php" class="btn btn-primary btn-sm" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #ffffff !important;">
+        <i class="bi bi-robot" style="color: #ffffff !important;"></i> <span style="color: #ffffff !important;">Tanya AI</span>
       </a>
     </div>
   </div>

@@ -82,8 +82,11 @@ try {
       </a>
     </div>
 
-    <!-- 2. Kartu Saldo / GoPay Wallet Style -->
-    <div class="gopay-wallet-card-web">
+    <!-- Body Content with Edge-to-Edge Fluid Padding -->
+    <div class="gojek-body-content">
+
+      <!-- 2. Kartu Saldo / GoPay Wallet Style -->
+      <div class="gopay-wallet-card-web">
       <div style="display: flex; flex-direction: column; gap: 2px; border-right: 1px solid var(--card-border); padding-right: 14px; min-width: 125px;">
         <div style="font-size: 0.7rem; font-weight: 800; color: #2563eb; display: flex; align-items: center; gap: 4px; letter-spacing: 0.04em;">
           <i class="bi bi-box-seam-fill"></i> STOK GUDANG
@@ -277,6 +280,7 @@ try {
       <?php endif; ?>
     </div>
 
+    </div> <!-- End .gojek-body-content -->
   </div>
 </div>
 

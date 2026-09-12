@@ -143,24 +143,31 @@ $recentActivity = $pdo->query("
       font-weight: 700 !important;
     }
     .gojek-wrapper {
-      max-width: 440px;
-      margin: 0 auto;
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
       padding: 0 16px;
+      box-sizing: border-box;
     }
 
     /* 1. Header & Search Bar Ala Gojek */
     .gojek-header {
       position: sticky;
       top: 0;
+      left: 0;
+      right: 0;
+      width: calc(100% + 32px);
       z-index: 50;
       background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(12px);
-      padding: 12px 16px 10px;
-      margin: 0 -16px 12px -16px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 12px 16px 12px 16px;
+      margin: 0 -16px 14px -16px;
       border-bottom: none;
       display: flex;
       align-items: center;
       gap: 10px;
+      box-sizing: border-box;
     }
     .gojek-search-pill {
       flex: 1;
@@ -387,16 +394,16 @@ $recentActivity = $pdo->query("
       bottom: 0;
       left: 0;
       right: 0;
+      width: 100%;
       height: 62px;
       background: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-top: 1px solid var(--gojek-border);
       display: flex;
       justify-content: space-around;
       align-items: center;
       z-index: 100;
-      max-width: 440px;
-      margin: 0 auto;
     }
     .nav-tab {
       display: flex;
