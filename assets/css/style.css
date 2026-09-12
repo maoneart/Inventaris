@@ -813,3 +813,106 @@ body {
   align-items: center;
   justify-content: space-between;
 }
+
+/* ==========================================================================
+   RESPONSIVE GOJEK SWITCHER FOR WEB (INDEX.PHP AUTO-DETECT HP VS DESKTOP)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .desktop-view-only {
+    display: none !important;
+  }
+  .mobile-gojek-view {
+    display: block !important;
+  }
+  .top-navbar {
+    display: none !important;
+  }
+  .main-wrapper {
+    padding: 0 16px 80px 16px !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-gojek-view {
+    display: none !important;
+  }
+  .desktop-view-only {
+    display: block !important;
+  }
+}
+
+/* Gojek Styling Shared Tokens */
+.gojek-wrapper {
+  max-width: 440px;
+  margin: 0 auto;
+}
+.gojek-header-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(14px);
+  padding: 12px 0 10px 0;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.gojek-search-pill-web {
+  flex: 1;
+  height: 40px;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 10px;
+  text-decoration: none;
+  color: #94a3b8;
+  font-size: 0.82rem;
+}
+.gojek-avatar-btn-web {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00aa13, #10b981);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.1rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.gopay-wallet-card-web {
+  background: #162033;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+.gojek-services-grid-web {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px 8px;
+  margin-bottom: 24px;
+}
+.gojek-circle-icon-web {
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  transition: transform 0.15s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+.gojek-service-item-web:active .gojek-circle-icon-web {
+  transform: scale(0.9);
+}
