@@ -1,9 +1,9 @@
 <?php
-// pengaturan.php - Pengaturan Sistem Gaya iPhone (iOS Grouped List & Sub-Pages)
+// pengaturan.php - Pengaturan Sistem Gaya iPhone (iOS Grouped List & Clean Sub-Pages)
 $pageTitle = "Pengaturan Sistem";
 require_once __DIR__ . '/config/database.php';
 
-// Sub-page route handler
+// Sub-page router
 $sub = trim($_GET['sub'] ?? '');
 
 // Proses Simpan Pengaturan Profil
@@ -106,40 +106,88 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
 ?>
 
 <style>
-/* iOS / iPhone Settings Styles for Web */
-.ios-section-header {
-  font-size: 0.73rem;
+/* ==========================================================================
+   TAMPILAN PENGATURAN GAYA IPHONE (iOS Clean Grouped List & Sub-Pages)
+   ========================================================================== */
+.ios-settings-wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+/* Header Sub-Page Khas iOS */
+.ios-subpage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding: 4px 0;
+}
+.ios-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #007AFF;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 12px 6px 8px;
+  border-radius: 99px;
+  background: rgba(0, 122, 255, 0.1);
+  transition: all 0.15s ease;
+}
+.ios-btn-back:hover {
+  background: rgba(0, 122, 255, 0.2);
+  color: #0062cc;
+}
+.ios-subpage-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+/* Section Header Gaya iOS */
+.ios-section-label {
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 20px 0 6px 14px;
+  letter-spacing: 0.6px;
+  margin: 22px 0 7px 14px;
 }
-.ios-group-container {
+
+/* Group Container (Kotak Membulat Khas iOS) */
+.ios-group-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   margin-bottom: 12px;
 }
-.ios-list-item {
+
+/* Baris Menu Gaya iOS */
+.ios-item-row {
   display: flex;
   align-items: center;
   padding: 13px 16px;
   color: var(--text-main);
   text-decoration: none;
-  transition: background 0.15s ease, transform 0.1s ease;
+  transition: background 0.15s ease;
   border-bottom: 1px solid var(--card-border);
 }
-.ios-list-item:last-child {
+.ios-item-row:last-child {
   border-bottom: none;
 }
-.ios-list-item:hover {
+.ios-item-row:hover {
   background: rgba(255, 255, 255, 0.04);
   color: var(--text-main);
 }
-.ios-list-icon {
+
+/* Kotak Ikon Berwarna Khas Apple */
+.ios-item-icon {
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -147,59 +195,93 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   margin-right: 14px;
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
-.ios-list-content {
+.ios-item-content {
   flex: 1;
   min-width: 0;
 }
-.ios-list-title {
-  font-size: 0.92rem;
+.ios-item-title {
+  font-size: 0.94rem;
   font-weight: 600;
   color: var(--text-main);
-  line-height: 1.25;
+  line-height: 1.3;
 }
-.ios-list-subtitle {
-  font-size: 0.74rem;
+.ios-item-subtitle {
+  font-size: 0.75rem;
   color: var(--text-muted);
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.ios-list-trailing {
+.ios-item-trailing {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   color: var(--text-muted);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   margin-left: 10px;
+  flex-shrink: 0;
 }
-.ios-sub-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  color: #2563eb;
-  font-weight: 700;
+
+/* Tabel Info Mengenai Sistem (iOS About Table) */
+.ios-info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.ios-info-table tr {
+  border-bottom: 1px solid var(--card-border);
+}
+.ios-info-table tr:last-child {
+  border-bottom: none;
+}
+.ios-info-table td {
+  padding: 13px 16px;
   font-size: 0.88rem;
-  text-decoration: none;
-  padding: 6px 12px;
-  border-radius: 99px;
-  background: rgba(37, 99, 235, 0.1);
-  transition: all 0.15s ease;
 }
-.ios-sub-back:hover {
-  background: rgba(37, 99, 235, 0.2);
-  color: #1d4ed8;
+.ios-info-table td.label-col {
+  color: var(--text-muted);
+  font-weight: 500;
+  width: 45%;
+}
+.ios-info-table td.val-col {
+  color: var(--text-main);
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Panduan Step Card */
+.ios-guide-card {
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.ios-guide-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+  flex-shrink: 0;
 }
 </style>
 
+<div class="ios-settings-wrap">
+
 <?php if (empty($sub)): ?>
   <!-- ========================================================================= -->
-  <!-- 1. HALAMAN UTAMA PENGATURAN GAYA IPHONE (iOS GROUPED LIST VIEW)           -->
+  <!-- 1. HALAMAN UTAMA PENGATURAN (LIST INDUK ALA IPHONE)                       -->
   <!-- ========================================================================= -->
 
   <div class="ios-top-bar">
@@ -207,26 +289,22 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       <i class="bi bi-chevron-left"></i>
     </a>
     <h1 class="ios-bar-title">Pengaturan</h1>
-    <div class="ios-bar-action">
-      <button type="button" class="btn btn-secondary btn-sm" onclick="showIntroWalkthrough(true)" style="border-radius: 99px; width: 34px; height: 34px; padding: 0;" title="Buka Panduan">
-        <i class="bi bi-info-circle-fill" style="color: #38bdf8;"></i>
-      </button>
-    </div>
+    <div class="ios-bar-action"></div>
   </div>
 
   <!-- Profil Pengguna Gudang (iOS Profile Banner) -->
-  <div class="ios-group-container" style="margin-top: 4px;">
-    <div class="ios-list-item" style="padding: 16px;">
+  <div class="ios-group-card" style="margin-top: 4px;">
+    <div class="ios-item-row" style="padding: 16px;">
       <div style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #007AFF, #5856D6); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.4rem; font-weight: 800; margin-right: 14px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.35);">
         OP
       </div>
-      <div class="ios-list-content">
+      <div class="ios-item-content">
         <div style="font-size: 1.05rem; font-weight: 700; color: var(--text-main);">Petugas Gudang Pabrik</div>
         <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
           Operator Lapangan • <?= htmlspecialchars($currNamaGudang) ?>
         </div>
       </div>
-      <div class="ios-list-trailing">
+      <div class="ios-item-trailing">
         <span class="badge <?= $pdo ? 'badge-success' : 'badge-danger' ?>" style="font-size: 0.7rem; padding: 4px 8px;">
           <i class="bi bi-circle-fill" style="font-size: 0.45rem;"></i> <?= $pdo ? 'Online' : 'Offline' ?>
         </span>
@@ -235,17 +313,17 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   </div>
 
   <!-- Section 1: Jaringan & Server -->
-  <div class="ios-section-header">JARINGAN & SERVER</div>
-  <div class="ios-group-container">
-    <a href="pengaturan.php?sub=jaringan" class="ios-list-item">
-      <div class="ios-list-icon" style="background: #007AFF;">
+  <div class="ios-section-label">JARINGAN & SERVER</div>
+  <div class="ios-group-card">
+    <a href="pengaturan.php?sub=jaringan" class="ios-item-row">
+      <div class="ios-item-icon" style="background: #007AFF;">
         <i class="bi bi-wifi"></i>
       </div>
-      <div class="ios-list-content">
-        <div class="ios-list-title">Koneksi Server & Database</div>
-        <div class="ios-list-subtitle">Host: <?= htmlspecialchars($host) ?>:<?= htmlspecialchars($port) ?> • <?= htmlspecialchars($dbname) ?></div>
+      <div class="ios-item-content">
+        <div class="ios-item-title">Koneksi Server & Database</div>
+        <div class="ios-item-subtitle"><?= htmlspecialchars($host) ?>:<?= htmlspecialchars($port) ?> • <?= htmlspecialchars($dbname) ?></div>
       </div>
-      <div class="ios-list-trailing">
+      <div class="ios-item-trailing">
         <span style="color: #059669; font-weight: 600;"><?= $pdo ? 'Terhubung' : 'Terputus' ?></span>
         <i class="bi bi-chevron-right"></i>
       </div>
@@ -253,94 +331,94 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   </div>
 
   <!-- Section 2: Tampilan & AI -->
-  <div class="ios-section-header">TAMPILAN & KECERDASAN BUATAN</div>
-  <div class="ios-group-container">
-    <a href="pengaturan.php?sub=tema" class="ios-list-item">
-      <div class="ios-list-icon" style="background: #AF52DE;">
+  <div class="ios-section-label">TAMPILAN & KECERDASAN BUATAN</div>
+  <div class="ios-group-card">
+    <a href="pengaturan.php?sub=tema" class="ios-item-row">
+      <div class="ios-item-icon" style="background: #AF52DE;">
         <i class="bi bi-palette-fill"></i>
       </div>
-      <div class="ios-list-content">
-        <div class="ios-list-title">Tema Tampilan Sistem</div>
-        <div class="ios-list-subtitle">Dark Navy Industrial & Clean White Modern</div>
+      <div class="ios-item-content">
+        <div class="ios-item-title">Tema Tampilan Sistem</div>
+        <div class="ios-item-subtitle">Mode Gelap (Dark Navy) & Mode Terang (Clean White)</div>
       </div>
-      <div class="ios-list-trailing">
+      <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
       </div>
     </a>
 
-    <a href="pengaturan.php?sub=ai" class="ios-list-item">
-      <div class="ios-list-icon" style="background: #5856D6;">
+    <a href="pengaturan.php?sub=ai" class="ios-item-row">
+      <div class="ios-item-icon" style="background: #5856D6;">
         <i class="bi bi-robot"></i>
       </div>
-      <div class="ios-list-content">
-        <div class="ios-list-title">Kecerdasan Buatan (Si-nya AI)</div>
-        <div class="ios-list-subtitle">Google Gemini API Key • Analisis Stok Realtime</div>
+      <div class="ios-item-content">
+        <div class="ios-item-title">Kecerdasan Buatan (Si-nya AI)</div>
+        <div class="ios-item-subtitle">API Key Google Gemini • Asisten Logistik Lapangan</div>
       </div>
-      <div class="ios-list-trailing">
+      <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
       </div>
     </a>
   </div>
 
   <!-- Section 3: Organisasi & Gudang -->
-  <div class="ios-section-header">IDENTITAS & PERUSAHAAN</div>
-  <div class="ios-group-container">
-    <a href="pengaturan.php?sub=profil" class="ios-list-item">
-      <div class="ios-list-icon" style="background: #34C759;">
+  <div class="ios-section-label">IDENTITAS & PERUSAHAAN</div>
+  <div class="ios-group-card">
+    <a href="pengaturan.php?sub=profil" class="ios-item-row">
+      <div class="ios-item-icon" style="background: #34C759;">
         <i class="bi bi-building"></i>
       </div>
-      <div class="ios-list-content">
-        <div class="ios-list-title">Identitas Gudang & Kantor</div>
-        <div class="ios-list-subtitle"><?= htmlspecialchars($currNamaKantor) ?> • <?= htmlspecialchars($currNamaGudang) ?></div>
+      <div class="ios-item-content">
+        <div class="ios-item-title">Identitas Gudang & Kantor</div>
+        <div class="ios-item-subtitle"><?= htmlspecialchars($currNamaKantor) ?> • <?= htmlspecialchars($currNamaGudang) ?></div>
       </div>
-      <div class="ios-list-trailing">
+      <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
       </div>
     </a>
   </div>
 
   <!-- Section 4: Panduan & Informasi -->
-  <div class="ios-section-header">PANDUAN & BANTUAN</div>
-  <div class="ios-group-container">
-    <div class="ios-list-item" onclick="showIntroWalkthrough(true)" style="cursor: pointer;">
-      <div class="ios-list-icon" style="background: #FF9500;">
+  <div class="ios-section-label">PANDUAN & BANTUAN</div>
+  <div class="ios-group-card">
+    <a href="pengaturan.php?sub=panduan" class="ios-item-row">
+      <div class="ios-item-icon" style="background: #FF9500;">
         <i class="bi bi-play-circle-fill"></i>
       </div>
-      <div class="ios-list-content">
-        <div class="ios-list-title">Panduan Aplikasi (3 Slide)</div>
-        <div class="ios-list-subtitle">Buka slide tutorial pengenalan fitur gudang & AI</div>
+      <div class="ios-item-content">
+        <div class="ios-item-title">Panduan Aplikasi (3 Langkah)</div>
+        <div class="ios-item-subtitle">Tutorial cara catat barang masuk, barang keluar & AI</div>
       </div>
-      <div class="ios-list-trailing">
+      <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
       </div>
-    </div>
+    </a>
 
-    <div class="ios-list-item" onclick="openAboutModal()" style="cursor: pointer;">
-      <div class="ios-list-icon" style="background: #0284C7;">
+    <a href="pengaturan.php?sub=about" class="ios-item-row">
+      <div class="ios-item-icon" style="background: #0284C7;">
         <i class="bi bi-info-circle-fill"></i>
       </div>
-      <div class="ios-list-content">
-        <div class="ios-list-title">Tentang MaoneArt Inventory</div>
-        <div class="ios-list-subtitle">Versi 2.0.0 Enterprise • Hermawan (MaoneArt)</div>
+      <div class="ios-item-content">
+        <div class="ios-item-title">Tentang MaoneArt Inventory</div>
+        <div class="ios-item-subtitle">Versi 2.0.0 Enterprise • Pengembang Hermawan</div>
       </div>
-      <div class="ios-list-trailing">
+      <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
       </div>
-    </div>
+    </a>
   </div>
 
   <!-- Section 5: Pemeliharaan -->
-  <div class="ios-section-header">SISTEM & PEMELIHARAAN</div>
-  <div class="ios-group-container">
-    <a href="pengaturan.php?sub=maintenance" class="ios-list-item">
-      <div class="ios-list-icon" style="background: #FF3B30;">
+  <div class="ios-section-label">SISTEM & PEMELIHARAAN</div>
+  <div class="ios-group-card">
+    <a href="pengaturan.php?sub=maintenance" class="ios-item-row">
+      <div class="ios-item-icon" style="background: #FF3B30;">
         <i class="bi bi-shield-shaded"></i>
       </div>
-      <div class="ios-list-content">
-        <div class="ios-list-title" style="color: #ef4444;">Pemeliharaan & Zona Bahaya</div>
-        <div class="ios-list-subtitle">Backup Database SQL, phpMyAdmin & Reset Data</div>
+      <div class="ios-item-content">
+        <div class="ios-item-title" style="color: #ef4444;">Pemeliharaan & Zona Bahaya</div>
+        <div class="ios-item-subtitle">Backup SQL, phpMyAdmin & Reset Riwayat Data</div>
       </div>
-      <div class="ios-list-trailing">
+      <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
       </div>
     </a>
@@ -353,36 +431,38 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
 
 <?php elseif ($sub === 'jaringan'): ?>
   <!-- ========================================================================= -->
-  <!-- 2. SUB-HALAMAN: KONEKSI JARINGAN & SERVER (MASUK SETELAH DIKLIK)         -->
+  <!-- 2. SUB-HALAMAN: KONEKSI JARINGAN & SERVER                                 -->
   <!-- ========================================================================= -->
 
-  <div class="ios-top-bar">
-    <a href="pengaturan.php" class="ios-sub-back">
+  <div class="ios-subpage-header">
+    <a href="pengaturan.php" class="ios-btn-back">
       <i class="bi bi-chevron-left"></i> Pengaturan
     </a>
-    <h1 class="ios-bar-title">Jaringan & Server</h1>
-    <div class="ios-bar-action"></div>
+    <h2 class="ios-subpage-title">Jaringan & Server</h2>
+    <div style="width: 70px;"></div>
   </div>
 
-  <div class="ios-form-card">
-    <div class="ios-group-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-      <span><i class="bi bi-hdd-network-fill"></i> KONEKSI SERVER & DATABASE</span>
-      <span class="badge <?= $pdo ? 'badge-success' : 'badge-danger' ?>" style="font-size: 0.68rem; padding: 4px 8px;">
-        <i class="bi bi-circle-fill" style="font-size: 0.5rem;"></i> <?= $pdo ? 'Terhubung (' . htmlspecialchars($host) . ')' : 'Terputus' ?>
+  <div class="ios-group-card" style="padding: 18px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+      <div style="font-weight: 800; font-size: 1rem; color: var(--text-main);">
+        <i class="bi bi-hdd-network-fill" style="color: #007AFF;"></i> Status Koneksi
+      </div>
+      <span class="badge <?= $pdo ? 'badge-success' : 'badge-danger' ?>" style="font-size: 0.72rem; padding: 5px 10px;">
+        <i class="bi bi-circle-fill" style="font-size: 0.45rem;"></i> <?= $pdo ? 'Terhubung (' . htmlspecialchars($host) . ')' : 'Terputus' ?>
       </span>
     </div>
 
-    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
-      Atur alamat akses web dan host database MySQL. Anda dapat dengan mudah mengalihkan sistem dari database lokal HP (Termux) ke komputer laptop / server kantor.
+    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+      Atur alamat akses web dan host database MySQL. Beralih dengan mudah dari database lokal HP (Termux) ke komputer laptop / server kantor.
     </p>
 
-    <!-- Pilihan Mode Cepat (Presets) -->
-    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
-      <button type="button" class="btn btn-secondary btn-sm" onclick="setPresetMode('hp')" style="border-radius: 10px; font-size: 0.78rem; font-weight: 700;">
+    <!-- Preset Cepat -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="setPresetMode('hp')" style="border-radius: 12px; padding: 10px; font-weight: 700;">
         📱 Mode HP (127.0.0.1)
       </button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="setPresetMode('laptop')" style="border-radius: 10px; font-size: 0.78rem; font-weight: 700;">
-        💻 Mode Laptop / Server Kantor
+      <button type="button" class="btn btn-secondary btn-sm" onclick="setPresetMode('laptop')" style="border-radius: 12px; padding: 10px; font-weight: 700;">
+        💻 Mode Laptop / Server
       </button>
     </div>
 
@@ -390,21 +470,18 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       <input type="hidden" name="action" value="simpan_koneksi">
 
       <div style="margin-bottom: 14px;">
-        <label class="ios-label">Alamat Akses Saat Ini (Web / APK Base URL) <span style="color: #ef4444;">*</span></label>
+        <label class="ios-label">Alamat Akses Web / Base URL <span style="color: #ef4444;">*</span></label>
         <input type="text" name="server_url" id="inputServerUrl" class="ios-input" value="<?= htmlspecialchars($customServerUrl ?: "http://$serverHost/inventory") ?>" placeholder="http://192.168.1.100:8085/inventory" required style="color: #2563eb; font-weight: 700;">
-        <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">
-          URL ini dipakai browser dan APK untuk menghubungkan transaksi ke server.
-        </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 14px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px;">
         <div>
-          <label class="ios-label">Host Database (IP Server / Laptop) <span style="color: #ef4444;">*</span></label>
-          <input type="text" name="db_host" id="inputDbHost" class="ios-input" value="<?= htmlspecialchars($host) ?>" placeholder="127.0.0.1 atau 192.168.x.x" required style="font-weight: 700;">
+          <label class="ios-label">Host Database (IP Server) <span style="color: #ef4444;">*</span></label>
+          <input type="text" name="db_host" id="inputDbHost" class="ios-input" value="<?= htmlspecialchars($host) ?>" placeholder="127.0.0.1" required style="font-weight: 700;">
         </div>
 
         <div>
-          <label class="ios-label">Port MySQL / MariaDB</label>
+          <label class="ios-label">Port Database</label>
           <input type="number" name="db_port" id="inputDbPort" class="ios-input" value="<?= htmlspecialchars($port) ?>" placeholder="3306" required>
         </div>
 
@@ -418,26 +495,18 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
           <input type="text" name="db_user" id="inputDbUser" class="ios-input" value="<?= htmlspecialchars($username) ?>" placeholder="root" required>
         </div>
 
-        <div style="grid-column: span 2;">
+        <div style="grid-column: 1 / -1;">
           <label class="ios-label">Password Database (Opsional)</label>
-          <input type="password" name="db_pass" id="inputDbPass" class="ios-input" value="<?= htmlspecialchars($password) ?>" placeholder="Kosongkan jika tanpa password (standar XAMPP)">
+          <input type="password" name="db_pass" id="inputDbPass" class="ios-input" value="<?= htmlspecialchars($password) ?>" placeholder="Kosongkan jika tanpa password">
         </div>
       </div>
 
-      <div style="margin-top: 18px;">
-        <button type="submit" class="ios-btn-primary ios-btn-blue" style="height: 46px;">
+      <div style="margin-top: 16px;">
+        <button type="submit" class="ios-btn-primary ios-btn-blue" style="height: 48px; border-radius: 14px;">
           <i class="bi bi-arrow-repeat"></i> Simpan & Hubungkan Database
         </button>
       </div>
     </form>
-
-    <div class="info-guide-box" style="margin-top: 16px;">
-      💡 <strong>Cara Pindah ke Database Laptop / Server:</strong><br>
-      1. Pastikan Komputer/Laptop dan HP terhubung pada WiFi yang sama.<br>
-      2. Klik tombol <strong>Mode Laptop / Server Kantor</strong> di atas.<br>
-      3. Masukkan IP Komputer Kantor (misal <code>192.168.1.50</code>) pada kolom <strong>Host Database</strong>.<br>
-      4. Klik <strong>Simpan & Hubungkan</strong>. Seluruh mutasi di HP otomatis membaca & menulis langsung ke server kantor!
-    </div>
   </div>
 
 <?php elseif ($sub === 'tema'): ?>
@@ -445,64 +514,49 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <!-- 3. SUB-HALAMAN: TEMA & TAMPILAN                                           -->
   <!-- ========================================================================= -->
 
-  <div class="ios-top-bar">
-    <a href="pengaturan.php" class="ios-sub-back">
+  <div class="ios-subpage-header">
+    <a href="pengaturan.php" class="ios-btn-back">
       <i class="bi bi-chevron-left"></i> Pengaturan
     </a>
-    <h1 class="ios-bar-title">Tema Tampilan</h1>
-    <div class="ios-bar-action"></div>
+    <h2 class="ios-subpage-title">Tema Tampilan</h2>
+    <div style="width: 70px;"></div>
   </div>
 
-  <div class="ios-form-card">
-    <div class="ios-group-title">
-      <i class="bi bi-palette-fill"></i> PILIH MODE WARNA SISTEM
+  <div class="ios-group-card" style="padding: 18px;">
+    <div style="font-weight: 800; font-size: 1rem; color: var(--text-main); margin-bottom: 6px;">
+      <i class="bi bi-palette-fill" style="color: #AF52DE;"></i> Pilih Mode Tampilan Visual
     </div>
-
-    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
-      Pilih gaya tampilan visual sistem. Seluruh warna kartu, form input, tabel, navigasi bar, dan latar belakang akan menyesuaikan secara instan tanpa perlu memuat ulang halaman.
+    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+      Sentuh salah satu pilihan kartu di bawah untuk mengubah nuansa warna seluruh sistem secara instan.
     </p>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
       <!-- Dark Mode Card -->
-      <div id="themeCardDark" class="theme-option-card active" onclick="setAppTheme('dark')" style="background: rgba(15, 23, 42, 0.85); cursor: pointer;">
+      <div id="themeCardDark" class="theme-option-card active" onclick="setAppTheme('dark')" style="background: rgba(15, 23, 42, 0.9); cursor: pointer; border-radius: 14px; padding: 14px;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(30, 41, 59, 0.9); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; color: #60a5fa;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 32px; height: 32px; border-radius: 8px; background: #1e293b; display: flex; align-items: center; justify-content: center; color: #60a5fa;">
               <i class="bi bi-moon-stars-fill"></i>
             </div>
-            <div>
-              <div style="font-weight: 800; font-size: 0.95rem; color: #ffffff;">Mode Gelap (Dark)</div>
-              <div style="font-size: 0.72rem; color: #94a3b8;">Dark Navy Industrial</div>
-            </div>
+            <div style="font-weight: 800; font-size: 0.9rem; color: #fff;">Dark Mode</div>
           </div>
-          <i class="bi bi-check-circle-fill check-icon" style="font-size: 1.25rem; color: #2563eb;"></i>
+          <i class="bi bi-check-circle-fill check-icon" style="font-size: 1.2rem; color: #007AFF;"></i>
         </div>
-        <div style="height: 38px; border-radius: 10px; background: #0b0f19; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; padding: 0 12px; gap: 8px;">
-          <div style="width: 16px; height: 7px; border-radius: 99px; background: #2563eb;"></div>
-          <div style="width: 45px; height: 7px; border-radius: 99px; background: rgba(255,255,255,0.25);"></div>
-          <div style="width: 25px; height: 7px; border-radius: 99px; background: rgba(16,185,129,0.4); margin-left: auto;"></div>
-        </div>
+        <div style="font-size: 0.72rem; color: #94a3b8;">Dark Navy Industrial</div>
       </div>
 
       <!-- Light Mode Card -->
-      <div id="themeCardLight" class="theme-option-card" onclick="setAppTheme('light')" style="background: rgba(255, 255, 255, 0.95); cursor: pointer;">
+      <div id="themeCardLight" class="theme-option-card" onclick="setAppTheme('light')" style="background: #ffffff; cursor: pointer; border-radius: 14px; padding: 14px; border: 1px solid rgba(0,0,0,0.1);">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 36px; height: 36px; border-radius: 10px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; color: #f59e0b;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 32px; height: 32px; border-radius: 8px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; color: #f59e0b;">
               <i class="bi bi-sun-fill"></i>
             </div>
-            <div>
-              <div style="font-weight: 800; font-size: 0.95rem; color: #0f172a;">Mode Terang (White)</div>
-              <div style="font-size: 0.72rem; color: #64748b;">Clean White Modern</div>
-            </div>
+            <div style="font-weight: 800; font-size: 0.9rem; color: #0f172a;">Light Mode</div>
           </div>
-          <i class="bi bi-check-circle-fill check-icon" style="font-size: 1.25rem; color: #2563eb; display: none;"></i>
+          <i class="bi bi-check-circle-fill check-icon" style="font-size: 1.2rem; color: #007AFF; display: none;"></i>
         </div>
-        <div style="height: 38px; border-radius: 10px; background: #f8fafc; border: 1px solid rgba(0,0,0,0.1); display: flex; align-items: center; padding: 0 12px; gap: 8px;">
-          <div style="width: 16px; height: 7px; border-radius: 99px; background: #2563eb;"></div>
-          <div style="width: 45px; height: 7px; border-radius: 99px; background: rgba(0,0,0,0.2);"></div>
-          <div style="width: 25px; height: 7px; border-radius: 99px; background: rgba(16,185,129,0.4); margin-left: auto;"></div>
-        </div>
+        <div style="font-size: 0.72rem; color: #64748b;">Clean White Modern</div>
       </div>
     </div>
   </div>
@@ -512,24 +566,23 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <!-- 4. SUB-HALAMAN: KECERDASAN BUATAN (GEMINI AI)                            -->
   <!-- ========================================================================= -->
 
-  <div class="ios-top-bar">
-    <a href="pengaturan.php" class="ios-sub-back">
+  <div class="ios-subpage-header">
+    <a href="pengaturan.php" class="ios-btn-back">
       <i class="bi bi-chevron-left"></i> Pengaturan
     </a>
-    <h1 class="ios-bar-title">Gemini AI Gudang</h1>
-    <div class="ios-bar-action"></div>
+    <h2 class="ios-subpage-title">Gemini AI</h2>
+    <div style="width: 70px;"></div>
   </div>
 
-  <div class="ios-form-card">
-    <div class="ios-group-title">
-      <i class="bi bi-robot"></i> KECERDASAN BUATAN (GEMINI AI GUDANG)
+  <div class="ios-group-card" style="padding: 18px;">
+    <div style="font-weight: 800; font-size: 1rem; color: var(--text-main); margin-bottom: 6px;">
+      <i class="bi bi-robot" style="color: #5856D6;"></i> Token Google Gemini AI
     </div>
-
-    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
-      🔒 <strong>Aman & Terisolasi:</strong> Token AI Gemini hanya disimpan di <code>localStorage</code> browser/HP masing-masing pengguna. Token tidak pernah disimpan di repository GitHub kodingan sehingga aman dari pencurian.
+    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+      🔒 <strong>Tersimpan Aman di HP:</strong> API Key hanya disimpan di browser/HP masing-masing pengguna. Token tidak pernah disimpan di source code repository GitHub.
     </p>
 
-    <div>
+    <div style="margin-bottom: 16px;">
       <label class="ios-label">API Key Google Gemini</label>
       <div style="display: flex; gap: 8px;">
         <input type="password" id="inputTokenGemini" class="ios-input" placeholder="Masukkan token AIzaSy..." autocomplete="off">
@@ -539,12 +592,13 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 16px;">
-      <button type="button" class="ios-btn-primary ios-btn-blue" onclick="saveGeminiToken()">
-        <i class="bi bi-check-lg"></i> Simpan Token ke HP
-      </button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="clearGeminiToken()" style="border-radius: 14px; height: 48px; font-weight: 700; color: #f87171;">
+    <!-- 2-Column Grid Symmetrical Actions -->
+    <div class="grid grid-cols-2 gap-3" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="clearGeminiToken()" style="border-radius: 14px; height: 48px; font-weight: 700; color: #ef4444;">
         <i class="bi bi-trash"></i> Hapus Token
+      </button>
+      <button type="button" class="ios-btn-primary ios-btn-blue" onclick="saveGeminiToken()" style="height: 48px; border-radius: 14px;">
+        <i class="bi bi-check-lg"></i> Simpan Token
       </button>
     </div>
   </div>
@@ -554,20 +608,20 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <!-- 5. SUB-HALAMAN: IDENTITAS GUDANG & PERUSAHAAN                            -->
   <!-- ========================================================================= -->
 
-  <div class="ios-top-bar">
-    <a href="pengaturan.php" class="ios-sub-back">
+  <div class="ios-subpage-header">
+    <a href="pengaturan.php" class="ios-btn-back">
       <i class="bi bi-chevron-left"></i> Pengaturan
     </a>
-    <h1 class="ios-bar-title">Profil Gudang</h1>
-    <div class="ios-bar-action"></div>
+    <h2 class="ios-subpage-title">Profil Gudang</h2>
+    <div style="width: 70px;"></div>
   </div>
 
   <form action="pengaturan.php" method="POST" id="formProfil">
     <input type="hidden" name="action" value="simpan_profil">
 
-    <div class="ios-form-card">
-      <div class="ios-group-title">
-        <i class="bi bi-building"></i> PROFIL GUDANG & PERUSAHAAN
+    <div class="ios-group-card" style="padding: 18px;">
+      <div style="font-weight: 800; font-size: 1rem; color: var(--text-main); margin-bottom: 16px;">
+        <i class="bi bi-building" style="color: #34C759;"></i> Informasi Resmi Gudang & Kantor
       </div>
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
@@ -577,11 +631,11 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
         </div>
 
         <div>
-          <label class="ios-label">Nama Gudang / Cabang</label>
+          <label class="ios-label">Nama Gudang / Workshop</label>
           <input type="text" name="nama_gudang" class="ios-input" value="<?= htmlspecialchars($currNamaGudang) ?>" required>
         </div>
 
-        <div style="grid-column: span 2;">
+        <div style="grid-column: 1 / -1;">
           <label class="ios-label">Nama Perusahaan / Organisasi</label>
           <input type="text" name="nama_kantor" class="ios-input" value="<?= htmlspecialchars($currNamaKantor) ?>" required>
         </div>
@@ -591,156 +645,190 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
           <input type="text" name="telepon_kantor" class="ios-input" value="<?= htmlspecialchars($currTelepon) ?>">
         </div>
 
-        <div style="grid-column: span 2;">
-          <label class="ios-label">Alamat Kantor / Workshop Logistik</label>
+        <div style="grid-column: 1 / -1;">
+          <label class="ios-label">Alamat Lengkap Kantor</label>
           <input type="text" name="alamat_kantor" class="ios-input" value="<?= htmlspecialchars($currAlamat) ?>">
         </div>
       </div>
 
       <div style="margin-top: 20px;">
-        <button type="submit" class="ios-btn-primary ios-btn-green">
+        <button type="submit" class="ios-btn-primary ios-btn-green" style="height: 48px; border-radius: 14px;">
           <i class="bi bi-save-fill"></i> Simpan Profil Perusahaan
         </button>
       </div>
     </div>
   </form>
 
-<?php elseif ($sub === 'maintenance'): ?>
+<?php elseif ($sub === 'panduan'): ?>
   <!-- ========================================================================= -->
-  <!-- 6. SUB-HALAMAN: PEMELIHARAAN & DATABASE                                   -->
+  <!-- 6. SUB-HALAMAN: PANDUAN APLIKASI (BERSIH TANPA POPUP MENUTUPI)           -->
   <!-- ========================================================================= -->
 
-  <div class="ios-top-bar">
-    <a href="pengaturan.php" class="ios-sub-back">
+  <div class="ios-subpage-header">
+    <a href="pengaturan.php" class="ios-btn-back">
       <i class="bi bi-chevron-left"></i> Pengaturan
     </a>
-    <h1 class="ios-bar-title">Pemeliharaan</h1>
-    <div class="ios-bar-action"></div>
+    <h2 class="ios-subpage-title">Panduan Aplikasi</h2>
+    <div style="width: 70px;"></div>
   </div>
 
-  <div class="ios-form-card">
-    <div class="ios-group-title">
-      <i class="bi bi-shield-shaded"></i> PEMELIHARAAN & DATABASE
+  <div class="ios-group-card" style="padding: 18px;">
+    <!-- Step 1 -->
+    <div class="ios-guide-card">
+      <div class="ios-guide-badge" style="background: rgba(0, 170, 19, 0.15); color: #00AA13;">
+        1
+      </div>
+      <div>
+        <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-main); margin-bottom: 4px;">
+          Penerimaan Barang Masuk (Stock In)
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+          Pilih rekanan supplier terlebih dahulu. Sistem otomatis menyaring part yang biasa dikirim supplier tersebut. Isi nomor surat jalan resmi dan jumlah qty kiriman.
+        </p>
+      </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
-      <a href="export.php?type=backup_db" class="btn btn-secondary" style="border-radius: 14px; padding: 14px; text-align: left; display: flex; align-items: center; gap: 12px;">
-        <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(37, 99, 235, 0.15); color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">
-          <i class="bi bi-download"></i>
+    <!-- Step 2 -->
+    <div class="ios-guide-card">
+      <div class="ios-guide-badge" style="background: rgba(238, 39, 55, 0.15); color: #EE2737;">
+        2
+      </div>
+      <div>
+        <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-main); margin-bottom: 4px;">
+          Pengeluaran Part / Tools (Stock Out)
         </div>
-        <div>
-          <div style="font-weight: 700; color: var(--text-main); font-size: 0.88rem;">Download Backup SQL</div>
-          <div style="font-size: 0.72rem; color: var(--text-muted);">Cadangan database db_inventory</div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+          Pilih teknisi/PIC pengambil. Cari barang dengan Live Search. Sistem otomatis memproteksi stok fisik gudang agar tidak minus saat pengeluaran.
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="ios-guide-card" style="margin-bottom: 0;">
+      <div class="ios-guide-badge" style="background: rgba(124, 58, 237, 0.15); color: #7C3AED;">
+        3
+      </div>
+      <div>
+        <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-main); margin-bottom: 4px;">
+          Tanya Asisten AI "Si-nya" & Laporan
         </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+          Gunakan fitur Tanya AI untuk menanyakan stok kritis tanpa repot cari manual. Cetak dokumen mutasi PDF & Excel kapan saja di menu Laporan.
+        </p>
+      </div>
+    </div>
+  </div>
+
+<?php elseif ($sub === 'about'): ?>
+  <!-- ========================================================================= -->
+  <!-- 7. SUB-HALAMAN: MENGENAI APLIKASI (GAYA IPHONE GENERAL -> ABOUT)           -->
+  <!-- ========================================================================= -->
+
+  <div class="ios-subpage-header">
+    <a href="pengaturan.php" class="ios-btn-back">
+      <i class="bi bi-chevron-left"></i> Pengaturan
+    </a>
+    <h2 class="ios-subpage-title">Mengenai Sistem</h2>
+    <div style="width: 70px;"></div>
+  </div>
+
+  <!-- App Hero Icon -->
+  <div style="text-align: center; margin: 10px 0 20px;">
+    <div style="width: 68px; height: 68px; border-radius: 18px; background: linear-gradient(135deg, #007AFF, #5856D6); display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 2rem; box-shadow: 0 8px 24px rgba(0, 122, 255, 0.35);">
+      📦
+    </div>
+    <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin: 10px 0 2px;">MaoneArt Inventory</h3>
+    <div style="font-size: 0.8rem; color: var(--text-muted);">Sistem Manajemen Stok & Pergudangan Pabrik</div>
+  </div>
+
+  <div class="ios-group-card">
+    <table class="ios-info-table">
+      <tr>
+        <td class="label-col">Nama Sistem</td>
+        <td class="val-col">MaoneArt Stock & Inventory</td>
+      </tr>
+      <tr>
+        <td class="label-col">Versi Aplikasi</td>
+        <td class="val-col"><span class="badge badge-primary" style="font-size: 0.72rem;">2.0.0 Enterprise</span></td>
+      </tr>
+      <tr>
+        <td class="label-col">Status Operasional</td>
+        <td class="val-col"><span class="badge badge-success" style="font-size: 0.72rem;">Production Ready</span></td>
+      </tr>
+      <tr>
+        <td class="label-col">Pengembang (Creator)</td>
+        <td class="val-col">Hermawan (MaoneArt)</td>
+      </tr>
+      <tr>
+        <td class="label-col">Domisili</td>
+        <td class="val-col">Tambun Utara, Kab. Bekasi</td>
+      </tr>
+      <tr>
+        <td class="label-col">Arsitektur</td>
+        <td class="val-col">Hybrid Local-First (Web & APK)</td>
+      </tr>
+      <tr>
+        <td class="label-col">Mesin Database</td>
+        <td class="val-col">MariaDB / MySQL 10.x</td>
+      </tr>
+      <tr>
+        <td class="label-col">Kecerdasan Buatan</td>
+        <td class="val-col">Google Gemini 1.5 Flash</td>
+      </tr>
+      <tr>
+        <td class="label-col">Web Resmi</td>
+        <td class="val-col">
+          <a href="https://maoneart.my.id" target="_blank" style="color: #007AFF; text-decoration: none; font-weight: 700;">
+            maoneart.my.id <i class="bi bi-box-arrow-up-right" style="font-size: 0.7rem;"></i>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+<?php elseif ($sub === 'maintenance'): ?>
+  <!-- ========================================================================= -->
+  <!-- 8. SUB-HALAMAN: PEMELIHARAAN & DATABASE                                   -->
+  <!-- ========================================================================= -->
+
+  <div class="ios-subpage-header">
+    <a href="pengaturan.php" class="ios-btn-back">
+      <i class="bi bi-chevron-left"></i> Pengaturan
+    </a>
+    <h2 class="ios-subpage-title">Pemeliharaan</h2>
+    <div style="width: 70px;"></div>
+  </div>
+
+  <div class="ios-group-card" style="padding: 18px;">
+    <div style="font-weight: 800; font-size: 1rem; color: var(--text-main); margin-bottom: 14px;">
+      <i class="bi bi-database-gear" style="color: #007AFF;"></i> Utilitas & Cadangan Data
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+      <a href="export.php?type=backup_db" class="btn btn-secondary" style="border-radius: 14px; padding: 14px; text-align: left; text-decoration: none;">
+        <div style="color: #007AFF; font-size: 1.3rem; margin-bottom: 4px;"><i class="bi bi-download"></i></div>
+        <div style="font-weight: 700; color: var(--text-main); font-size: 0.88rem;">Backup SQL</div>
+        <div style="font-size: 0.72rem; color: var(--text-muted);">Unduh salinan database</div>
       </a>
 
-      <a href="http://localhost:8085/phpmyadmin" target="_blank" class="btn btn-secondary" style="border-radius: 14px; padding: 14px; text-align: left; display: flex; align-items: center; gap: 12px;">
-        <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); color: #d97706; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">
-          <i class="bi bi-database-gear"></i>
-        </div>
-        <div>
-          <div style="font-weight: 700; color: var(--text-main); font-size: 0.88rem;">Buka phpMyAdmin</div>
-          <div style="font-size: 0.72rem; color: var(--text-muted);">Port 8085 / phpmyadmin</div>
-        </div>
+      <a href="http://localhost:8085/phpmyadmin" target="_blank" class="btn btn-secondary" style="border-radius: 14px; padding: 14px; text-align: left; text-decoration: none;">
+        <div style="color: #f59e0b; font-size: 1.3rem; margin-bottom: 4px;"><i class="bi bi-database-fill-gear"></i></div>
+        <div style="font-weight: 700; color: var(--text-main); font-size: 0.88rem;">phpMyAdmin</div>
+        <div style="font-size: 0.72rem; color: var(--text-muted);">Port 8085 / phpmyadmin</div>
       </a>
     </div>
 
-    <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--card-border);">
-      <div style="font-size: 0.82rem; font-weight: 700; color: var(--danger); margin-bottom: 6px;">Zona Berbahaya (Maintenance)</div>
-      <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Hapus seluruh transaksi masuk & keluar jika Anda ingin memulai pencatatan stok dari nol.</p>
-      <button type="button" class="btn btn-danger btn-sm" onclick="confirmResetTrans()" style="border-radius: 12px; padding: 10px 18px; font-weight: 700;">
-        <i class="bi bi-exclamation-triangle-fill"></i> Bersihkan Riwayat Transaksi Percobaan
+    <div style="padding-top: 16px; border-top: 1px solid var(--card-border);">
+      <div style="font-size: 0.85rem; font-weight: 800; color: #ef4444; margin-bottom: 6px;">Zona Berbahaya (Reset Data)</div>
+      <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 14px;">Hapus seluruh transaksi barang masuk & keluar jika Anda ingin memulai siklus gudang dari nol.</p>
+      <button type="button" class="btn btn-danger btn-sm" onclick="confirmResetTrans()" style="border-radius: 12px; padding: 10px 18px; font-weight: 700; width: 100%;">
+        <i class="bi bi-exclamation-triangle-fill"></i> Bersihkan Riwayat Transaksi
       </button>
     </div>
   </div>
 
 <?php endif; ?>
 
-<!-- Modal Full Tentang Aplikasi (MaoneArt Glassmorphism Modal) -->
-<div id="modalAboutApp" class="maoneart-modal-overlay" style="display: none;">
-  <div class="maoneart-modal-card" style="max-width: 520px; text-align: left; max-height: 85vh; display: flex; flex-direction: column;">
-    <!-- Modal Header -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px;">
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <div style="width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: #fff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);">
-          📦
-        </div>
-        <div>
-          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin: 0;">Tentang Aplikasi</h3>
-          <p style="font-size: 0.72rem; color: #2563eb; margin: 0;">MaoneArt Stock & Inventory System</p>
-        </div>
-      </div>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="closeAboutModal()" style="border-radius: 10px; width: 34px; height: 34px; padding: 0; display: flex; align-items: center; justify-content: center;">✕</button>
-    </div>
-
-    <!-- Modal Body (Scrollable) -->
-    <div style="flex: 1; overflow-y: auto; padding-right: 4px;">
-      <!-- Version Pill & Status -->
-      <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
-        <span class="badge badge-primary" style="font-size: 0.72rem; padding: 5px 10px;"><i class="bi bi-tag-fill"></i> Versi 2.0.0 Enterprise</span>
-        <span class="badge badge-success" style="font-size: 0.72rem; padding: 5px 10px;"><i class="bi bi-check-circle-fill"></i> Production Ready</span>
-        <span class="badge badge-purple" style="font-size: 0.72rem; padding: 5px 10px;"><i class="bi bi-cpu-fill"></i> Gemini AI Ready</span>
-      </div>
-
-      <!-- App Overview -->
-      <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 0.8rem; color: var(--text-muted); line-height: 1.6;">
-        <p style="margin-bottom: 8px;">
-          <strong>MaoneArt Stock & Inventory</strong> adalah sistem pergudangan modern berarsitektur <em>Hybrid Local-First</em> yang dirancang untuk kecepatan operasional inventory pabrik, pencatatan Part Number pabrik, nomor surat jalan supplier, dan pengeluaran material ke PIC teknisi secara realtime.
-        </p>
-        <p style="margin: 0;">
-          Dapat berjalan mandiri di smartphone (Android Termux) maupun jaringan WiFi kantor (PC/Server lokal) tanpa ketergantungan hosting berbayar.
-        </p>
-      </div>
-
-      <!-- Specifications Grid -->
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px;">
-        <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;">
-          <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Developer / Creator</div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">Hermawan (MaoneArt)</div>
-        </div>
-        <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;">
-          <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Official Portal</div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: #2563eb; margin-top: 2px;">
-            <a href="https://maoneart.my.id" target="_blank" style="color: #2563eb; text-decoration: none; font-weight: 800;">Maoneart.my.id</a>
-          </div>
-        </div>
-        <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;">
-          <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Stack Teknologi</div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">PHP 8.5, MariaDB, Flutter</div>
-        </div>
-        <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;">
-          <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Desain Antarmuka</div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">Apple iOS & Gojek Superapp</div>
-        </div>
-      </div>
-
-      <!-- Feature Highlights -->
-      <div style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 14px;">
-        <div style="font-weight: 800; color: var(--text-main); margin-bottom: 6px;">Fitur Utama Sistem:</div>
-        • 📥 <strong>Barang Masuk</strong>: Multi-item supplier, nomor surat jalan / PO, tambah stok otomatis.<br>
-        • 📤 <strong>Barang Keluar</strong>: Multi-item PIC teknisi, keperluan proyek, validasi stok minimum.<br>
-        • 🏷️ <strong>Katalog Barang</strong>: Manajemen Part Number pabrik, barcode SKU, satuan & lokasi rak.<br>
-        • 🤖 <strong>Tanya Si-nya (AI)</strong>: Asisten AI logistik berbasis Gemini API dengan token client-side aman.<br>
-        • 📊 <strong>Laporan & Ekspor</strong>: Format cetak resmi PDF dan spreadsheet Excel terstandarisasi.<br>
-        • 🌓 <strong>Tema Dinamis</strong>: Mode Terang (Clean White) & Mode Gelap (Dark Navy) instan.
-      </div>
-
-      <!-- Copyright Notice -->
-      <div style="text-align: center; padding-top: 10px; border-top: 1px solid var(--card-border); font-size: 0.72rem; color: var(--text-muted);">
-        © 2026 <strong>MaoneArt</strong> · All Rights Reserved · <a href="https://maoneart.my.id" target="_blank" style="color: #2563eb; text-decoration: none; font-weight: 700;">Maoneart.my.id</a>
-      </div>
-    </div>
-
-    <!-- Modal Actions (100% Symmetrical 2-Column Grid) -->
-    <div class="maoneart-modal-actions" style="margin-top: 16px; border-top: 1px solid var(--card-border); padding-top: 14px;">
-      <a href="https://maoneart.my.id" target="_blank" class="maoneart-modal-btn cancel" style="text-decoration: none;">
-        <i class="bi bi-globe2"></i> Web Resmi
-      </a>
-      <button type="button" class="maoneart-modal-btn primary" onclick="closeAboutModal()">
-        Tutup
-      </button>
-    </div>
-  </div>
 </div>
 
 <!-- Hidden Form for Reset Transaksi -->
@@ -808,7 +896,7 @@ function setPresetMode(mode) {
     if (urlInp)  urlInp.value  = 'http://' + currentHost + ':8085/inventory';
     showAlertModal({
       title: 'Preset Mode Laptop / Server',
-      message: 'Parameter disiapkan untuk server kantor/laptop. Silakan sesuaikan IP (' + currentHost + ') jika berbeda, lalu klik "Simpan & Hubungkan Database".',
+      message: 'Parameter disiapkan untuk server kantor/laptop (' + currentHost + '). Silakan klik "Simpan & Hubungkan Database".',
       type: 'info'
     });
   }
@@ -859,22 +947,6 @@ function confirmResetTrans() {
       document.getElementById('formResetTrans').submit();
     }
   });
-}
-
-function openAboutModal() {
-  const m = document.getElementById('modalAboutApp');
-  if (m) {
-    m.style.display = 'flex';
-    setTimeout(() => m.classList.add('active'), 10);
-  }
-}
-
-function closeAboutModal() {
-  const m = document.getElementById('modalAboutApp');
-  if (m) {
-    m.classList.remove('active');
-    setTimeout(() => m.style.display = 'none', 200);
-  }
 }
 
 function updateThemeVisuals() {
