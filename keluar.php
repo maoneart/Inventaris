@@ -133,9 +133,10 @@ require_once __DIR__ . '/includes/header.php';
 
 $pics = $pdo->query("SELECT * FROM pic ORDER BY departemen ASC, nama_pic ASC")->fetchAll();
 $barangs = $pdo->query("
-    SELECT b.*, s.singkatan, s.id as def_satuan 
+    SELECT b.*, s.singkatan, s.id as def_satuan, sup.nama_supplier 
     FROM barang b 
     LEFT JOIN satuan s ON b.id_satuan = s.id 
+    LEFT JOIN supplier sup ON b.id_supplier = sup.id
     ORDER BY b.nama_barang ASC
 ")->fetchAll();
 $satuans = $pdo->query("SELECT * FROM satuan ORDER BY kategori ASC, nama_satuan ASC")->fetchAll();
@@ -151,7 +152,7 @@ $recentKeluar = $pdo->query("
 ")->fetchAll();
 ?>
 
-<!-- iOS Minimalist Header Ala iPhone (Exact Screenshot) -->
+<!-- iOS Minimalist Header Ala iPhone -->
 <div class="ios-top-bar">
   <a href="index.php" class="ios-circle-back" title="Kembali ke Dashboard">
     <i class="bi bi-chevron-left"></i>
@@ -183,7 +184,7 @@ $recentKeluar = $pdo->query("
       <div>
         <label class="ios-label">PIC / Teknisi Pengambil <span style="color: #ef4444;">*</span></label>
         <div style="display: flex; gap: 8px;">
-          <select name="id_pic" class="ios-select" required>
+          <select name="id_pic" id="selectPic" class="ios-select" required>
             <option value="">-- Pilih PIC / Karyawan --</option>
             <?php foreach ($pics as $p): ?>
               <option value="<?= $p['id'] ?>">
@@ -191,7 +192,7 @@ $recentKeluar = $pdo->query("
               </option>
             <?php endforeach; ?>
           </select>
-          <a href="pic.php" class="btn btn-secondary btn-sm" title="Tambah PIC Baru" style="border-radius: 12px; padding: 0 14px;">+</a>
+          <a href="pic.php" class="btn btn-secondary btn-sm" title="Tambah PIC Baru" style="border-radius: 12px; padding: 0 14px; display: inline-flex; align-items: center; justify-content: center;">+</a>
         </div>
       </div>
 
@@ -228,22 +229,51 @@ $recentKeluar = $pdo->query("
           <span class="item-num-badge" style="color: #ef4444; background: rgba(239, 68, 68, 0.15);"><i class="bi bi-box-arrow-up-right"></i> Item #1</span>
         </div>
 
-        <div class="item-barang-field">
-          <label class="ios-label">Pilih Barang & Part Number <span style="color: #ef4444;">*</span></label>
-          <select name="id_barang[]" class="ios-select select-barang" required onchange="updateRowDetails(this)">
-            <option value="">-- Cari Barang / P/N --</option>
-            <?php foreach ($barangs as $b): ?>
-              <option value="<?= $b['id'] ?>" data-satuan="<?= $b['def_satuan'] ?>" data-stok="<?= $b['stok_saat_ini'] ?>" <?= $preselectedBarangId == $b['id'] ? 'selected' : '' ?>>
-                <?= htmlspecialchars($b['nama_barang']) ?> [P/N: <?= htmlspecialchars($b['part_number'] ?: '-') ?>] (Sisa: <?= formatStok($b['stok_saat_ini']) ?>)
-              </option>
-            <?php endforeach; ?>
-          </select>
+        <div class="item-barang-field" style="position: relative;">
+          <label class="ios-label">Pilih Barang (Bebas Pilih) <span style="color: #ef4444;">*</span></label>
+          <input type="hidden" name="id_barang[]" class="input-id-barang" value="">
+
+          <div class="barang-search-wrapper" style="position: relative;">
+            <div style="position: relative; display: flex; align-items: center;">
+              <i class="bi bi-search" style="position: absolute; left: 12px; color: var(--text-dim); pointer-events: none; font-size: 0.9rem;"></i>
+              <input type="text" 
+                     class="ios-input barang-search-input" 
+                     placeholder="Ketik nama barang / P/N / kode / rak..." 
+                     autocomplete="off" 
+                     style="padding-left: 36px; padding-right: 36px;">
+              <button type="button" class="btn-clear-barang" style="position: absolute; right: 10px; background: none; border: none; color: var(--text-muted); cursor: pointer; display: none;" title="Reset barang">
+                <i class="bi bi-x-circle-fill" style="font-size: 1rem;"></i>
+              </button>
+            </div>
+            <div class="live-search-dropdown" style="display: none;"></div>
+          </div>
+
+          <!-- Card Informasi Stok Fisik Awal (Sangat Jelas & Kontras) -->
+          <div class="selected-barang-card" style="display: none; flex-direction: column; align-items: stretch; gap: 6px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="stock-status-pill stock-pill-label">Stok Fisik: 0</span>
+                <span class="selected-barang-status badge" style="font-size: 0.68rem;">-</span>
+              </div>
+              <span class="selected-barang-lokasi" style="font-size: 0.72rem; color: var(--text-muted);">Rak: -</span>
+            </div>
+            <div class="selected-barang-info" style="font-size: 0.75rem; color: var(--text-muted); width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              -
+            </div>
+          </div>
         </div>
 
         <div class="item-qty-satuan-grid">
           <div>
-            <label class="ios-label">Jumlah Keluar <span style="color: #ef4444;">*</span></label>
-            <input type="number" step="any" min="0.01" name="qty[]" class="ios-input" placeholder="0" required style="text-align: right; font-weight: 700;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="ios-label" style="margin-bottom: 0;">Jumlah Keluar <span style="color: #ef4444;">*</span></label>
+              <span class="stock-max-hint" style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;"></span>
+            </div>
+            <input type="number" step="any" min="0.01" name="qty[]" class="ios-input item-qty-input" placeholder="0" required style="text-align: right; font-weight: 700; margin-top: 4px;">
+            
+            <!-- Realtime Alert Box di Bawah Qty -->
+            <div class="stock-alert-box danger qty-danger-box" style="display: none;"></div>
+            <div class="stock-alert-box warning qty-warning-box" style="display: none;"></div>
           </div>
 
           <div>
@@ -258,8 +288,8 @@ $recentKeluar = $pdo->query("
 
         <div class="item-bottom-action-row">
           <div class="item-notes-field">
-            <label class="ios-label">Catatan Pemakaian</label>
-            <input type="text" name="item_keterangan[]" class="ios-input" placeholder="No. mesin / keperluan..." autocomplete="off">
+            <label class="ios-label">Catatan Pemakaian / No. Mesin</label>
+            <input type="text" name="item_keterangan[]" class="ios-input" placeholder="No. mesin / keperluan spesifik..." autocomplete="off">
           </div>
 
           <button type="button" class="item-trash-btn" onclick="removeRowOut(this)" title="Hapus Baris Ini">
@@ -327,14 +357,306 @@ $recentKeluar = $pdo->query("
 </div>
 
 <script>
+// Data Master Barang untuk Client-Side Live Search & Stok Real-time
+const ALL_BARANGS = <?= json_encode(array_map(function($b) {
+    return [
+        'id' => (int)$b['id'],
+        'kode' => $b['kode_barang'] ?? '',
+        'nama' => $b['nama_barang'] ?? '',
+        'pn' => $b['part_number'] ?? '',
+        'id_supplier' => (int)($b['id_supplier'] ?? 0),
+        'nama_supplier' => $b['nama_supplier'] ?? '',
+        'stok' => (float)$b['stok_saat_ini'],
+        'min' => (float)$b['stok_minimum'],
+        'satuan_id' => (int)($b['def_satuan'] ?: 1),
+        'satuan_nama' => $b['singkatan'] ?? 'PCS',
+        'rak' => $b['lokasi_rak'] ?? ''
+    ];
+}, $barangs)) ?>;
+
+const PRESELECTED_BARANG_ID = <?= $preselectedBarangId ?>;
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Inisialisasi Row Live Search Barang Keluar
+function initBarangSearchOut(row) {
+  const wrapper = row.querySelector('.barang-search-wrapper');
+  const searchInput = row.querySelector('.barang-search-input');
+  const idInput = row.querySelector('.input-id-barang');
+  const clearBtn = row.querySelector('.btn-clear-barang');
+  const dropdown = row.querySelector('.live-search-dropdown');
+  const card = row.querySelector('.selected-barang-card');
+  const cardPill = row.querySelector('.stock-pill-label');
+  const cardStatus = row.querySelector('.selected-barang-status');
+  const cardInfo = row.querySelector('.selected-barang-info');
+  const cardLokasi = row.querySelector('.selected-barang-lokasi');
+  const selectSatuan = row.querySelector('.select-satuan');
+  const qtyInput = row.querySelector('.item-qty-input');
+  const maxHint = row.querySelector('.stock-max-hint');
+  const dangerBox = row.querySelector('.qty-danger-box');
+  const warningBox = row.querySelector('.qty-warning-box');
+
+  function renderList(query = '') {
+    // PIC bebas pilih barang dari seluruh master barang
+    let filtered = ALL_BARANGS;
+
+    const q = query.trim().toLowerCase();
+    if (q) {
+      filtered = filtered.filter(b => {
+        return b.nama.toLowerCase().includes(q) ||
+               b.kode.toLowerCase().includes(q) ||
+               b.pn.toLowerCase().includes(q) ||
+               (b.nama_supplier && b.nama_supplier.toLowerCase().includes(q)) ||
+               (b.rak && b.rak.toLowerCase().includes(q));
+      });
+    }
+
+    if (filtered.length === 0) {
+      dropdown.innerHTML = `
+        <div style="padding: 14px; text-align: center; color: var(--text-muted); font-size: 0.82rem;">
+          <i class="bi bi-inbox" style="font-size: 1.3rem; display: block; margin-bottom: 4px;"></i>
+          Tidak ada barang yang cocok dengan "<strong>${escapeHtml(query)}</strong>".
+        </div>
+      `;
+      dropdown.style.display = 'block';
+      return;
+    }
+
+    let html = '';
+    filtered.slice(0, 35).forEach(b => {
+      let pillClass = 'stock-status-safe';
+      let pillText = `Stok: ${b.stok} ${escapeHtml(b.satuan_nama)}`;
+
+      if (b.stok <= 0) {
+        pillClass = 'stock-status-danger';
+        pillText = `STOK HABIS (0)`;
+      } else if (b.stok <= b.min) {
+        pillClass = 'stock-status-warning';
+        pillText = `Menipis: ${b.stok} ${escapeHtml(b.satuan_nama)}`;
+      }
+
+      html += `
+        <div class="search-result-item" data-id="${b.id}">
+          <div class="search-item-top">
+            <span class="search-item-title">${escapeHtml(b.nama)}</span>
+            <span class="stock-status-pill ${pillClass}">${pillText}</span>
+          </div>
+          <div class="search-item-sub">
+            <span>P/N: <strong>${escapeHtml(b.pn || '-')}</strong> | Rak: ${escapeHtml(b.rak || '-')}</span>
+            <span>Supplier: ${escapeHtml(b.nama_supplier || '-')}</span>
+          </div>
+        </div>
+      `;
+    });
+
+    dropdown.innerHTML = html;
+    dropdown.style.display = 'block';
+
+    // Event Klik Item
+    dropdown.querySelectorAll('.search-result-item').forEach(itemEl => {
+      itemEl.addEventListener('click', () => {
+        const bId = parseInt(itemEl.getAttribute('data-id'));
+        selectBarang(bId);
+      });
+    });
+  }
+
+  function selectBarang(bId) {
+    const b = ALL_BARANGS.find(item => item.id === bId);
+    if (!b) return;
+
+    idInput.value = b.id;
+    searchInput.value = b.nama;
+    clearBtn.style.display = 'block';
+    dropdown.style.display = 'none';
+
+    // Update Status Pill & Badge Stok Fisik Awal
+    let pillClass = 'stock-status-safe';
+    let pillText = `✓ Stok Tersedia: ${b.stok} ${b.satuan_nama}`;
+    let badgeClass = 'badge-success';
+    let badgeText = 'STOK AMAN';
+
+    if (b.stok <= 0) {
+      pillClass = 'stock-status-danger';
+      pillText = `⛔ STOK KOSONG (0 ${b.satuan_nama})`;
+      badgeClass = 'badge-danger';
+      badgeText = 'HABIS / KOSONG';
+    } else if (b.stok <= b.min) {
+      pillClass = 'stock-status-warning';
+      pillText = `⚠️ Sisa Stok: ${b.stok} ${b.satuan_nama}`;
+      badgeClass = 'badge-warning';
+      badgeText = `MENIPIS (Min: ${b.min})`;
+    }
+
+    cardPill.className = `stock-status-pill ${pillClass} stock-pill-label`;
+    cardPill.innerHTML = pillText;
+
+    cardStatus.className = `selected-barang-status badge ${badgeClass}`;
+    cardStatus.textContent = badgeText;
+
+    cardInfo.textContent = `P/N: ${b.pn || '-'} | Kode: ${b.kode} | Batas Min: ${b.min} ${b.satuan_nama}`;
+    cardLokasi.textContent = b.rak ? `Rak: ${b.rak}` : '';
+    card.style.display = 'flex';
+
+    // Update max hint
+    maxHint.textContent = `Tersedia: ${b.stok} ${b.satuan_nama}`;
+
+    // Auto set satuan
+    if (selectSatuan && b.satuan_id) {
+      selectSatuan.value = b.satuan_id;
+    }
+
+    // Set max attribute
+    qtyInput.setAttribute('max', b.stok);
+
+    // Jalankan validasi stok real-time
+    validateRowQty();
+  }
+
+  function clearSelection() {
+    idInput.value = '';
+    searchInput.value = '';
+    clearBtn.style.display = 'none';
+    card.style.display = 'none';
+    dropdown.style.display = 'none';
+    maxHint.textContent = '';
+    dangerBox.style.display = 'none';
+    warningBox.style.display = 'none';
+    qtyInput.style.borderColor = '';
+    qtyInput.style.boxShadow = '';
+    qtyInput.removeAttribute('max');
+  }
+
+  function validateRowQty() {
+    const bId = parseInt(idInput.value) || 0;
+    if (!bId) {
+      dangerBox.style.display = 'none';
+      warningBox.style.display = 'none';
+      qtyInput.style.borderColor = '';
+      qtyInput.style.boxShadow = '';
+      return;
+    }
+
+    const b = ALL_BARANGS.find(item => item.id === bId);
+    if (!b) return;
+
+    const qty = parseFloat(qtyInput.value) || 0;
+
+    // Jika stok fisik sudah 0
+    if (b.stok <= 0) {
+      qtyInput.style.borderColor = '#ef4444';
+      qtyInput.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.2)';
+      dangerBox.innerHTML = `<i class="bi bi-exclamation-octagon-fill"></i> Stok fisik barang ini KOSONG (0). Tidak dapat dikeluarkan!`;
+      dangerBox.style.display = 'flex';
+      warningBox.style.display = 'none';
+      return;
+    }
+
+    // Jika melebihi stok yang ada
+    if (qty > b.stok) {
+      qtyInput.style.borderColor = '#ef4444';
+      qtyInput.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.2)';
+      dangerBox.innerHTML = `<i class="bi bi-exclamation-triangle-fill"></i> Melebihi stok gudang! Maksimal tersedia: <strong>${b.stok} ${escapeHtml(b.satuan_nama)}</strong>.`;
+      dangerBox.style.display = 'flex';
+      warningBox.style.display = 'none';
+    } 
+    // Jika stok setelah dikurangi akan di bawah batas minimum
+    else if (qty > 0 && (b.stok - qty) <= b.min) {
+      qtyInput.style.borderColor = '#f59e0b';
+      qtyInput.style.boxShadow = '0 0 0 3px rgba(245, 158, 11, 0.2)';
+      dangerBox.style.display = 'none';
+      const sisa = b.stok - qty;
+      warningBox.innerHTML = `<i class="bi bi-info-circle-fill"></i> Sisa stok nantinya tinggal <strong>${sisa} ${escapeHtml(b.satuan_nama)}</strong> (Di bawah batas minimum: ${b.min}).`;
+      warningBox.style.display = 'flex';
+    } 
+    // Stok aman
+    else {
+      qtyInput.style.borderColor = '';
+      qtyInput.style.boxShadow = '';
+      dangerBox.style.display = 'none';
+      warningBox.style.display = 'none';
+    }
+  }
+
+  searchInput.addEventListener('focus', () => {
+    renderList(searchInput.value);
+  });
+
+  searchInput.addEventListener('input', () => {
+    if (idInput.value) {
+      idInput.value = '';
+      card.style.display = 'none';
+      clearBtn.style.display = 'none';
+      maxHint.textContent = '';
+      dangerBox.style.display = 'none';
+      warningBox.style.display = 'none';
+    }
+    renderList(searchInput.value);
+  });
+
+  clearBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    clearSelection();
+    searchInput.focus();
+  });
+
+  qtyInput.addEventListener('input', validateRowQty);
+
+  // Ekspos helper
+  row._selectBarang = selectBarang;
+  row._clearSelection = clearSelection;
+}
+
+// Inisialisasi baris awal
+document.addEventListener('DOMContentLoaded', () => {
+  const firstRow = document.querySelector('#itemsContainerOut .ios-item-card');
+  if (firstRow) {
+    initBarangSearchOut(firstRow);
+    if (PRESELECTED_BARANG_ID > 0) {
+      firstRow._selectBarang(PRESELECTED_BARANG_ID);
+    }
+  }
+});
+
+// Tutup dropdown jika klik di luar
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.barang-search-wrapper')) {
+    document.querySelectorAll('.live-search-dropdown').forEach(d => {
+      d.style.display = 'none';
+    });
+  }
+});
+
+// Tambah Baris Baru
 function createRowHtmlOut() {
   const container = document.getElementById('itemsContainerOut');
   const firstRow = container.querySelector('.ios-item-card');
   const newRow = firstRow.cloneNode(true);
 
-  newRow.querySelectorAll('input').forEach(inp => inp.value = '');
-  newRow.querySelector('.select-barang').value = '';
+  // Bersihkan data
+  newRow.querySelectorAll('input').forEach(inp => {
+    if (inp.type !== 'hidden') inp.value = '';
+  });
+  newRow.querySelector('.input-id-barang').value = '';
+  newRow.querySelector('.barang-search-input').value = '';
+  newRow.querySelector('.btn-clear-barang').style.display = 'none';
+  newRow.querySelector('.selected-barang-card').style.display = 'none';
+  newRow.querySelector('.stock-max-hint').textContent = '';
+  newRow.querySelector('.qty-danger-box').style.display = 'none';
+  newRow.querySelector('.qty-warning-box').style.display = 'none';
+  newRow.querySelector('.live-search-dropdown').style.display = 'none';
+  newRow.querySelector('.live-search-dropdown').innerHTML = '';
   
+  const qtyInp = newRow.querySelector('.item-qty-input');
+  qtyInp.style.borderColor = '';
+  qtyInp.style.boxShadow = '';
+  qtyInp.removeAttribute('max');
+
   const rows = container.querySelectorAll('.ios-item-card');
   const badge = newRow.querySelector('.item-num-badge');
   if (badge) {
@@ -342,10 +664,12 @@ function createRowHtmlOut() {
   }
 
   container.appendChild(newRow);
+  initBarangSearchOut(newRow);
 }
 
 document.getElementById('btnAddRowOut').addEventListener('click', createRowHtmlOut);
 
+// Hapus Baris
 function removeRowOut(btn) {
   const container = document.getElementById('itemsContainerOut');
   const rows = container.querySelectorAll('.ios-item-card');
@@ -366,22 +690,98 @@ function removeRowOut(btn) {
   });
 }
 
-function updateRowDetails(selectElem) {
-  const selectedOption = selectElem.options[selectElem.selectedIndex];
-  const satuanId = selectedOption.getAttribute('data-satuan');
-  const maxStok = parseFloat(selectedOption.getAttribute('data-stok')) || 0;
-  
-  const row = selectElem.closest('.ios-item-card') || selectElem.closest('.item-row');
-  const satuanSelect = row.querySelector('.select-satuan');
-  const qtyInput = row.querySelector('input[name="qty[]"]');
+// Validasi Form Submit Barang Keluar (Proteksi Total Stok Habis/Minus)
+document.getElementById('formKeluar').addEventListener('submit', function(e) {
+  const picSelect = document.getElementById('selectPic');
+  if (!picSelect.value) {
+    e.preventDefault();
+    showAlertModal({
+      title: 'PIC Belum Dipilih',
+      message: 'Harap pilih <strong>PIC / Teknisi Pengambil</strong> barang terlebih dahulu.',
+      type: 'danger',
+      icon: 'bi-exclamation-octagon-fill'
+    });
+    picSelect.focus();
+    return;
+  }
 
-  if (satuanId && satuanSelect) {
-    satuanSelect.value = satuanId;
+  const rows = document.querySelectorAll('#itemsContainerOut .ios-item-card');
+  let hasValidItem = false;
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const idInput = row.querySelector('.input-id-barang');
+    const searchInput = row.querySelector('.barang-search-input');
+    const qtyInput = row.querySelector('.item-qty-input');
+    const bId = parseInt(idInput.value) || 0;
+    const qty = parseFloat(qtyInput.value) || 0;
+
+    if (searchInput.value.trim() && !bId) {
+      e.preventDefault();
+      showAlertModal({
+        title: 'Pilihan Barang Tidak Lengkap',
+        message: `Pada <strong>Item #${i + 1}</strong>, Anda mengetik nama barang tetapi belum memilih dari daftar pilihan autocomplete. Silakan klik salah satu barang dari dropdown.`,
+        type: 'danger',
+        icon: 'bi-exclamation-octagon-fill'
+      });
+      searchInput.focus();
+      return;
+    }
+
+    if (bId > 0) {
+      const b = ALL_BARANGS.find(item => item.id === bId);
+      if (!b) continue;
+
+      if (b.stok <= 0) {
+        e.preventDefault();
+        showAlertModal({
+          title: 'Stok Barang Kosong!',
+          message: `Barang <strong>${escapeHtml(b.nama)}</strong> pada <strong>Item #${i + 1}</strong> memiliki stok <strong>0 (habis)</strong> di gudang.<br><br>Barang ini tidak dapat dikeluarkan. Silakan hapus baris ini atau lakukan transaksi penerimaan barang terlebih dahulu.`,
+          type: 'danger',
+          icon: 'bi-exclamation-octagon-fill'
+        });
+        qtyInput.focus();
+        return;
+      }
+
+      if (qty <= 0) {
+        e.preventDefault();
+        showAlertModal({
+          title: 'Jumlah Tidak Valid',
+          message: `Jumlah qty pengeluaran pada <strong>Item #${i + 1}</strong> (${escapeHtml(b.nama)}) harus lebih dari 0.`,
+          type: 'danger',
+          icon: 'bi-exclamation-octagon-fill'
+        });
+        qtyInput.focus();
+        return;
+      }
+
+      if (qty > b.stok) {
+        e.preventDefault();
+        showAlertModal({
+          title: 'Stok Tidak Mencukupi!',
+          message: `Pengeluaran barang <strong>${escapeHtml(b.nama)}</strong> pada <strong>Item #${i + 1}</strong> melebihi sisa stok fisik di gudang!<br><br>Diminta: <strong>${qty} ${escapeHtml(b.satuan_nama)}</strong><br>Stok Tersedia: <strong>${b.stok} ${escapeHtml(b.satuan_nama)}</strong>.<br><br>Harap sesuaikan jumlah yang diminta agar stok tidak minus.`,
+          type: 'danger',
+          icon: 'bi-exclamation-octagon-fill'
+        });
+        qtyInput.focus();
+        return;
+      }
+
+      hasValidItem = true;
+    }
   }
-  if (qtyInput) {
-    qtyInput.setAttribute('max', maxStok);
+
+  if (!hasValidItem) {
+    e.preventDefault();
+    showAlertModal({
+      title: 'Item Masih Kosong',
+      message: 'Harap pilih minimal 1 barang yang akan dikeluarkan dari gudang.',
+      type: 'danger',
+      icon: 'bi-exclamation-octagon-fill'
+    });
   }
-}
+});
 </script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

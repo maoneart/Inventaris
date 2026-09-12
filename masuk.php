@@ -130,6 +130,15 @@ $satuans = $pdo->query("SELECT * FROM satuan ORDER BY kategori ASC, nama_satuan 
 
 $autoNoMasuk = generateNoTransaksi('IN');
 $preselectedBarangId = (int) ($_GET['id_barang'] ?? 0);
+$preselectedSupplierId = 0;
+if ($preselectedBarangId > 0) {
+    foreach ($barangs as $b) {
+        if ($b['id'] == $preselectedBarangId) {
+            $preselectedSupplierId = (int)$b['id_supplier'];
+            break;
+        }
+    }
+}
 
 $recentMasuk = $pdo->query("
     SELECT tm.*, s.nama_supplier 
@@ -139,7 +148,7 @@ $recentMasuk = $pdo->query("
 ")->fetchAll();
 ?>
 
-<!-- iOS Minimalist Header Ala iPhone (Exact Screenshot) -->
+<!-- iOS Minimalist Header Ala iPhone -->
 <div class="ios-top-bar">
   <a href="index.php" class="ios-circle-back" title="Kembali ke Dashboard">
     <i class="bi bi-chevron-left"></i>
@@ -171,13 +180,15 @@ $recentMasuk = $pdo->query("
       <div>
         <label class="ios-label">Supplier Pengirim <span style="color: #ef4444;">*</span></label>
         <div style="display: flex; gap: 8px;">
-          <select name="id_supplier" class="ios-select" required>
+          <select name="id_supplier" id="selectSupplier" class="ios-select" required>
             <option value="">-- Pilih Supplier Pengirim --</option>
             <?php foreach ($suppliers as $sup): ?>
-              <option value="<?= $sup['id'] ?>"><?= htmlspecialchars($sup['nama_supplier']) ?> (<?= htmlspecialchars($sup['kode_supplier']) ?>)</option>
+              <option value="<?= $sup['id'] ?>" <?= $preselectedSupplierId == $sup['id'] ? 'selected' : '' ?>>
+                <?= htmlspecialchars($sup['nama_supplier']) ?> (<?= htmlspecialchars($sup['kode_supplier']) ?>)
+              </option>
             <?php endforeach; ?>
           </select>
-          <a href="supplier.php" class="btn btn-secondary btn-sm" title="Tambah Supplier Baru" style="border-radius: 12px; padding: 0 14px;">+</a>
+          <a href="supplier.php" class="btn btn-secondary btn-sm" title="Tambah Supplier Baru" style="border-radius: 12px; padding: 0 14px; display: inline-flex; align-items: center; justify-content: center;">+</a>
         </div>
       </div>
 
@@ -199,6 +210,12 @@ $recentMasuk = $pdo->query("
       </button>
     </div>
 
+    <!-- Banner Info Filter Supplier -->
+    <div id="supplierFilterBanner" style="display: none; padding: 8px 12px; background: rgba(37, 99, 235, 0.08); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 10px; margin-bottom: 12px; font-size: 0.78rem; color: var(--text-main); align-items: center; gap: 8px;">
+      <i class="bi bi-funnel-fill text-primary"></i>
+      <span>Menampilkan barang khusus dari supplier: <strong id="supplierBannerName" class="text-primary">-</strong></span>
+    </div>
+
     <div id="itemsContainer" style="display: flex; flex-direction: column; gap: 14px;">
       <!-- Row 1 -->
       <div class="ios-item-card">
@@ -206,16 +223,32 @@ $recentMasuk = $pdo->query("
           <span class="item-num-badge"><i class="bi bi-box-seam"></i> Item #1</span>
         </div>
 
-        <div class="item-barang-field">
+        <div class="item-barang-field" style="position: relative;">
           <label class="ios-label">Pilih Barang & Part Number <span style="color: #ef4444;">*</span></label>
-          <select name="id_barang[]" class="ios-select select-barang" required onchange="updateSatuanRow(this)">
-            <option value="">-- Cari Barang / P/N --</option>
-            <?php foreach ($barangs as $b): ?>
-              <option value="<?= $b['id'] ?>" data-satuan="<?= $b['def_satuan'] ?>" <?= $preselectedBarangId == $b['id'] ? 'selected' : '' ?>>
-                <?= htmlspecialchars($b['nama_barang']) ?> [P/N: <?= htmlspecialchars($b['part_number'] ?: '-') ?>] (Sisa: <?= formatStok($b['stok_saat_ini']) ?>)
-              </option>
-            <?php endforeach; ?>
-          </select>
+          <input type="hidden" name="id_barang[]" class="input-id-barang" value="">
+
+          <div class="barang-search-wrapper" style="position: relative;">
+            <div style="position: relative; display: flex; align-items: center;">
+              <i class="bi bi-search" style="position: absolute; left: 12px; color: var(--text-dim); pointer-events: none; font-size: 0.9rem;"></i>
+              <input type="text" 
+                     class="ios-input barang-search-input" 
+                     placeholder="Ketik nama barang / P/N / kode..." 
+                     autocomplete="off" 
+                     style="padding-left: 36px; padding-right: 36px;">
+              <button type="button" class="btn-clear-barang" style="position: absolute; right: 10px; background: none; border: none; color: var(--text-muted); cursor: pointer; display: none;" title="Reset barang">
+                <i class="bi bi-x-circle-fill" style="font-size: 1rem;"></i>
+              </button>
+            </div>
+            <div class="live-search-dropdown" style="display: none;"></div>
+          </div>
+
+          <div class="selected-barang-card" style="display: none;">
+            <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
+              <span class="stock-status-pill stock-status-safe stock-pill-label">Stok: 0</span>
+              <span class="selected-barang-info" style="font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">-</span>
+            </div>
+            <span class="selected-barang-lokasi" style="font-size: 0.72rem; color: var(--text-muted); white-space: nowrap;">-</span>
+          </div>
         </div>
 
         <div class="item-qty-satuan-grid">
@@ -303,14 +336,262 @@ $recentMasuk = $pdo->query("
 </div>
 
 <script>
+// Data Master Barang untuk Client-Side Live Search & Supplier Filtering
+const ALL_BARANGS = <?= json_encode(array_map(function($b) {
+    return [
+        'id' => (int)$b['id'],
+        'kode' => $b['kode_barang'] ?? '',
+        'nama' => $b['nama_barang'] ?? '',
+        'pn' => $b['part_number'] ?? '',
+        'id_supplier' => (int)($b['id_supplier'] ?? 0),
+        'nama_supplier' => $b['nama_supplier'] ?? '',
+        'stok' => (float)$b['stok_saat_ini'],
+        'min' => (float)$b['stok_minimum'],
+        'satuan_id' => (int)($b['def_satuan'] ?: 1),
+        'satuan_nama' => $b['singkatan'] ?? 'PCS',
+        'rak' => $b['lokasi_rak'] ?? ''
+    ];
+}, $barangs)) ?>;
+
+const PRESELECTED_BARANG_ID = <?= $preselectedBarangId ?>;
+const selectSupplier = document.getElementById('selectSupplier');
+const supplierFilterBanner = document.getElementById('supplierFilterBanner');
+const supplierBannerName = document.getElementById('supplierBannerName');
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function updateSupplierBanner() {
+  const selOpt = selectSupplier.options[selectSupplier.selectedIndex];
+  if (selectSupplier.value) {
+    supplierBannerName.textContent = selOpt.text;
+    supplierFilterBanner.style.display = 'flex';
+  } else {
+    supplierFilterBanner.style.display = 'none';
+  }
+}
+
+// Inisialisasi Row Live Search
+function initBarangSearch(row) {
+  const wrapper = row.querySelector('.barang-search-wrapper');
+  const searchInput = row.querySelector('.barang-search-input');
+  const idInput = row.querySelector('.input-id-barang');
+  const clearBtn = row.querySelector('.btn-clear-barang');
+  const dropdown = row.querySelector('.live-search-dropdown');
+  const card = row.querySelector('.selected-barang-card');
+  const cardPill = row.querySelector('.stock-pill-label');
+  const cardInfo = row.querySelector('.selected-barang-info');
+  const cardLokasi = row.querySelector('.selected-barang-lokasi');
+  const selectSatuan = row.querySelector('.select-satuan');
+  const inputKet = row.querySelector('input[name="item_keterangan[]"]');
+
+  function renderList(query = '') {
+    const supplierId = parseInt(selectSupplier.value) || 0;
+    
+    // Jika supplier belum dipilih
+    if (!supplierId) {
+      dropdown.innerHTML = `
+        <div style="padding: 14px; text-align: center; color: #f59e0b; font-size: 0.82rem;">
+          <i class="bi bi-exclamation-triangle" style="font-size: 1.3rem; display: block; margin-bottom: 4px;"></i>
+          Harap pilih <strong>Supplier Pengirim</strong> di atas terlebih dahulu.
+        </div>
+      `;
+      dropdown.style.display = 'block';
+      return;
+    }
+
+    // Filter barang sesuai supplier yang dipilih
+    let filtered = ALL_BARANGS.filter(b => b.id_supplier === supplierId);
+
+    const q = query.trim().toLowerCase();
+    if (q) {
+      filtered = filtered.filter(b => {
+        return b.nama.toLowerCase().includes(q) ||
+               b.kode.toLowerCase().includes(q) ||
+               b.pn.toLowerCase().includes(q) ||
+               (b.rak && b.rak.toLowerCase().includes(q));
+      });
+    }
+
+    if (filtered.length === 0) {
+      const supText = selectSupplier.options[selectSupplier.selectedIndex].text;
+      dropdown.innerHTML = `
+        <div style="padding: 14px; text-align: center; color: var(--text-muted); font-size: 0.82rem;">
+          <i class="bi bi-inbox" style="font-size: 1.3rem; display: block; margin-bottom: 4px;"></i>
+          Tidak ada barang dari supplier ini ${q ? `yang cocok "<strong>${escapeHtml(query)}</strong>"` : ''}.
+        </div>
+      `;
+      dropdown.style.display = 'block';
+      return;
+    }
+
+    let html = '';
+    filtered.slice(0, 30).forEach(b => {
+      let pillClass = 'stock-status-safe';
+      if (b.stok <= 0) pillClass = 'stock-status-danger';
+      else if (b.stok <= b.min) pillClass = 'stock-status-warning';
+
+      html += `
+        <div class="search-result-item" data-id="${b.id}">
+          <div class="search-item-top">
+            <span class="search-item-title">${escapeHtml(b.nama)}</span>
+            <span class="stock-status-pill ${pillClass}">Stok: ${b.stok} ${escapeHtml(b.satuan_nama)}</span>
+          </div>
+          <div class="search-item-sub">
+            <span>P/N: <strong>${escapeHtml(b.pn || '-')}</strong> | Kode: ${escapeHtml(b.kode)}</span>
+            <span>Rak: ${escapeHtml(b.rak || '-')}</span>
+          </div>
+        </div>
+      `;
+    });
+
+    dropdown.innerHTML = html;
+    dropdown.style.display = 'block';
+
+    // Event Klik Item
+    dropdown.querySelectorAll('.search-result-item').forEach(itemEl => {
+      itemEl.addEventListener('click', () => {
+        const bId = parseInt(itemEl.getAttribute('data-id'));
+        selectBarang(bId);
+      });
+    });
+  }
+
+  function selectBarang(bId) {
+    const b = ALL_BARANGS.find(item => item.id === bId);
+    if (!b) return;
+
+    idInput.value = b.id;
+    searchInput.value = b.nama;
+    clearBtn.style.display = 'block';
+    dropdown.style.display = 'none';
+
+    // Update Card Info
+    let pillClass = 'stock-status-safe';
+    if (b.stok <= 0) pillClass = 'stock-status-danger';
+    else if (b.stok <= b.min) pillClass = 'stock-status-warning';
+
+    cardPill.className = `stock-status-pill ${pillClass} stock-pill-label`;
+    cardPill.textContent = `Stok Gudang: ${b.stok} ${b.satuan_nama}`;
+    cardInfo.textContent = `P/N: ${b.pn || '-'} | Kode: ${b.kode}`;
+    cardLokasi.textContent = b.rak ? `Lokasi: ${b.rak}` : '';
+    card.style.display = 'flex';
+
+    // Auto update satuan & keterangan rak
+    if (selectSatuan && b.satuan_id) {
+      selectSatuan.value = b.satuan_id;
+    }
+    if (inputKet && !inputKet.value && b.rak) {
+      inputKet.value = b.rak;
+    }
+  }
+
+  function clearSelection() {
+    idInput.value = '';
+    searchInput.value = '';
+    clearBtn.style.display = 'none';
+    card.style.display = 'none';
+    dropdown.style.display = 'none';
+  }
+
+  searchInput.addEventListener('focus', () => {
+    renderList(searchInput.value);
+  });
+
+  searchInput.addEventListener('input', () => {
+    // Jika user mengedit teks, kosongkan id_barang sampai barang dipilih ulang dari list
+    if (idInput.value) {
+      idInput.value = '';
+      card.style.display = 'none';
+      clearBtn.style.display = 'none';
+    }
+    renderList(searchInput.value);
+  });
+
+  clearBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    clearSelection();
+    searchInput.focus();
+  });
+
+  // Ekspos fungsi helper ke element row
+  row._selectBarang = selectBarang;
+  row._clearSelection = clearSelection;
+}
+
+// Initial binding untuk baris pertama
+document.addEventListener('DOMContentLoaded', () => {
+  const firstRow = document.querySelector('.ios-item-card');
+  if (firstRow) {
+    initBarangSearch(firstRow);
+    if (PRESELECTED_BARANG_ID > 0) {
+      firstRow._selectBarang(PRESELECTED_BARANG_ID);
+    }
+  }
+  updateSupplierBanner();
+});
+
+// Listener ganti supplier
+selectSupplier.addEventListener('change', () => {
+  updateSupplierBanner();
+  const newSupplierId = parseInt(selectSupplier.value) || 0;
+  let resetCount = 0;
+
+  document.querySelectorAll('.ios-item-card').forEach(row => {
+    const idInput = row.querySelector('.input-id-barang');
+    if (idInput && idInput.value) {
+      const b = ALL_BARANGS.find(item => item.id == idInput.value);
+      if (b && b.id_supplier !== newSupplierId) {
+        if (typeof row._clearSelection === 'function') {
+          row._clearSelection();
+        }
+        resetCount++;
+      }
+    }
+    // Sembunyikan dropdown yang sedang terbuka
+    const dropdown = row.querySelector('.live-search-dropdown');
+    if (dropdown) dropdown.style.display = 'none';
+  });
+
+  if (resetCount > 0) {
+    showAlertModal({
+      title: 'Daftar Barang Disesuaikan',
+      message: `${resetCount} item barang pada baris sebelumnya telah direset karena disesuaikan dengan supplier terpilih.`,
+      type: 'info'
+    });
+  }
+});
+
+// Tutup dropdown jika klik di luar
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.barang-search-wrapper')) {
+    document.querySelectorAll('.live-search-dropdown').forEach(d => {
+      d.style.display = 'none';
+    });
+  }
+});
+
+// Tambah Baris Baru
 function createRowHtml() {
   const container = document.getElementById('itemsContainer');
   const firstRow = container.querySelector('.ios-item-card');
   const newRow = firstRow.cloneNode(true);
 
-  newRow.querySelectorAll('input').forEach(inp => inp.value = '');
-  newRow.querySelector('.select-barang').value = '';
-  
+  // Bersihkan data
+  newRow.querySelectorAll('input').forEach(inp => {
+    if (inp.type !== 'hidden') inp.value = '';
+  });
+  newRow.querySelector('.input-id-barang').value = '';
+  newRow.querySelector('.barang-search-input').value = '';
+  newRow.querySelector('.btn-clear-barang').style.display = 'none';
+  newRow.querySelector('.selected-barang-card').style.display = 'none';
+  newRow.querySelector('.live-search-dropdown').style.display = 'none';
+  newRow.querySelector('.live-search-dropdown').innerHTML = '';
+
   const rows = container.querySelectorAll('.ios-item-card');
   const badge = newRow.querySelector('.item-num-badge');
   if (badge) {
@@ -318,10 +599,12 @@ function createRowHtml() {
   }
 
   container.appendChild(newRow);
+  initBarangSearch(newRow);
 }
 
 document.getElementById('btnAddRow').addEventListener('click', createRowHtml);
 
+// Hapus Baris
 function removeRow(btn) {
   const container = document.getElementById('itemsContainer');
   const rows = container.querySelectorAll('.ios-item-card');
@@ -342,17 +625,70 @@ function removeRow(btn) {
   });
 }
 
-function updateSatuanRow(selectElem) {
-  const selectedOption = selectElem.options[selectElem.selectedIndex];
-  const satuanId = selectedOption.getAttribute('data-satuan');
-  if (satuanId) {
-    const row = selectElem.closest('.ios-item-card') || selectElem.closest('.item-row');
-    const satuanSelect = row.querySelector('.select-satuan');
-    if (satuanSelect) {
-      satuanSelect.value = satuanId;
+// Validasi Form Submit Masuk
+document.getElementById('formMasuk').addEventListener('submit', function(e) {
+  const supplierId = parseInt(selectSupplier.value) || 0;
+  if (!supplierId) {
+    e.preventDefault();
+    showAlertModal({
+      title: 'Supplier Belum Dipilih',
+      message: 'Harap pilih asal <strong>Supplier Pengirim</strong> terlebih dahulu.',
+      type: 'danger',
+      icon: 'bi-exclamation-octagon-fill'
+    });
+    selectSupplier.focus();
+    return;
+  }
+
+  const rows = document.querySelectorAll('.ios-item-card');
+  let hasValidItem = false;
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const idInput = row.querySelector('.input-id-barang');
+    const searchInput = row.querySelector('.barang-search-input');
+    const qtyInput = row.querySelector('input[name="qty[]"]');
+    const bId = parseInt(idInput.value) || 0;
+    const qty = parseFloat(qtyInput.value) || 0;
+
+    if (searchInput.value.trim() && !bId) {
+      e.preventDefault();
+      showAlertModal({
+        title: 'Pilihan Barang Tidak Lengkap',
+        message: `Pada <strong>Item #${i + 1}</strong>, Anda mengetik nama barang tetapi belum memilih dari daftar pilihan autocomplete. Silakan klik salah satu barang dari dropdown.`,
+        type: 'danger',
+        icon: 'bi-exclamation-octagon-fill'
+      });
+      searchInput.focus();
+      return;
+    }
+
+    if (bId > 0) {
+      if (qty <= 0) {
+        e.preventDefault();
+        showAlertModal({
+          title: 'Jumlah Tidak Valid',
+          message: `Jumlah qty pada <strong>Item #${i + 1}</strong> harus lebih dari 0.`,
+          type: 'danger',
+          icon: 'bi-exclamation-octagon-fill'
+        });
+        qtyInput.focus();
+        return;
+      }
+      hasValidItem = true;
     }
   }
-}
+
+  if (!hasValidItem) {
+    e.preventDefault();
+    showAlertModal({
+      title: 'Item Masih Kosong',
+      message: 'Harap pilih minimal 1 barang yang akan diterima pada form penerimaan.',
+      type: 'danger',
+      icon: 'bi-exclamation-octagon-fill'
+    });
+  }
+});
 </script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
