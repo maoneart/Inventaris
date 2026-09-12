@@ -158,12 +158,12 @@ require_once __DIR__ . '/includes/header.php';
         <?php if (!empty($listMasuk)): ?>
           <?php foreach ($listMasuk as $m): ?>
             <tr>
-              <td><strong style="color: #60a5fa;"><?= htmlspecialchars($m['no_masuk']) ?></strong></td>
+              <td><strong class="text-primary"><?= htmlspecialchars($m['no_masuk']) ?></strong></td>
               <td><?= date('d/m/Y', strtotime($m['tanggal_masuk'])) ?></td>
-              <td><strong style="color: #ffffff;"><?= htmlspecialchars($m['nama_supplier']) ?></strong></td>
+              <td><strong style="color: var(--text-main);"><?= htmlspecialchars($m['nama_supplier']) ?></strong></td>
               <td><?= htmlspecialchars($m['no_surat_jalan_po'] ?: '-') ?></td>
               <td style="text-align: right;"><?= $m['total_item'] ?> jenis</td>
-              <td style="text-align: right; font-weight: 700; color: #34d399;">+<?= formatStok($m['total_qty']) ?></td>
+              <td style="text-align: right; font-weight: 700; color: var(--success);">+<?= formatStok($m['total_qty']) ?></td>
               <td><span style="font-size: 0.75rem; color: var(--text-muted);"><?= htmlspecialchars($m['catatan'] ?: '-') ?></span></td>
             </tr>
           <?php endforeach; ?>
@@ -179,7 +179,7 @@ require_once __DIR__ . '/includes/header.php';
 <?php if ($tipe === 'semua' || $tipe === 'keluar'): ?>
 <!-- Tabel Pengeluaran Barang -->
 <div class="ios-form-card" style="padding: 18px;">
-  <div class="ios-group-title" style="color: #f87171; margin-bottom: 14px;">
+  <div class="ios-group-title" style="color: var(--danger); margin-bottom: 14px;">
     <i class="bi bi-box-arrow-up-right"></i> RINCIAN BARANG KELUAR (<?= count($listKeluar) ?> PENGAMBILAN)
   </div>
 
@@ -200,13 +200,13 @@ require_once __DIR__ . '/includes/header.php';
         <?php if (!empty($listKeluar)): ?>
           <?php foreach ($listKeluar as $k): ?>
             <tr>
-              <td><strong style="color: #60a5fa;"><?= htmlspecialchars($k['no_keluar']) ?></strong></td>
+              <td><strong class="text-primary"><?= htmlspecialchars($k['no_keluar']) ?></strong></td>
               <td><?= date('d/m/Y', strtotime($k['tanggal_keluar'])) ?></td>
-              <td><strong style="color: #ffffff;"><?= htmlspecialchars($k['nama_pic']) ?></strong></td>
+              <td><strong style="color: var(--text-main);"><?= htmlspecialchars($k['nama_pic']) ?></strong></td>
               <td><span class="badge badge-purple"><?= htmlspecialchars($k['departemen']) ?></span></td>
               <td><?= htmlspecialchars($k['keperluan']) ?></td>
               <td style="text-align: right;"><?= $k['total_item'] ?> jenis</td>
-              <td style="text-align: right; font-weight: 700; color: #f87171;">-<?= formatStok($k['total_qty']) ?></td>
+              <td style="text-align: right; font-weight: 700; color: var(--danger);">-<?= formatStok($k['total_qty']) ?></td>
             </tr>
           <?php endforeach; ?>
         <?php else: ?>

@@ -87,7 +87,7 @@ $saranKodeSup = 'SUP-' . str_pad($nextCount, 3, '0', STR_PAD_LEFT);
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
       <div>
         <label class="ios-label">Kode Supplier</label>
-        <input type="text" name="kode_supplier" class="ios-input" value="<?= htmlspecialchars($saranKodeSup) ?>" style="background: rgba(0,0,0,0.25); color: #34d399; font-weight: 700;">
+        <input type="text" name="kode_supplier" class="ios-input" value="<?= htmlspecialchars($saranKodeSup) ?>" style="color: #059669; font-weight: 700;">
       </div>
 
       <div style="grid-column: span 2;">
@@ -159,12 +159,12 @@ $saranKodeSup = 'SUP-' . str_pad($nextCount, 3, '0', STR_PAD_LEFT);
         <?php if (count($suppliers) > 0): ?>
           <?php foreach ($suppliers as $s): ?>
             <tr>
-              <td><strong style="color: #60a5fa;"><?= htmlspecialchars($s['kode_supplier'] ?: '-') ?></strong></td>
-              <td><strong style="color: #ffffff;"><?= htmlspecialchars($s['nama_supplier']) ?></strong></td>
+              <td><strong class="text-primary"><?= htmlspecialchars($s['kode_supplier'] ?: '-') ?></strong></td>
+              <td><strong style="color: var(--text-main);"><?= htmlspecialchars($s['nama_supplier']) ?></strong></td>
               <td><?= htmlspecialchars($s['kontak_person'] ?: '-') ?></td>
               <td>
                 <?php if ($s['no_telp']): ?>
-                  <a href="https://wa.me/<?= preg_replace('/[^0-9]/', '', $s['no_telp']) ?>" target="_blank" style="color: #34d399; text-decoration: none;">
+                  <a href="https://wa.me/<?= preg_replace('/[^0-9]/', '', $s['no_telp']) ?>" target="_blank" style="color: #059669; text-decoration: none; font-weight: 700;">
                     <i class="bi bi-whatsapp"></i> <?= htmlspecialchars($s['no_telp']) ?>
                   </a>
                 <?php else: ?>

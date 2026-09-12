@@ -127,12 +127,12 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
       <div>
         <label class="ios-label">Kode Barang Sistem <span style="color: #ef4444;">*</span></label>
-        <input type="text" name="kode_barang" class="ios-input" value="<?= htmlspecialchars($saranKode) ?>" required style="background: rgba(0,0,0,0.25); color: #60a5fa; font-weight: 700;">
+        <input type="text" name="kode_barang" class="ios-input" value="<?= htmlspecialchars($saranKode) ?>" required style="color: #2563eb; font-weight: 700;">
       </div>
 
       <div>
         <label class="ios-label">Part Number (P/N) Pabrik <span style="color: #ef4444;">*</span></label>
-        <input type="text" name="part_number" class="ios-input" placeholder="Contoh: WR-CRV-824, GWS-060..." required style="font-weight: 700; color: #93c5fd;">
+        <input type="text" name="part_number" class="ios-input" placeholder="Contoh: WR-CRV-824, GWS-060..." required style="font-weight: 700;">
       </div>
 
       <div>
@@ -196,12 +196,12 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
       <div>
         <label class="ios-label">Stok Awal Fisik</label>
-        <input type="number" step="any" min="0" name="stok_awal" class="ios-input" value="0" style="text-align: right; font-weight: 700; color: #34d399;">
+        <input type="number" step="any" min="0" name="stok_awal" class="ios-input" value="0" style="text-align: right; font-weight: 700; color: #059669;">
       </div>
 
       <div>
         <label class="ios-label">Batas Minimum (Warning)</label>
-        <input type="number" step="any" min="0" name="stok_minimum" class="ios-input" value="5" style="text-align: right; font-weight: 700; color: #f87171;">
+        <input type="number" step="any" min="0" name="stok_minimum" class="ios-input" value="5" style="text-align: right; font-weight: 700; color: #dc2626;">
       </div>
 
       <div>
@@ -227,7 +227,7 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
 <div id="modalSatuan" class="maoneart-modal-overlay" style="display: none;">
   <div class="maoneart-modal-card" style="max-width: 420px; text-align: left;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-      <h3 style="font-size: 1.1rem; font-weight: 800; color: #ffffff;">+ Tambah Satuan Baru</h3>
+      <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">+ Tambah Satuan Baru</h3>
       <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('modalSatuan').style.display='none'">✕</button>
     </div>
 
@@ -293,13 +293,13 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
           <?php foreach ($barangs as $b): ?>
             <tr>
               <td>
-                <strong style="color: #60a5fa;"><?= htmlspecialchars($b['kode_barang']) ?></strong>
+                <strong class="text-primary"><?= htmlspecialchars($b['kode_barang']) ?></strong>
                 <?php if ($b['part_number']): ?>
-                  <div style="font-size: 0.75rem; color: #93c5fd; font-weight: 700;"><i class="bi bi-tag-fill"></i> <?= htmlspecialchars($b['part_number']) ?></div>
+                  <div style="font-size: 0.75rem; color: #2563eb; font-weight: 700;"><i class="bi bi-tag-fill"></i> <?= htmlspecialchars($b['part_number']) ?></div>
                 <?php endif; ?>
               </td>
               <td>
-                <strong style="color: #ffffff;"><?= htmlspecialchars($b['nama_barang']) ?></strong>
+                <strong style="color: var(--text-main);"><?= htmlspecialchars($b['nama_barang']) ?></strong>
                 <?php if ($b['spesifikasi']): ?>
                   <div style="font-size: 0.7rem; color: var(--text-muted);"><?= htmlspecialchars($b['spesifikasi']) ?></div>
                 <?php endif; ?>
@@ -313,7 +313,7 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
               </td>
               <td><span class="badge badge-purple"><?= htmlspecialchars($b['nama_kategori']) ?></span></td>
               <td><?= htmlspecialchars($b['singkatan']) ?></td>
-              <td style="text-align: right; font-weight: 800; font-size: 0.95rem; <?= $b['stok_saat_ini'] <= $b['stok_minimum'] ? 'color: #f87171;' : 'color: #34d399;' ?>">
+              <td style="text-align: right; font-weight: 800; font-size: 0.95rem; <?= $b['stok_saat_ini'] <= $b['stok_minimum'] ? 'color: #dc2626;' : 'color: #059669;' ?>">
                 <?= formatStok($b['stok_saat_ini']) ?>
               </td>
               <td style="text-align: right; color: var(--text-muted);"><?= formatStok($b['stok_minimum']) ?></td>

@@ -68,35 +68,61 @@ $recentActivity = $pdo->query("
       color: #0f172a !important;
     }
     [data-theme="light"] .gojek-header {
-      background: rgba(255, 255, 255, 0.95) !important;
+      background: rgba(255, 255, 255, 0.96) !important;
       border-bottom: none !important;
     }
     [data-theme="light"] .gojek-search-pill {
       background: #ffffff !important;
-      border: 1px solid rgba(0, 0, 0, 0.1) !important;
+      border: 1px solid #cbd5e1 !important;
+      color: #334155 !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    }
+    [data-theme="light"] .gojek-search-pill span {
       color: #64748b !important;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
     }
-    [data-theme="light"] .gojek-wallet-card {
-      background: linear-gradient(135deg, #ffffff, #f1f5f9) !important;
-      border: 1px solid rgba(0, 0, 0, 0.08) !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+    [data-theme="light"] .gojek-search-pill i {
+      color: #2563eb !important;
     }
-    [data-theme="light"] .wallet-bal-val {
+    [data-theme="light"] .gopay-wallet-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+    }
+    [data-theme="light"] .gopay-left {
+      border-right: 1px solid #e2e8f0 !important;
+    }
+    [data-theme="light"] .gopay-title {
+      color: #2563eb !important;
+    }
+    [data-theme="light"] .gopay-value {
       color: #0f172a !important;
     }
-    [data-theme="light"] .service-title {
+    [data-theme="light"] .gopay-sub {
+      color: #059669 !important;
+    }
+    [data-theme="light"] .gopay-action-btn span {
       color: #334155 !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] .service-title {
+      color: #1e293b !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] .icon-goweb {
+      background: #ecfdf5 !important;
+      border: 1px solid #10b981 !important;
+      color: #059669 !important;
     }
     [data-theme="light"] .gojek-feed-section {
       background: #ffffff !important;
-      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
     }
     [data-theme="light"] .feed-header div {
       color: #0f172a !important;
     }
     [data-theme="light"] .feed-item {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+      border-bottom: 1px solid #f1f5f9 !important;
     }
     [data-theme="light"] .feed-item div div {
       color: #0f172a !important;
@@ -105,14 +131,16 @@ $recentActivity = $pdo->query("
       color: #64748b !important;
     }
     [data-theme="light"] .gojek-bottom-nav {
-      background: rgba(255, 255, 255, 0.95) !important;
+      background: rgba(255, 255, 255, 0.96) !important;
       border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05) !important;
     }
     [data-theme="light"] .nav-tab {
       color: #64748b !important;
     }
     [data-theme="light"] .nav-tab.active {
       color: #00aa13 !important;
+      font-weight: 700 !important;
     }
     .gojek-wrapper {
       max-width: 440px;

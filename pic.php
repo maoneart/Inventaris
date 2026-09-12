@@ -147,13 +147,13 @@ $pics = $pdo->query("
         <?php if (count($pics) > 0): ?>
           <?php foreach ($pics as $p): ?>
             <tr>
-              <td><strong style="color: #60a5fa;"><?= htmlspecialchars($p['nip_nik'] ?: '-') ?></strong></td>
-              <td><strong style="color: #ffffff;"><?= htmlspecialchars($p['nama_pic']) ?></strong></td>
+              <td><strong class="text-primary"><?= htmlspecialchars($p['nip_nik'] ?: '-') ?></strong></td>
+              <td><strong style="color: var(--text-main);"><?= htmlspecialchars($p['nama_pic']) ?></strong></td>
               <td><span class="badge badge-purple"><?= htmlspecialchars($p['departemen']) ?></span></td>
               <td><?= htmlspecialchars($p['jabatan'] ?: '-') ?></td>
               <td>
                 <?php if ($p['no_hp']): ?>
-                  <a href="https://wa.me/<?= preg_replace('/[^0-9]/', '', $p['no_hp']) ?>" target="_blank" style="color: #34d399; text-decoration: none;">
+                  <a href="https://wa.me/<?= preg_replace('/[^0-9]/', '', $p['no_hp']) ?>" target="_blank" style="color: #059669; text-decoration: none; font-weight: 700;">
                     <i class="bi bi-whatsapp"></i> <?= htmlspecialchars($p['no_hp']) ?>
                   </a>
                 <?php else: ?>

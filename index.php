@@ -84,43 +84,43 @@ try {
 
     <!-- 2. Kartu Saldo / GoPay Wallet Style -->
     <div class="gopay-wallet-card-web">
-      <div style="display: flex; flex-direction: column; gap: 2px; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 14px; min-width: 125px;">
-        <div style="font-size: 0.7rem; font-weight: 800; color: #60a5fa; display: flex; align-items: center; gap: 4px; letter-spacing: 0.04em;">
+      <div style="display: flex; flex-direction: column; gap: 2px; border-right: 1px solid var(--card-border); padding-right: 14px; min-width: 125px;">
+        <div style="font-size: 0.7rem; font-weight: 800; color: #2563eb; display: flex; align-items: center; gap: 4px; letter-spacing: 0.04em;">
           <i class="bi bi-box-seam-fill"></i> STOK GUDANG
         </div>
-        <div style="font-size: 1.15rem; font-weight: 800; color: #ffffff;"><?= number_format($totalBarang) ?> Part</div>
-        <div style="font-size: 0.65rem; color: #34d399; font-weight: 600;">
+        <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);"><?= number_format($totalBarang) ?> Part</div>
+        <div style="font-size: 0.65rem; color: #059669; font-weight: 700;">
           <i class="bi bi-check-circle-fill"></i> Realtime Aktif
         </div>
       </div>
 
       <div style="display: flex; gap: 10px; flex: 1; justify-content: space-around; padding-left: 6px;">
-        <a href="masuk.php" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #ffffff; gap: 4px;">
-          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(0, 170, 19, 0.18); border: 1px solid rgba(0, 170, 19, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #00aa13;">
+        <a href="masuk.php" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; gap: 4px;">
+          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(0, 170, 19, 0.15); border: 1px solid rgba(0, 170, 19, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #00aa13;">
             <i class="bi bi-arrow-down-left"></i>
           </div>
-          <span style="font-size: 0.65rem; font-weight: 700; color: #cbd5e1;">Masuk</span>
+          <span style="font-size: 0.65rem; font-weight: 700; color: var(--text-muted);">Masuk</span>
         </a>
 
-        <a href="keluar.php" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #ffffff; gap: 4px;">
-          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(238, 39, 55, 0.18); border: 1px solid rgba(238, 39, 55, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #ee2737;">
+        <a href="keluar.php" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; gap: 4px;">
+          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(238, 39, 55, 0.15); border: 1px solid rgba(238, 39, 55, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #ee2737;">
             <i class="bi bi-arrow-up-right"></i>
           </div>
-          <span style="font-size: 0.65rem; font-weight: 700; color: #cbd5e1;">Keluar</span>
+          <span style="font-size: 0.65rem; font-weight: 700; color: var(--text-muted);">Keluar</span>
         </a>
 
-        <a href="tanya_ai.php" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #ffffff; gap: 4px;">
-          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(139, 92, 246, 0.18); border: 1px solid rgba(139, 92, 246, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #c084fc;">
+        <a href="tanya_ai.php" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; gap: 4px;">
+          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #8b5cf6;">
             <i class="bi bi-robot"></i>
           </div>
-          <span style="font-size: 0.65rem; font-weight: 700; color: #cbd5e1;">Tanya AI</span>
+          <span style="font-size: 0.65rem; font-weight: 700; color: var(--text-muted);">Tanya AI</span>
         </a>
 
-        <a href="export.php?type=stok_pdf" target="_blank" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #ffffff; gap: 4px;">
-          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(245, 158, 11, 0.18); border: 1px solid rgba(245, 158, 11, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #fbbf24;">
+        <a href="export.php?type=stok_pdf" target="_blank" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; gap: 4px;">
+          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #d97706;">
             <i class="bi bi-printer"></i>
           </div>
-          <span style="font-size: 0.65rem; font-weight: 700; color: #cbd5e1;">Cetak</span>
+          <span style="font-size: 0.65rem; font-weight: 700; color: var(--text-muted);">Cetak</span>
         </a>
       </div>
     </div>
@@ -132,7 +132,7 @@ try {
         <div class="gojek-circle-icon-web" style="background: #00aa13; color: #ffffff;">
           <i class="bi bi-box-arrow-in-down"></i>
         </div>
-        <div style="font-size: 0.72rem; font-weight: 700; color: #f1f5f9; text-align: center;">Brg Masuk</div>
+        <div class="service-title" style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); text-align: center;">Brg Masuk</div>
       </a>
 
       <!-- 2. GoKeluar -->
@@ -140,7 +140,7 @@ try {
         <div class="gojek-circle-icon-web" style="background: #ee2737; color: #ffffff;">
           <i class="bi bi-box-arrow-up-right"></i>
         </div>
-        <div style="font-size: 0.72rem; font-weight: 700; color: #f1f5f9; text-align: center;">Brg Keluar</div>
+        <div class="service-title" style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); text-align: center;">Brg Keluar</div>
       </a>
 
       <!-- 3. GoBarang -->
@@ -148,7 +148,7 @@ try {
         <div class="gojek-circle-icon-web" style="background: #0081a0; color: #ffffff;">
           <i class="bi bi-boxes"></i>
         </div>
-        <div style="font-size: 0.72rem; font-weight: 700; color: #f1f5f9; text-align: center;">Barang</div>
+        <div class="service-title" style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); text-align: center;">Barang</div>
       </a>
 
       <!-- 4. GoSupplier -->
@@ -156,7 +156,7 @@ try {
         <div class="gojek-circle-icon-web" style="background: #df6b00; color: #ffffff;">
           <i class="bi bi-truck"></i>
         </div>
-        <div style="font-size: 0.72rem; font-weight: 700; color: #f1f5f9; text-align: center;">Supplier</div>
+        <div class="service-title" style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); text-align: center;">Supplier</div>
       </a>
 
       <!-- 5. GoPIC -->
@@ -164,7 +164,7 @@ try {
         <div class="gojek-circle-icon-web" style="background: #00a3a6; color: #ffffff;">
           <i class="bi bi-people-fill"></i>
         </div>
-        <div style="font-size: 0.72rem; font-weight: 700; color: #f1f5f9; text-align: center;">Data PIC</div>
+        <div class="service-title" style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); text-align: center;">Data PIC</div>
       </a>
 
       <!-- 6. GoAI -->
@@ -172,7 +172,7 @@ try {
         <div class="gojek-circle-icon-web" style="background: #8b5cf6; color: #ffffff;">
           <i class="bi bi-robot"></i>
         </div>
-        <div style="font-size: 0.72rem; font-weight: 700; color: #f1f5f9; text-align: center;">Tanya AI</div>
+        <div class="service-title" style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); text-align: center;">Tanya AI</div>
       </a>
 
       <!-- 7. GoLaporan -->
@@ -180,7 +180,7 @@ try {
         <div class="gojek-circle-icon-web" style="background: #475569; color: #ffffff;">
           <i class="bi bi-file-earmark-bar-graph"></i>
         </div>
-        <div style="font-size: 0.72rem; font-weight: 700; color: #f1f5f9; text-align: center;">Laporan</div>
+        <div class="service-title" style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); text-align: center;">Laporan</div>
       </a>
 
       <!-- 8. Dokumen Ekspor -->
@@ -188,52 +188,52 @@ try {
         <div class="gojek-circle-icon-web" style="background: #1e293b; color: #34d399; border: 1px solid rgba(255,255,255,0.15);">
           <i class="bi bi-file-earmark-excel"></i>
         </div>
-        <div style="font-size: 0.72rem; font-weight: 700; color: #f1f5f9; text-align: center;">Ekspor XLS</div>
+        <div class="service-title" style="font-size: 0.72rem; font-weight: 700; color: var(--text-main); text-align: center;">Ekspor XLS</div>
       </a>
     </div>
 
     <!-- 4. Carousel Banner Slider Promo Ala Gojek -->
     <div style="margin-bottom: 24px;">
-      <div style="overflow: hidden; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+      <div style="overflow: hidden; border-radius: 16px; box-shadow: var(--shadow-card);">
         <div id="mTrack" style="display: flex; transition: transform 0.4s ease; width: 400%;">
           <!-- Slide 1 -->
           <a href="masuk.php" style="width: 25%; padding: 18px 16px; background: linear-gradient(135deg, #00aa13 0%, #059669 100%); display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #ffffff;">
             <div>
               <div style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.2); display: inline-block; padding: 2px 6px; border-radius: 4px; margin-bottom: 4px;">STOCK IN</div>
-              <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px;">Penerimaan Kiriman</h3>
-              <p style="font-size: 0.72rem; opacity: 0.9;">Catat no surat jalan & multi-item cepat.</p>
+              <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px; color: #ffffff;">Penerimaan Kiriman</h3>
+              <p style="font-size: 0.72rem; opacity: 0.9; color: #ffffff;">Catat no surat jalan & multi-item cepat.</p>
             </div>
-            <i class="bi bi-box-arrow-in-down" style="font-size: 2.2rem; opacity: 0.85;"></i>
+            <i class="bi bi-box-arrow-in-down" style="font-size: 2.2rem; opacity: 0.85; color: #ffffff;"></i>
           </a>
 
           <!-- Slide 2 -->
           <a href="keluar.php" style="width: 25%; padding: 18px 16px; background: linear-gradient(135deg, #ee2737 0%, #b91c1c 100%); display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #ffffff;">
             <div>
               <div style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.2); display: inline-block; padding: 2px 6px; border-radius: 4px; margin-bottom: 4px;">STOCK OUT</div>
-              <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px;">Pengeluaran Tools & Part</h3>
-              <p style="font-size: 0.72rem; opacity: 0.9;">Otomatis mengurangi stok fisik.</p>
+              <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px; color: #ffffff;">Pengeluaran Tools & Part</h3>
+              <p style="font-size: 0.72rem; opacity: 0.9; color: #ffffff;">Otomatis mengurangi stok fisik.</p>
             </div>
-            <i class="bi bi-box-arrow-up-right" style="font-size: 2.2rem; opacity: 0.85;"></i>
+            <i class="bi bi-box-arrow-up-right" style="font-size: 2.2rem; opacity: 0.85; color: #ffffff;"></i>
           </a>
 
           <!-- Slide 3 -->
           <a href="tanya_ai.php" style="width: 25%; padding: 18px 16px; background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #ffffff;">
             <div>
               <div style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.2); display: inline-block; padding: 2px 6px; border-radius: 4px; margin-bottom: 4px;">SI-NYA AI</div>
-              <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px;">Asisten Pintar Gudang</h3>
-              <p style="font-size: 0.72rem; opacity: 0.9;">Tanya sisa stok & minta draf laporan.</p>
+              <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px; color: #ffffff;">Asisten Pintar Gudang</h3>
+              <p style="font-size: 0.72rem; opacity: 0.9; color: #ffffff;">Tanya sisa stok & minta draf laporan.</p>
             </div>
-            <i class="bi bi-robot" style="font-size: 2.2rem; opacity: 0.85;"></i>
+            <i class="bi bi-robot" style="font-size: 2.2rem; opacity: 0.85; color: #ffffff;"></i>
           </a>
 
           <!-- Slide 4 -->
           <a href="laporan.php" style="width: 25%; padding: 18px 16px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #ffffff;">
             <div>
               <div style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.2); display: inline-block; padding: 2px 6px; border-radius: 4px; margin-bottom: 4px;">DOKUMEN</div>
-              <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px;">Cetak Dokumen Resmi</h3>
-              <p style="font-size: 0.72rem; opacity: 0.9;">Format Excel & PDF siap audit kantor.</p>
+              <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px; color: #ffffff;">Cetak Dokumen Resmi</h3>
+              <p style="font-size: 0.72rem; opacity: 0.9; color: #ffffff;">Format Excel & PDF siap audit kantor.</p>
             </div>
-            <i class="bi bi-printer" style="font-size: 2.2rem; opacity: 0.85;"></i>
+            <i class="bi bi-printer" style="font-size: 2.2rem; opacity: 0.85; color: #ffffff;"></i>
           </a>
         </div>
       </div>
@@ -247,9 +247,9 @@ try {
     </div>
 
     <!-- 5. Feed Aktivitas Terkini (Gojek Feed) -->
-    <div style="background: #162033; border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 16px; margin-bottom: 20px;">
+    <div class="glass-card" style="border-radius: 18px; padding: 16px; margin-bottom: 20px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div style="font-size: 0.82rem; font-weight: 800; color: #ffffff;">Aktivitas Terkini Gudang</div>
+        <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-main);">Aktivitas Terkini Gudang</div>
         <a href="laporan.php" style="font-size: 0.72rem; color: #00aa13; text-decoration: none; font-weight: 700;">Lihat Semua</a>
       </div>
 
@@ -257,23 +257,23 @@ try {
         <?php foreach ($feedActivities as $act): 
           $isIn = $act['tipe'] === 'masuk';
         ?>
-          <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--card-border);">
             <div style="display: flex; align-items: center; gap: 10px;">
-              <div style="width: 32px; height: 32px; border-radius: 10px; background: <?= $isIn ? 'rgba(0, 170, 19, 0.2)' : 'rgba(238, 39, 55, 0.2)' ?>; color: <?= $isIn ? '#00aa13' : '#ee2737' ?>; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;">
+              <div style="width: 32px; height: 32px; border-radius: 10px; background: <?= $isIn ? 'rgba(0, 170, 19, 0.15)' : 'rgba(238, 39, 55, 0.15)' ?>; color: <?= $isIn ? '#00aa13' : '#ee2737' ?>; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;">
                 <i class="bi <?= $isIn ? 'bi-box-arrow-in-down' : 'bi-box-arrow-up-right' ?>"></i>
               </div>
               <div>
-                <div style="font-size: 0.78rem; font-weight: 700; color: #ffffff;"><?= htmlspecialchars($act['pihak']) ?></div>
-                <div style="font-size: 0.68rem; color: #94a3b8;"><?= htmlspecialchars($act['no_trx']) ?> • <?= date('d M', strtotime($act['tgl'])) ?></div>
+                <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-main);"><?= htmlspecialchars($act['pihak']) ?></div>
+                <div style="font-size: 0.68rem; color: var(--text-muted);"><?= htmlspecialchars($act['no_trx']) ?> • <?= date('d M', strtotime($act['tgl'])) ?></div>
               </div>
             </div>
-            <div style="font-size: 0.82rem; font-weight: 800; color: <?= $isIn ? '#34d399' : '#f87171' ?>;">
+            <div style="font-size: 0.82rem; font-weight: 800; color: <?= $isIn ? '#059669' : '#dc2626' ?>;">
               <?= $isIn ? '+' : '-' ?><?= formatStok($act['qty']) ?>
             </div>
           </div>
         <?php endforeach; ?>
       <?php else: ?>
-        <p style="font-size: 0.75rem; color: #64748b; text-align: center; padding: 10px 0;">Belum ada riwayat transaksi.</p>
+        <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 10px 0;">Belum ada riwayat transaksi.</p>
       <?php endif; ?>
     </div>
 
@@ -365,7 +365,7 @@ try {
   <div class="glass-card">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px;">
       <div>
-        <h2 style="font-size: 1.15rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+        <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
           <i class="bi bi-broadcast text-primary"></i> Aktual Stok Realtime & Part Number
         </h2>
         <p style="font-size: 0.75rem; color: var(--text-muted);">Status stok fisik langsung terupdate tiap kali ada mutasi masuk/keluar</p>
@@ -404,13 +404,13 @@ try {
             ?>
               <tr>
                 <td>
-                  <strong style="color: #60a5fa;"><?= htmlspecialchars($b['kode_barang']) ?></strong>
+                  <strong class="text-primary"><?= htmlspecialchars($b['kode_barang']) ?></strong>
                   <?php if ($b['part_number']): ?>
-                    <div style="font-size: 0.75rem; color: #93c5fd; font-weight: 700;"><i class="bi bi-tag-fill"></i> <?= htmlspecialchars($b['part_number']) ?></div>
+                    <div style="font-size: 0.75rem; color: #2563eb; font-weight: 700;"><i class="bi bi-tag-fill"></i> <?= htmlspecialchars($b['part_number']) ?></div>
                   <?php endif; ?>
                 </td>
                 <td>
-                  <div style="font-weight: 700; color: #ffffff;"><?= htmlspecialchars($b['nama_barang']) ?></div>
+                  <div style="font-weight: 700; color: var(--text-main);"><?= htmlspecialchars($b['nama_barang']) ?></div>
                   <?php if ($b['spesifikasi']): ?>
                     <div style="font-size: 0.72rem; color: var(--text-muted); max-width: 240px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?= htmlspecialchars($b['spesifikasi']) ?></div>
                   <?php endif; ?>
@@ -426,9 +426,9 @@ try {
                   <span class="badge badge-purple"><?= htmlspecialchars($b['nama_kategori'] ?? 'Umum') ?></span>
                 </td>
                 <td>
-                  <span style="font-size: 0.8rem; color: #cbd5e1;"><i class="bi bi-archive-fill text-dim"></i> <?= htmlspecialchars($b['lokasi_rak'] ?? '-') ?></span>
+                  <span style="font-size: 0.8rem; color: var(--text-muted);"><i class="bi bi-archive-fill text-dim"></i> <?= htmlspecialchars($b['lokasi_rak'] ?? '-') ?></span>
                 </td>
-                <td style="text-align: right; font-weight: 800; font-size: 0.95rem; <?= $isCritical ? 'color: #f87171;' : 'color: #34d399;' ?>">
+                <td style="text-align: right; font-weight: 800; font-size: 0.95rem; <?= $isCritical ? 'color: #dc2626;' : 'color: #059669;' ?>">
                   <?= formatStok($b['stok_saat_ini']) ?> <span style="font-size: 0.72rem; font-weight: 600; color: var(--text-muted);"><?= htmlspecialchars($b['singkatan'] ?? 'pcs') ?></span>
                 </td>
                 <td style="text-align: right; font-size: 0.82rem; color: var(--text-muted);">
@@ -458,7 +458,7 @@ try {
           <?php else: ?>
             <tr>
               <td colspan="9" style="text-align: center; padding: 24px; color: var(--text-muted);">
-                Belum ada data barang. Silakan daftarkan di menu <a href="barang.php" style="color: #60a5fa;">Data Barang</a>.
+                Belum ada data barang. Silakan daftarkan di menu <a href="barang.php" class="text-primary">Data Barang</a>.
               </td>
             </tr>
           <?php endif; ?>
@@ -472,18 +472,18 @@ try {
     <!-- Masuk Terakhir -->
     <div class="glass-card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h3 style="font-size: 0.95rem; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 6px;">
+        <h3 style="font-size: 0.95rem; font-weight: 800; color: var(--success); display: flex; align-items: center; gap: 6px;">
           <i class="bi bi-arrow-down-left-circle-fill"></i> Pemasukan Terakhir (Dari Supplier)
         </h3>
-        <a href="laporan.php?tipe=masuk" style="font-size: 0.75rem; color: #60a5fa; text-decoration: none;">Lihat Semua</a>
+        <a href="laporan.php?tipe=masuk" style="font-size: 0.75rem; color: var(--primary); text-decoration: none;">Lihat Semua</a>
       </div>
 
       <?php if (!empty($recentIn)): ?>
         <div style="display: flex; flex-direction: column; gap: 8px;">
           <?php foreach ($recentIn as $in): ?>
-            <div style="background: rgba(15, 23, 42, 0.4); border: 1px solid var(--card-border); border-radius: 8px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
               <div>
-                <div style="font-weight: 700; font-size: 0.82rem; color: #ffffff;"><?= htmlspecialchars($in['nama_supplier']) ?></div>
+                <div style="font-weight: 700; font-size: 0.82rem; color: var(--text-main);"><?= htmlspecialchars($in['nama_supplier']) ?></div>
                 <div style="font-size: 0.7rem; color: var(--text-muted);"><?= htmlspecialchars($in['no_masuk']) ?> • <?= date('d M Y', strtotime($in['tanggal_masuk'])) ?></div>
               </div>
               <div style="text-align: right;">
@@ -500,18 +500,18 @@ try {
     <!-- Keluar Terakhir -->
     <div class="glass-card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h3 style="font-size: 0.95rem; font-weight: 700; color: #f87171; display: flex; align-items: center; gap: 6px;">
+        <h3 style="font-size: 0.95rem; font-weight: 800; color: var(--danger); display: flex; align-items: center; gap: 6px;">
           <i class="bi bi-arrow-up-right-circle-fill"></i> Pengeluaran Terakhir (Ke PIC)
         </h3>
-        <a href="laporan.php?tipe=keluar" style="font-size: 0.75rem; color: #60a5fa; text-decoration: none;">Lihat Semua</a>
+        <a href="laporan.php?tipe=keluar" style="font-size: 0.75rem; color: var(--primary); text-decoration: none;">Lihat Semua</a>
       </div>
 
       <?php if (!empty($recentOut)): ?>
         <div style="display: flex; flex-direction: column; gap: 8px;">
           <?php foreach ($recentOut as $out): ?>
-            <div style="background: rgba(15, 23, 42, 0.4); border: 1px solid var(--card-border); border-radius: 8px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
               <div>
-                <div style="font-weight: 700; font-size: 0.82rem; color: #ffffff;"><?= htmlspecialchars($out['nama_pic']) ?> (<?= htmlspecialchars($out['departemen']) ?>)</div>
+                <div style="font-weight: 700; font-size: 0.82rem; color: var(--text-main);"><?= htmlspecialchars($out['nama_pic']) ?> (<?= htmlspecialchars($out['departemen']) ?>)</div>
                 <div style="font-size: 0.7rem; color: var(--text-muted);"><?= htmlspecialchars($out['keperluan']) ?> • <?= date('d M Y', strtotime($out['tanggal_keluar'])) ?></div>
               </div>
               <div style="text-align: right;">

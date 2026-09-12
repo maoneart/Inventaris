@@ -262,29 +262,29 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
 
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
     <a href="export.php?type=backup_db" class="btn btn-secondary" style="border-radius: 14px; padding: 14px; text-align: left; display: flex; align-items: center; gap: 12px;">
-      <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(37, 99, 235, 0.2); color: #60a5fa; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">
+      <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(37, 99, 235, 0.15); color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">
         <i class="bi bi-download"></i>
       </div>
       <div>
-        <div style="font-weight: 700; color: #ffffff; font-size: 0.88rem;">Download Backup SQL</div>
-        <div style="font-size: 0.72rem; color: #94a3b8;">Cadangan database db_inventaris</div>
+        <div style="font-weight: 700; color: var(--text-main); font-size: 0.88rem;">Download Backup SQL</div>
+        <div style="font-size: 0.72rem; color: var(--text-muted);">Cadangan database db_inventaris</div>
       </div>
     </a>
 
     <a href="http://localhost:8085/phpmyadmin" target="_blank" class="btn btn-secondary" style="border-radius: 14px; padding: 14px; text-align: left; display: flex; align-items: center; gap: 12px;">
-      <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(245, 158, 11, 0.2); color: #fbbf24; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">
+      <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); color: #d97706; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">
         <i class="bi bi-database-gear"></i>
       </div>
       <div>
-        <div style="font-weight: 700; color: #ffffff; font-size: 0.88rem;">Buka phpMyAdmin</div>
-        <div style="font-size: 0.72rem; color: #94a3b8;">Port 8085 / phpmyadmin</div>
+        <div style="font-weight: 700; color: var(--text-main); font-size: 0.88rem;">Buka phpMyAdmin</div>
+        <div style="font-size: 0.72rem; color: var(--text-muted);">Port 8085 / phpmyadmin</div>
       </div>
     </a>
   </div>
 
-  <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08);">
-    <div style="font-size: 0.82rem; font-weight: 700; color: #f87171; margin-bottom: 6px;">Zona Berbahaya (Maintenance)</div>
-    <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 12px;">Hapus seluruh transaksi masuk & keluar jika Anda ingin memulai pencatatan stok dari nol.</p>
+  <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--card-border);">
+    <div style="font-size: 0.82rem; font-weight: 700; color: var(--danger); margin-bottom: 6px;">Zona Berbahaya (Maintenance)</div>
+    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Hapus seluruh transaksi masuk & keluar jika Anda ingin memulai pencatatan stok dari nol.</p>
     <button type="button" class="btn btn-danger btn-sm" onclick="confirmResetTrans()" style="border-radius: 12px; padding: 10px 18px; font-weight: 700;">
       <i class="bi bi-exclamation-triangle-fill"></i> Bersihkan Riwayat Transaksi Percobaan
     </button>
@@ -313,14 +313,14 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
 <div id="modalAboutApp" class="maoneart-modal-overlay" style="display: none;">
   <div class="maoneart-modal-card" style="max-width: 520px; text-align: left; max-height: 85vh; display: flex; flex-direction: column;">
     <!-- Modal Header -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px;">
       <div style="display: flex; align-items: center; gap: 10px;">
         <div style="width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: #fff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);">
           📦
         </div>
         <div>
-          <h3 style="font-size: 1.1rem; font-weight: 800; color: #ffffff; margin: 0;">Tentang Aplikasi</h3>
-          <p style="font-size: 0.72rem; color: #60a5fa; margin: 0;">MaoneArt Stock & Inventory System</p>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin: 0;">Tentang Aplikasi</h3>
+          <p style="font-size: 0.72rem; color: #2563eb; margin: 0;">MaoneArt Stock & Inventory System</p>
         </div>
       </div>
       <button type="button" class="btn btn-secondary btn-sm" onclick="closeAboutModal()" style="border-radius: 10px; width: 34px; height: 34px; padding: 0; display: flex; align-items: center; justify-content: center;">✕</button>
@@ -336,7 +336,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
 
       <!-- App Overview -->
-      <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 0.8rem; color: #cbd5e1; line-height: 1.6;">
+      <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 0.8rem; color: var(--text-muted); line-height: 1.6;">
         <p style="margin-bottom: 8px;">
           <strong>MaoneArt Stock & Inventory</strong> adalah sistem pergudangan modern berarsitektur <em>Hybrid Local-First</em> yang dirancang untuk kecepatan operasional inventaris, pencatatan Part Number pabrik, nomor surat jalan supplier, dan pengeluaran material ke PIC teknisi secara realtime.
         </p>
@@ -347,29 +347,29 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
 
       <!-- Specifications Grid -->
       <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px;">
-        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px;">
-          <div style="font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Developer / Creator</div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: #ffffff; margin-top: 2px;">Hermawan (MaoneArt)</div>
+        <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;">
+          <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Developer / Creator</div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">Hermawan (MaoneArt)</div>
         </div>
-        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px;">
-          <div style="font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Official Portal</div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: #38bdf8; margin-top: 2px;">
-            <a href="https://maoneart.my.id" target="_blank" style="color: #38bdf8; text-decoration: none;">Maoneart.my.id</a>
+        <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;">
+          <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Official Portal</div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: #2563eb; margin-top: 2px;">
+            <a href="https://maoneart.my.id" target="_blank" style="color: #2563eb; text-decoration: none; font-weight: 800;">Maoneart.my.id</a>
           </div>
         </div>
-        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px;">
-          <div style="font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Stack Teknologi</div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: #ffffff; margin-top: 2px;">PHP 8.5, MariaDB, Flutter</div>
+        <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;">
+          <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Stack Teknologi</div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">PHP 8.5, MariaDB, Flutter</div>
         </div>
-        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px;">
-          <div style="font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Desain Antarmuka</div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: #ffffff; margin-top: 2px;">Apple iOS & Gojek Superapp</div>
+        <div style="background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;">
+          <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Desain Antarmuka</div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">Apple iOS & Gojek Superapp</div>
         </div>
       </div>
 
       <!-- Feature Highlights -->
-      <div style="font-size: 0.76rem; color: #94a3b8; line-height: 1.7; margin-bottom: 14px;">
-        <div style="font-weight: 800; color: #ffffff; margin-bottom: 6px;">Fitur Utama Sistem:</div>
+      <div style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 14px;">
+        <div style="font-weight: 800; color: var(--text-main); margin-bottom: 6px;">Fitur Utama Sistem:</div>
         • 📥 <strong>Barang Masuk</strong>: Multi-item supplier, nomor surat jalan / PO, tambah stok otomatis.<br>
         • 📤 <strong>Barang Keluar</strong>: Multi-item PIC teknisi, keperluan proyek, validasi stok minimum.<br>
         • 🏷️ <strong>Katalog Barang</strong>: Manajemen Part Number pabrik, barcode SKU, satuan & lokasi rak.<br>
@@ -379,13 +379,13 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
 
       <!-- Copyright Notice -->
-      <div style="text-align: center; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 0.72rem; color: #64748b;">
-        © 2026 <strong>MaoneArt</strong> · All Rights Reserved · <a href="https://maoneart.my.id" target="_blank" style="color: #60a5fa; text-decoration: none;">Maoneart.my.id</a>
+      <div style="text-align: center; padding-top: 10px; border-top: 1px solid var(--card-border); font-size: 0.72rem; color: var(--text-muted);">
+        © 2026 <strong>MaoneArt</strong> · All Rights Reserved · <a href="https://maoneart.my.id" target="_blank" style="color: #2563eb; text-decoration: none; font-weight: 700;">Maoneart.my.id</a>
       </div>
     </div>
 
     <!-- Modal Actions (100% Symmetrical 2-Column Grid) -->
-    <div class="maoneart-modal-actions" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px;">
+    <div class="maoneart-modal-actions" style="margin-top: 16px; border-top: 1px solid var(--card-border); padding-top: 14px;">
       <a href="https://maoneart.my.id" target="_blank" class="maoneart-modal-btn cancel" style="text-decoration: none;">
         <i class="bi bi-globe2"></i> Web Resmi
       </a>

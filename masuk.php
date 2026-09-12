@@ -164,7 +164,7 @@ $recentMasuk = $pdo->query("
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
       <div>
         <label class="ios-label">No. Transaksi</label>
-        <input type="text" name="no_masuk" class="ios-input" value="<?= htmlspecialchars($autoNoMasuk) ?>" readonly style="background: rgba(0,0,0,0.25); color: #60a5fa; font-weight: 700;">
+        <input type="text" name="no_masuk" class="ios-input" value="<?= htmlspecialchars($autoNoMasuk) ?>" readonly style="color: #2563eb; font-weight: 700;">
       </div>
 
       <div>
@@ -205,7 +205,7 @@ $recentMasuk = $pdo->query("
 
     <div id="itemsContainer" style="display: flex; flex-direction: column; gap: 12px;">
       <!-- Row 1 -->
-      <div class="item-row" style="background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 14px; display: grid; grid-template-columns: 3.5fr 1.2fr 1.5fr 2fr 38px; gap: 10px; align-items: end;">
+      <div class="item-row" style="border-radius: 16px; padding: 14px; display: grid; grid-template-columns: 3.5fr 1.2fr 1.5fr 2fr 38px; gap: 10px; align-items: end;">
         <div>
           <label class="ios-label">Pilih Barang & Part Number <span style="color: #ef4444;">*</span></label>
           <select name="id_barang[]" class="ios-select select-barang" required onchange="updateSatuanRow(this)">
@@ -280,11 +280,11 @@ $recentMasuk = $pdo->query("
         <?php if (!empty($recentMasuk)): ?>
           <?php foreach ($recentMasuk as $rm): ?>
             <tr>
-              <td><strong style="color: #60a5fa;"><?= htmlspecialchars($rm['no_masuk']) ?></strong></td>
+              <td><strong class="text-primary"><?= htmlspecialchars($rm['no_masuk']) ?></strong></td>
               <td><?= date('d/m/Y', strtotime($rm['tanggal_masuk'])) ?></td>
-              <td><strong style="color: #ffffff;"><?= htmlspecialchars($rm['nama_supplier']) ?></strong></td>
+              <td><strong style="color: var(--text-main);"><?= htmlspecialchars($rm['nama_supplier']) ?></strong></td>
               <td><?= htmlspecialchars($rm['no_surat_jalan_po'] ?: '-') ?></td>
-              <td style="text-align: right; color: #34d399; font-weight: 700;">+<?= formatStok($rm['total_qty']) ?> item</td>
+              <td style="text-align: right; color: var(--success); font-weight: 700;">+<?= formatStok($rm['total_qty']) ?> item</td>
               <td style="text-align: center;">
                 <button type="button" class="btn btn-danger btn-sm" style="border-radius: 8px;" onclick="confirmDelete('masuk.php?action=hapus&id=<?= $rm['id'] ?>', 'Transaksi <?= $rm['no_masuk'] ?>')" title="Batalkan & Kembalikan Stok">
                   <i class="bi bi-trash"></i>

@@ -52,7 +52,7 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
         <i class="bi bi-box-seam-fill"></i>
       </div>
       <div>
-        <div style="font-weight: 800; font-size: 0.95rem; color: #ffffff; letter-spacing: -0.01em;">MaoneArt Gudang</div>
+        <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-main); letter-spacing: -0.01em;">MaoneArt Gudang</div>
         <div style="font-size: 0.68rem; color: #60a5fa;"><i class="bi bi-geo-alt-fill"></i> <?= htmlspecialchars($namaGudang) ?></div>
       </div>
     </div>

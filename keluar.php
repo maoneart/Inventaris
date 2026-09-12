@@ -176,7 +176,7 @@ $recentKeluar = $pdo->query("
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
       <div>
         <label class="ios-label">No. Transaksi</label>
-        <input type="text" name="no_keluar" class="ios-input" value="<?= htmlspecialchars($autoNoKeluar) ?>" readonly style="background: rgba(0,0,0,0.25); color: #f87171; font-weight: 700;">
+        <input type="text" name="no_keluar" class="ios-input" value="<?= htmlspecialchars($autoNoKeluar) ?>" readonly style="color: #dc2626; font-weight: 700;">
       </div>
 
       <div>
@@ -227,7 +227,7 @@ $recentKeluar = $pdo->query("
 
     <div id="itemsContainerOut" style="display: flex; flex-direction: column; gap: 12px;">
       <!-- Row 1 -->
-      <div class="item-row" style="background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 14px; display: grid; grid-template-columns: 3.5fr 1.2fr 1.5fr 2fr 38px; gap: 10px; align-items: end;">
+      <div class="item-row" style="border-radius: 16px; padding: 14px; display: grid; grid-template-columns: 3.5fr 1.2fr 1.5fr 2fr 38px; gap: 10px; align-items: end;">
         <div>
           <label class="ios-label">Pilih Barang & Part Number <span style="color: #ef4444;">*</span></label>
           <select name="id_barang[]" class="ios-select select-barang" required onchange="updateRowDetails(this)">
@@ -303,12 +303,12 @@ $recentKeluar = $pdo->query("
         <?php if (!empty($recentKeluar)): ?>
           <?php foreach ($recentKeluar as $rk): ?>
             <tr>
-              <td><strong style="color: #60a5fa;"><?= htmlspecialchars($rk['no_keluar']) ?></strong></td>
+              <td><strong class="text-primary"><?= htmlspecialchars($rk['no_keluar']) ?></strong></td>
               <td><?= date('d/m/Y', strtotime($rk['tanggal_keluar'])) ?></td>
-              <td><strong style="color: #ffffff;"><?= htmlspecialchars($rk['nama_pic']) ?></strong></td>
+              <td><strong style="color: var(--text-main);"><?= htmlspecialchars($rk['nama_pic']) ?></strong></td>
               <td><span class="badge badge-purple"><?= htmlspecialchars($rk['departemen']) ?></span></td>
-              <td><span style="font-size: 0.8rem; color: #cbd5e1;"><?= htmlspecialchars($rk['keperluan']) ?></span></td>
-              <td style="text-align: right; color: #f87171; font-weight: 700;">-<?= formatStok($rk['total_qty']) ?> item</td>
+              <td><span style="font-size: 0.8rem; color: var(--text-muted);"><?= htmlspecialchars($rk['keperluan']) ?></span></td>
+              <td style="text-align: right; color: var(--danger); font-weight: 700;">-<?= formatStok($rk['total_qty']) ?> item</td>
               <td style="text-align: center;">
                 <button type="button" class="btn btn-danger btn-sm" style="border-radius: 8px;" onclick="confirmDelete('keluar.php?action=hapus&id=<?= $rk['id'] ?>', 'Transaksi <?= $rk['no_keluar'] ?>')" title="Batalkan & Kembalikan Stok">
                   <i class="bi bi-trash"></i>

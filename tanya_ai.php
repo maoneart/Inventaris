@@ -24,13 +24,13 @@ require_once __DIR__ . '/includes/header.php';
 <div id="modalGeminiToken" class="maoneart-modal-overlay" style="display: none;">
   <div class="maoneart-modal-card" style="max-width: 420px; text-align: left;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-      <h3 style="font-size: 1.1rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+      <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
         <i class="bi bi-shield-lock-fill text-primary"></i> Token Gemini AI
       </h3>
       <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('modalGeminiToken').style.display='none'">✕</button>
     </div>
 
-    <p style="font-size: 0.78rem; color: #94a3b8; line-height: 1.5; margin-bottom: 16px;">
+    <p style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
       🔒 <strong>Keamanan Terjamin:</strong> Token hanya disimpan di penyimpanan lokal browser/HP Anda (LocalStorage). Tidak disimpan di file kodingan sehingga <strong>aman dari risiko terambil orang di GitHub</strong>.
     </p>
 
@@ -57,7 +57,7 @@ require_once __DIR__ . '/includes/header.php';
       <div style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6, #6d28d9); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #fff; flex-shrink: 0; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);">
         🤖
       </div>
-      <div style="background: rgba(30, 41, 59, 0.85); border: 1px solid var(--card-border); border-radius: 4px 18px 18px 18px; padding: 14px 18px; font-size: 0.88rem; line-height: 1.6; max-width: 85%; color: #f8fafc;">
+      <div class="ai-bubble" style="border: 1px solid var(--card-border); border-radius: 4px 18px 18px 18px; padding: 14px 18px; font-size: 0.88rem; line-height: 1.6; max-width: 85%; color: var(--text-main); background: var(--input-bg);">
         <strong>Halo! Saya Si-nya, Asisten AI Gudang MaoneArt 🤖✨</strong><br><br>
         Saya terhubung langsung ke database stok gudang kantor. Anda bisa tanya atau instruksikan apa saja:<br>
         • 📦 <em>"Berapa stok Kunci Pas dan Kawat Las saat ini?"</em><br>
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6, #6d28d9); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #fff; flex-shrink: 0;">
           🤖
         </div>
-        <div style="background: rgba(30, 41, 59, 0.85); border: 1px solid var(--card-border); border-radius: 4px 18px 18px 18px; padding: 14px 18px; font-size: 0.88rem; line-height: 1.6; max-width: 85%; color: #f8fafc;">
+        <div class="ai-bubble" style="border: 1px solid var(--card-border); border-radius: 4px 18px 18px 18px; padding: 14px 18px; font-size: 0.88rem; line-height: 1.6; max-width: 85%; color: var(--text-main); background: var(--input-bg);">
           ${htmlContent}
         </div>
       `;
@@ -169,13 +169,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!md) return '';
     let html = md;
     
-    html = html.replace(/^### (.*$)/gim, '<h4 style="font-size: 0.95rem; font-weight: 800; color: #60a5fa; margin: 10px 0 6px 0;">$1</h4>');
-    html = html.replace(/^## (.*$)/gim, '<h3 style="font-size: 1.05rem; font-weight: 800; color: #c084fc; margin: 12px 0 8px 0;">$1</h3>');
-    html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #ffffff;">$1</strong>');
+    html = html.replace(/^### (.*$)/gim, '<h4 style="font-size: 0.95rem; font-weight: 800; color: #2563eb; margin: 10px 0 6px 0;">$1</h4>');
+    html = html.replace(/^## (.*$)/gim, '<h3 style="font-size: 1.05rem; font-weight: 800; color: #7c3aed; margin: 12px 0 8px 0;">$1</h3>');
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--text-main); font-weight: 800;">$1</strong>');
     html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-    html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="btn btn-secondary btn-sm" style="display: inline-flex; margin: 3px 2px; padding: 4px 10px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(37, 99, 235, 0.5); color: #93c5fd; text-decoration: none;">$1</a>');
-    html = html.replace(/^\s*[\*\-]\s+(.*$)/gim, '<div style="display: flex; gap: 6px; margin: 4px 0;"><span style="color: #60a5fa;">•</span><div>$1</div></div>');
-    html = html.replace(/^\s*(\d+)\.\s+(.*$)/gim, '<div style="display: flex; gap: 6px; margin: 4px 0;"><strong style="color: #c084fc;">$1.</strong><div>$2</div></div>');
+    html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="btn btn-secondary btn-sm" style="display: inline-flex; margin: 3px 2px; padding: 4px 10px; text-decoration: none;">$1</a>');
+    html = html.replace(/^\s*[\*\-]\s+(.*$)/gim, '<div style="display: flex; gap: 6px; margin: 4px 0;"><span style="color: #2563eb;">•</span><div>$1</div></div>');
+    html = html.replace(/^\s*(\d+)\.\s+(.*$)/gim, '<div style="display: flex; gap: 6px; margin: 4px 0;"><strong style="color: #7c3aed;">$1.</strong><div>$2</div></div>');
     html = html.replace(/\n/g, '<br>');
     return html;
   }
