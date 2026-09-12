@@ -115,6 +115,36 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   padding-bottom: 50px;
 }
 
+
+.ios-back-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: #007AFF;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 12px 6px 6px;
+  border-radius: 99px;
+  background: rgba(0, 122, 255, 0.1);
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+.ios-back-nav:hover {
+  background: rgba(0, 122, 255, 0.2);
+  color: #0056b3;
+}
+.ios-back-nav i {
+  font-size: 1.15rem;
+  line-height: 1;
+  margin-top: -1px;
+}
+.ios-back-nav span {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
 /* Header Sub-Page Khas iOS */
 .ios-subpage-header {
   display: flex;
@@ -434,12 +464,13 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <!-- 2. SUB-HALAMAN: KONEKSI JARINGAN & SERVER                                 -->
   <!-- ========================================================================= -->
 
-  <div class="ios-subpage-header">
-    <a href="pengaturan.php" class="ios-btn-back">
-      <i class="bi bi-chevron-left"></i> Pengaturan
+    <div class="ios-top-bar">
+    <a href="pengaturan.php" class="ios-back-nav" title="Kembali ke Pengaturan">
+      <i class="bi bi-chevron-left"></i>
+      <span>Pengaturan</span>
     </a>
-    <h2 class="ios-subpage-title">Jaringan & Server</h2>
-    <div style="width: 70px;"></div>
+    <h1 class="ios-bar-title">Jaringan & Server</h1>
+    <div class="ios-bar-action" style="min-width: 90px;"></div>
   </div>
 
   <div class="ios-group-card" style="padding: 18px;">
@@ -514,12 +545,13 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <!-- 3. SUB-HALAMAN: TEMA & TAMPILAN                                           -->
   <!-- ========================================================================= -->
 
-  <div class="ios-subpage-header">
-    <a href="pengaturan.php" class="ios-btn-back">
-      <i class="bi bi-chevron-left"></i> Pengaturan
+    <div class="ios-top-bar">
+    <a href="pengaturan.php" class="ios-back-nav" title="Kembali ke Pengaturan">
+      <i class="bi bi-chevron-left"></i>
+      <span>Pengaturan</span>
     </a>
-    <h2 class="ios-subpage-title">Tema Tampilan</h2>
-    <div style="width: 70px;"></div>
+    <h1 class="ios-bar-title">Tema Tampilan</h1>
+    <div class="ios-bar-action" style="min-width: 90px;"></div>
   </div>
 
   <div class="ios-group-card" style="padding: 18px;">
@@ -566,12 +598,13 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <!-- 4. SUB-HALAMAN: KECERDASAN BUATAN (GEMINI AI)                            -->
   <!-- ========================================================================= -->
 
-  <div class="ios-subpage-header">
-    <a href="pengaturan.php" class="ios-btn-back">
-      <i class="bi bi-chevron-left"></i> Pengaturan
+    <div class="ios-top-bar">
+    <a href="pengaturan.php" class="ios-back-nav" title="Kembali ke Pengaturan">
+      <i class="bi bi-chevron-left"></i>
+      <span>Pengaturan</span>
     </a>
-    <h2 class="ios-subpage-title">Gemini AI</h2>
-    <div style="width: 70px;"></div>
+    <h1 class="ios-bar-title">Gemini AI</h1>
+    <div class="ios-bar-action" style="min-width: 90px;"></div>
   </div>
 
   <div class="ios-group-card" style="padding: 18px;">
@@ -608,12 +641,13 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <!-- 5. SUB-HALAMAN: IDENTITAS GUDANG & PERUSAHAAN                            -->
   <!-- ========================================================================= -->
 
-  <div class="ios-subpage-header">
-    <a href="pengaturan.php" class="ios-btn-back">
-      <i class="bi bi-chevron-left"></i> Pengaturan
+    <div class="ios-top-bar">
+    <a href="pengaturan.php" class="ios-back-nav" title="Kembali ke Pengaturan">
+      <i class="bi bi-chevron-left"></i>
+      <span>Pengaturan</span>
     </a>
-    <h2 class="ios-subpage-title">Profil Gudang</h2>
-    <div style="width: 70px;"></div>
+    <h1 class="ios-bar-title">Profil Gudang</h1>
+    <div class="ios-bar-action" style="min-width: 90px;"></div>
   </div>
 
   <form action="pengaturan.php" method="POST" id="formProfil">
@@ -664,12 +698,13 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <!-- 6. SUB-HALAMAN: PANDUAN APLIKASI (BERSIH TANPA POPUP MENUTUPI)           -->
   <!-- ========================================================================= -->
 
-  <div class="ios-subpage-header">
-    <a href="pengaturan.php" class="ios-btn-back">
-      <i class="bi bi-chevron-left"></i> Pengaturan
+    <div class="ios-top-bar">
+    <a href="pengaturan.php" class="ios-back-nav" title="Kembali ke Pengaturan">
+      <i class="bi bi-chevron-left"></i>
+      <span>Pengaturan</span>
     </a>
-    <h2 class="ios-subpage-title">Panduan Aplikasi</h2>
-    <div style="width: 70px;"></div>
+    <h1 class="ios-bar-title">Panduan Aplikasi</h1>
+    <div class="ios-bar-action" style="min-width: 90px;"></div>
   </div>
 
   <div class="ios-group-card" style="padding: 18px;">
@@ -724,12 +759,13 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <!-- 7. SUB-HALAMAN: MENGENAI APLIKASI (GAYA IPHONE GENERAL -> ABOUT)           -->
   <!-- ========================================================================= -->
 
-  <div class="ios-subpage-header">
-    <a href="pengaturan.php" class="ios-btn-back">
-      <i class="bi bi-chevron-left"></i> Pengaturan
+    <div class="ios-top-bar">
+    <a href="pengaturan.php" class="ios-back-nav" title="Kembali ke Pengaturan">
+      <i class="bi bi-chevron-left"></i>
+      <span>Pengaturan</span>
     </a>
-    <h2 class="ios-subpage-title">Mengenai Sistem</h2>
-    <div style="width: 70px;"></div>
+    <h1 class="ios-bar-title">Mengenai Sistem</h1>
+    <div class="ios-bar-action" style="min-width: 90px;"></div>
   </div>
 
   <!-- App Hero Icon -->
@@ -791,12 +827,13 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <!-- 8. SUB-HALAMAN: PEMELIHARAAN & DATABASE                                   -->
   <!-- ========================================================================= -->
 
-  <div class="ios-subpage-header">
-    <a href="pengaturan.php" class="ios-btn-back">
-      <i class="bi bi-chevron-left"></i> Pengaturan
+    <div class="ios-top-bar">
+    <a href="pengaturan.php" class="ios-back-nav" title="Kembali ke Pengaturan">
+      <i class="bi bi-chevron-left"></i>
+      <span>Pengaturan</span>
     </a>
-    <h2 class="ios-subpage-title">Pemeliharaan</h2>
-    <div style="width: 70px;"></div>
+    <h1 class="ios-bar-title">Pemeliharaan</h1>
+    <div class="ios-bar-action" style="min-width: 90px;"></div>
   </div>
 
   <div class="ios-group-card" style="padding: 18px;">
