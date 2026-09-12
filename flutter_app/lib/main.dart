@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/home_screen.dart';
+import 'screens/intro_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MaoneArtGudangApp());
+  final prefs = await SharedPreferences.getInstance();
+  final bool hasSeenIntro = prefs.getBool('has_seen_intro') ?? false;
+
+  runApp(MaoneArtGudangApp(showIntro: !hasSeenIntro));
 }
 
 class MaoneArtGudangApp extends StatelessWidget {
-  const MaoneArtGudangApp({super.key});
+  final bool showIntro;
+  const MaoneArtGudangApp({super.key, this.showIntro = false});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,7 @@ class MaoneArtGudangApp extends StatelessWidget {
           ThemeData(brightness: Brightness.dark).textTheme,
         ),
       ),
-      home: const HomeScreen(),
+      home: showIntro ? const IntroScreen() : const HomeScreen(),
     );
   }
 }

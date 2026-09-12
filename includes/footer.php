@@ -34,5 +34,6 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
   window._FLASH_MESSAGE_ = <?= json_encode($flash) ?>;
 </script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/intro_walkthrough.js"></script>
 </body>
 </html>

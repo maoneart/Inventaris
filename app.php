@@ -27,6 +27,7 @@ $recentActivity = $pdo->query("
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#00aa13">
 
@@ -433,6 +434,9 @@ $recentActivity = $pdo->query("
       <i class="bi bi-search" style="color: #64748b; font-size: 1rem;"></i>
       <span>Cari part number, barang, supplier...</span>
     </a>
+    <button type="button" onclick="openIntroWalkthrough()" class="gojek-avatar-btn" style="background: rgba(37, 99, 235, 0.15); border: 1px solid rgba(37, 99, 235, 0.3); color: #38bdf8;" title="Tentang Aplikasi (3 Slide Intro)">
+      <i class="bi bi-info-circle-fill"></i>
+    </button>
     <a href="index.php" class="gojek-avatar-btn" title="Mode Web Portal">
       <i class="bi bi-person-fill"></i>
     </a>
@@ -685,5 +689,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<script src="assets/js/intro_walkthrough.js"></script>
 </body>
 </html>

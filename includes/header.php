@@ -149,6 +149,10 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
         <i class="bi bi-phone-fill text-info"></i>
         <span>Mode Khusus APK HP</span>
       </a>
+      <a href="javascript:void(0)" onclick="openIntroWalkthrough()" class="sidebar-link">
+        <i class="bi bi-info-circle-fill text-info"></i>
+        <span>Tentang Aplikasi (3 Slide)</span>
+      </a>
     </div>
   </div>
 

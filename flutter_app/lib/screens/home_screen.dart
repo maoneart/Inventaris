@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'webview_screen.dart';
+import 'intro_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -249,7 +250,29 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 8),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const IntroScreen(isReplay: true),
+                ),
+              );
+            },
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E293B),
+                shape: BoxShape.circle,
+                border: Border.all(color: const Color(0xFF334155)),
+              ),
+              child: const Icon(Icons.info_outline_rounded, color: Color(0xFF38BDF8), size: 20),
+            ),
+          ),
+          const SizedBox(width: 8),
           InkWell(
             onTap: _showConfigDialog,
             borderRadius: BorderRadius.circular(20),
@@ -260,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 shape: BoxShape.circle,
                 gradient: LinearGradient(colors: [Color(0xFF00AA13), Color(0xFF10B981)]),
               ),
-              child: const Icon(Icons.person, color: Colors.white, size: 20),
+              child: const Icon(Icons.settings, color: Colors.white, size: 20),
             ),
           ),
         ],
