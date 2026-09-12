@@ -4,19 +4,18 @@ $pageTitle = "Tanya Si-nya (AI Gudang)";
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-  <div>
-    <h2 style="font-size: 1.25rem; font-weight: 800; color: #c084fc; display: flex; align-items: center; gap: 8px;">
-      <i class="bi bi-robot"></i> Tanya Si-nya (AI Logistik & Laporan)
-    </h2>
-    <p style="font-size: 0.78rem; color: var(--text-muted);">Tanya stok realtime, analisa barang keluar-masuk, & minta draf laporan PDF/Excel</p>
+<!-- iPhone Style Navigation Header -->
+<div class="ios-nav-header">
+  <a href="index.php" class="ios-back-btn">
+    <i class="bi bi-chevron-left"></i> Kembali
+  </a>
+  <div class="ios-header-center">
+    <h1 class="ios-header-title">Tanya Si-nya</h1>
+    <p class="ios-header-subtitle">Asisten AI Logistik & Inventaris</p>
   </div>
-  <div style="display: flex; gap: 8px;">
-    <button type="button" id="btnOpenTokenModal" class="btn btn-secondary btn-sm" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); color: #c084fc;">
-      <i class="bi bi-key-fill text-warning"></i> <span id="tokenStatusText">Atur Token Gemini</span>
-    </button>
-    <a href="index.php" class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i> Dashboard</a>
-  </div>
+  <button type="button" id="btnOpenTokenModal" class="btn btn-secondary btn-sm" style="border-radius: 999px; font-size: 0.75rem; padding: 6px 12px; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); color: #c084fc;">
+    <i class="bi bi-key-fill text-warning"></i> <span id="tokenStatusText">Atur Token</span>
+  </button>
 </div>
 
 <!-- Modal Atur Token Gemini Manual (Aman, Tidak Masuk Kodingan / GitHub) -->
@@ -34,8 +33,8 @@ require_once __DIR__ . '/includes/header.php';
     </p>
 
     <div class="form-group">
-      <label class="form-label">Masukkan API Key Google Gemini</label>
-      <input type="password" id="inputGeminiKey" class="form-control" placeholder="AIzaSy... atau token Gemini Anda" autocomplete="off">
+      <label class="ios-label">Masukkan API Key Google Gemini</label>
+      <input type="password" id="inputGeminiKey" class="ios-input" placeholder="AIzaSy... atau token Gemini Anda" autocomplete="off">
     </div>
 
     <div class="maoneart-modal-actions" style="margin-top: 20px;">
@@ -45,8 +44,8 @@ require_once __DIR__ . '/includes/header.php';
   </div>
 </div>
 
-<!-- Chat Shell Container -->
-<div class="glass-card" style="display: flex; flex-direction: column; height: 72vh; max-height: 750px; padding: 16px; position: relative;">
+<!-- Chat Shell Container iOS Style -->
+<div class="ios-form-card" style="display: flex; flex-direction: column; height: 72vh; max-height: 750px; padding: 16px; position: relative;">
   
   <!-- Chat Messages Stream -->
   <div id="aiChatBox" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding-right: 6px;">
@@ -86,8 +85,8 @@ require_once __DIR__ . '/includes/header.php';
 
   <!-- Input Bar -->
   <div style="display: flex; gap: 10px; align-items: center; padding-top: 10px; border-top: 1px solid var(--card-border);">
-    <input type="text" id="aiInput" class="form-control" placeholder="Ketik pertanyaan atau minta buatkan laporan gudang..." autocomplete="off" style="padding: 12px 16px; font-size: 0.9rem;">
-    <button type="button" id="btnSendAi" class="btn btn-primary" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); height: 46px; padding: 0 20px; flex-shrink: 0;">
+    <input type="text" id="aiInput" class="ios-input" placeholder="Ketik pertanyaan atau minta buatkan laporan gudang..." autocomplete="off" style="padding: 12px 16px; font-size: 0.9rem;">
+    <button type="button" id="btnSendAi" class="ios-btn-primary" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); height: 46px; width: auto; padding: 0 20px; flex-shrink: 0; box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);">
       <i class="bi bi-send-fill"></i> Kirim
     </button>
   </div>

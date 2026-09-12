@@ -99,109 +99,129 @@ $nextNum = $stmtNext->fetchColumn();
 $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-  <div>
-    <h2 style="font-size: 1.25rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
-      <i class="bi bi-boxes text-info"></i> Master Data Barang, Part Number & Rekanan Supplier
-    </h2>
-    <p style="font-size: 0.78rem; color: var(--text-muted);">Kelola katalog barang, Part Number (P/N), asal supplier, satuan lengkap, dan stok fisik</p>
+<!-- iPhone Style Navigation Header -->
+<div class="ios-nav-header">
+  <a href="index.php" class="ios-back-btn">
+    <i class="bi bi-chevron-left"></i> Kembali
+  </a>
+  <div class="ios-header-center">
+    <h1 class="ios-header-title">Master Barang</h1>
+    <p class="ios-header-subtitle">Katalog Barang, Part Number & Rekanan Supplier</p>
   </div>
-  <div style="display: flex; gap: 8px;">
-    <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('modalSatuan').style.display='flex'">
-      <i class="bi bi-tag-fill text-warning"></i> + Tambah Satuan
+  <div style="display: flex; gap: 6px;">
+    <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('modalSatuan').style.display='flex'" style="border-radius: 999px; font-size: 0.75rem; padding: 6px 12px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b;">
+      <i class="bi bi-tag-fill"></i> + Satuan
     </button>
-    <a href="supplier.php" class="btn btn-secondary btn-sm">
-      <i class="bi bi-truck text-success"></i> Kelola Supplier
-    </a>
   </div>
 </div>
 
-<!-- Form Pendaftaran Barang Baru Card -->
-<div class="glass-card">
-  <h3 style="font-size: 1rem; font-weight: 700; color: #60a5fa; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
-    <i class="bi bi-plus-square-fill"></i> Daftarkan Barang Baru & Part Number
-  </h3>
+<form action="barang.php" method="POST" id="formBarang">
+  <input type="hidden" name="action" value="tambah_barang">
 
-  <form action="barang.php" method="POST">
-    <input type="hidden" name="action" value="tambah_barang">
+  <!-- Group 1: Identitas & Part Number -->
+  <div class="ios-form-card">
+    <div class="ios-group-title">
+      <i class="bi bi-upc-scan"></i> IDENTITAS & PART NUMBER PABRIK
+    </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
-      <div class="form-group">
-        <label class="form-label">Kode Barang Sistem <span style="color: #ef4444;">*</span></label>
-        <input type="text" name="kode_barang" class="form-control" value="<?= htmlspecialchars($saranKode) ?>" required>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+      <div>
+        <label class="ios-label">Kode Barang Sistem <span style="color: #ef4444;">*</span></label>
+        <input type="text" name="kode_barang" class="ios-input" value="<?= htmlspecialchars($saranKode) ?>" required style="background: rgba(0,0,0,0.25); color: #60a5fa; font-weight: 700;">
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Part Number (P/N) Pabrik <span style="color: #ef4444;">*</span></label>
-        <input type="text" name="part_number" class="form-control" placeholder="Contoh: WR-CRV-824, GWS-060..." required style="font-weight: 700; color: #93c5fd;">
+      <div>
+        <label class="ios-label">Part Number (P/N) Pabrik <span style="color: #ef4444;">*</span></label>
+        <input type="text" name="part_number" class="ios-input" placeholder="Contoh: WR-CRV-824, GWS-060..." required style="font-weight: 700; color: #93c5fd;">
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Barcode / SKU (Opsional)</label>
-        <input type="text" name="barcode" class="form-control" placeholder="Contoh: 8991234567">
+      <div>
+        <label class="ios-label">Barcode / SKU (Opsional)</label>
+        <input type="text" name="barcode" class="ios-input" placeholder="Contoh: 8991234567">
+      </div>
+    </div>
+
+    <div style="margin-top: 14px;">
+      <label class="ios-label">Nama Barang / Peralatan <span style="color: #ef4444;">*</span></label>
+      <input type="text" name="nama_barang" class="ios-input" placeholder="Contoh: Kunci Pas Ring 17mm, Kawat Las RD-260..." required>
+    </div>
+  </div>
+
+  <!-- Group 2: Rekanan Supplier & Kategori -->
+  <div class="ios-form-card">
+    <div class="ios-group-title">
+      <i class="bi bi-diagram-3"></i> SUPPLIER & KLASIFIKASI
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+      <div>
+        <label class="ios-label">Supplier Utama (Asal Pemasok)</label>
+        <div style="display: flex; gap: 8px;">
+          <select name="id_supplier" class="ios-select">
+            <option value="">-- Pilih Supplier Rekanan --</option>
+            <?php foreach ($suppliers as $sup): ?>
+              <option value="<?= $sup['id'] ?>"><?= htmlspecialchars($sup['nama_supplier']) ?> (<?= htmlspecialchars($sup['kode_supplier']) ?>)</option>
+            <?php endforeach; ?>
+          </select>
+          <a href="supplier.php" class="btn btn-secondary btn-sm" title="Kelola Supplier" style="border-radius: 12px; padding: 0 14px;">+</a>
+        </div>
       </div>
 
-      <div class="form-group" style="grid-column: span 2;">
-        <label class="form-label">Nama Barang / Peralatan <span style="color: #ef4444;">*</span></label>
-        <input type="text" name="nama_barang" class="form-control" placeholder="Contoh: Kunci Pas Ring 17mm, Kawat Las RD-260..." required>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Supplier Utama (Asal Pemasok)</label>
-        <select name="id_supplier" class="form-select">
-          <option value="">-- Pilih Supplier Rekanan --</option>
-          <?php foreach ($suppliers as $sup): ?>
-            <option value="<?= $sup['id'] ?>"><?= htmlspecialchars($sup['nama_supplier']) ?> (<?= htmlspecialchars($sup['kode_supplier']) ?>)</option>
-          <?php endforeach; ?>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Kategori <span style="color: #ef4444;">*</span></label>
-        <select name="id_kategori" class="form-select" required>
+      <div>
+        <label class="ios-label">Kategori <span style="color: #ef4444;">*</span></label>
+        <select name="id_kategori" class="ios-select" required>
           <?php foreach ($kategoris as $k): ?>
             <option value="<?= $k['id'] ?>"><?= htmlspecialchars($k['nama_kategori']) ?></option>
           <?php endforeach; ?>
         </select>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Satuan Utama <span style="color: #ef4444;">*</span></label>
-        <select name="id_satuan" class="form-select" required>
+      <div>
+        <label class="ios-label">Satuan Utama <span style="color: #ef4444;">*</span></label>
+        <select name="id_satuan" class="ios-select" required>
           <?php foreach ($satuans as $s): ?>
             <option value="<?= $s['id'] ?>"><?= htmlspecialchars($s['singkatan']) ?> (<?= htmlspecialchars($s['nama_satuan']) ?> - <?= ucfirst($s['kategori']) ?>)</option>
           <?php endforeach; ?>
         </select>
       </div>
+    </div>
+  </div>
 
-      <div class="form-group">
-        <label class="form-label">Stok Awal Fisik</label>
-        <input type="number" step="any" min="0" name="stok_awal" class="form-control" value="0">
+  <!-- Group 3: Stok Fisik & Lokasi Rak -->
+  <div class="ios-form-card">
+    <div class="ios-group-title">
+      <i class="bi bi-geo-alt"></i> STOK AWAL & PENYIMPANAN
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+      <div>
+        <label class="ios-label">Stok Awal Fisik</label>
+        <input type="number" step="any" min="0" name="stok_awal" class="ios-input" value="0" style="text-align: right; font-weight: 700; color: #34d399;">
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Batas Stok Minimum (Warning)</label>
-        <input type="number" step="any" min="0" name="stok_minimum" class="form-control" value="5">
+      <div>
+        <label class="ios-label">Batas Minimum (Warning)</label>
+        <input type="number" step="any" min="0" name="stok_minimum" class="ios-input" value="5" style="text-align: right; font-weight: 700; color: #f87171;">
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Lokasi Rak / Gudang</label>
-        <input type="text" name="lokasi_rak" class="form-control" placeholder="Contoh: Rak A-02, Bin C-12, Area Drum">
-      </div>
-
-      <div class="form-group" style="grid-column: span 2;">
-        <label class="form-label">Spesifikasi / Detail Part</label>
-        <input type="text" name="spesifikasi" class="form-control" placeholder="Ukuran, diameter, voltase, grade baja...">
+      <div>
+        <label class="ios-label">Lokasi Rak / Gudang</label>
+        <input type="text" name="lokasi_rak" class="ios-input" placeholder="Contoh: Rak A-02, Bin C-12">
       </div>
     </div>
 
-    <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
-      <button type="submit" class="btn btn-primary">
-        <i class="bi bi-save-fill"></i> Simpan Barang & Part Number
+    <div style="margin-top: 14px;">
+      <label class="ios-label">Spesifikasi / Detail Part</label>
+      <input type="text" name="spesifikasi" class="ios-input" placeholder="Ukuran, diameter, voltase, grade baja...">
+    </div>
+
+    <div style="margin-top: 20px;">
+      <button type="submit" class="ios-btn-primary ios-btn-blue">
+        <i class="bi bi-check-circle-fill"></i> Simpan Barang & Part Number
       </button>
     </div>
-  </form>
-</div>
+  </div>
+</form>
 
 <!-- Modal Tambah Custom Satuan -->
 <div id="modalSatuan" class="maoneart-modal-overlay" style="display: none;">
@@ -215,18 +235,18 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
       <input type="hidden" name="action" value="tambah_satuan">
 
       <div class="form-group">
-        <label class="form-label">Nama Lengkap Satuan</label>
-        <input type="text" name="nama_satuan" class="form-control" placeholder="Contoh: Centimeter Kubik, Slop, Rim..." required>
+        <label class="ios-label">Nama Lengkap Satuan</label>
+        <input type="text" name="nama_satuan" class="ios-input" placeholder="Contoh: Centimeter Kubik, Slop, Rim..." required>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Singkatan Satuan</label>
-        <input type="text" name="singkatan" class="form-control" placeholder="Contoh: cm3, slp, rim..." required>
+      <div class="form-group" style="margin-top: 12px;">
+        <label class="ios-label">Singkatan Satuan</label>
+        <input type="text" name="singkatan" class="ios-input" placeholder="Contoh: cm3, slp, rim..." required>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Kategori Satuan</label>
-        <select name="kategori_satuan" class="form-select">
+      <div class="form-group" style="margin-top: 12px;">
+        <label class="ios-label">Kategori Satuan</label>
+        <select name="kategori_satuan" class="ios-select">
           <option value="unit">Unit / Kuantitas (pcs, buah, unit)</option>
           <option value="berat">Berat (kg, gram, ton)</option>
           <option value="volume">Volume (liter, ml, drum)</option>
@@ -245,10 +265,12 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
 </div>
 
 <!-- Daftar Master Barang & Part Number -->
-<div class="glass-card">
+<div class="ios-form-card" style="padding: 18px;">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 12px; flex-wrap: wrap;">
-    <h3 style="font-size: 1rem; font-weight: 700; color: #ffffff;">Katalog Master Barang & Part Number (<?= count($barangs) ?> Item)</h3>
-    <input type="text" id="tableSearchInput" class="form-control" placeholder="🔍 Cari P/N / nama / supplier..." style="max-width: 280px; padding: 8px 12px; font-size: 0.8rem;">
+    <div class="ios-group-title" style="margin-bottom: 0;">
+      <i class="bi bi-boxes"></i> KATALOG MASTER BARANG & PART NUMBER (<?= count($barangs) ?> ITEM)
+    </div>
+    <input type="text" id="tableSearchInput" class="ios-input" placeholder="🔍 Cari P/N / nama / supplier..." style="max-width: 280px; padding: 8px 12px; font-size: 0.8rem;">
   </div>
 
   <div class="table-responsive">
@@ -267,41 +289,45 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($barangs as $b): ?>
-          <tr>
-            <td>
-              <strong style="color: #60a5fa;"><?= htmlspecialchars($b['kode_barang']) ?></strong>
-              <?php if ($b['part_number']): ?>
-                <div style="font-size: 0.75rem; color: #93c5fd; font-weight: 700;"><i class="bi bi-tag-fill"></i> <?= htmlspecialchars($b['part_number']) ?></div>
-              <?php endif; ?>
-            </td>
-            <td>
-              <strong style="color: #ffffff;"><?= htmlspecialchars($b['nama_barang']) ?></strong>
-              <?php if ($b['spesifikasi']): ?>
-                <div style="font-size: 0.7rem; color: var(--text-muted);"><?= htmlspecialchars($b['spesifikasi']) ?></div>
-              <?php endif; ?>
-            </td>
-            <td>
-              <?php if ($b['nama_supplier']): ?>
-                <span class="badge badge-success"><i class="bi bi-truck"></i> <?= htmlspecialchars($b['nama_supplier']) ?></span>
-              <?php else: ?>
-                <span style="font-size: 0.72rem; color: var(--text-dim);">-</span>
-              <?php endif; ?>
-            </td>
-            <td><span class="badge badge-purple"><?= htmlspecialchars($b['nama_kategori']) ?></span></td>
-            <td><?= htmlspecialchars($b['singkatan']) ?></td>
-            <td style="text-align: right; font-weight: 800; font-size: 0.95rem; <?= $b['stok_saat_ini'] <= $b['stok_minimum'] ? 'color: #f87171;' : 'color: #34d399;' ?>">
-              <?= formatStok($b['stok_saat_ini']) ?>
-            </td>
-            <td style="text-align: right; color: var(--text-muted);"><?= formatStok($b['stok_minimum']) ?></td>
-            <td><span style="font-size: 0.8rem;"><?= htmlspecialchars($b['lokasi_rak'] ?: '-') ?></span></td>
-            <td style="text-align: center;">
-              <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('barang.php?action=hapus&id=<?= $b['id'] ?>', '<?= htmlspecialchars($b['nama_barang']) ?>')">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          </tr>
-        <?php endforeach; ?>
+        <?php if (count($barangs) > 0): ?>
+          <?php foreach ($barangs as $b): ?>
+            <tr>
+              <td>
+                <strong style="color: #60a5fa;"><?= htmlspecialchars($b['kode_barang']) ?></strong>
+                <?php if ($b['part_number']): ?>
+                  <div style="font-size: 0.75rem; color: #93c5fd; font-weight: 700;"><i class="bi bi-tag-fill"></i> <?= htmlspecialchars($b['part_number']) ?></div>
+                <?php endif; ?>
+              </td>
+              <td>
+                <strong style="color: #ffffff;"><?= htmlspecialchars($b['nama_barang']) ?></strong>
+                <?php if ($b['spesifikasi']): ?>
+                  <div style="font-size: 0.7rem; color: var(--text-muted);"><?= htmlspecialchars($b['spesifikasi']) ?></div>
+                <?php endif; ?>
+              </td>
+              <td>
+                <?php if ($b['nama_supplier']): ?>
+                  <span class="badge badge-success"><i class="bi bi-truck"></i> <?= htmlspecialchars($b['nama_supplier']) ?></span>
+                <?php else: ?>
+                  <span style="font-size: 0.72rem; color: var(--text-dim);">-</span>
+                <?php endif; ?>
+              </td>
+              <td><span class="badge badge-purple"><?= htmlspecialchars($b['nama_kategori']) ?></span></td>
+              <td><?= htmlspecialchars($b['singkatan']) ?></td>
+              <td style="text-align: right; font-weight: 800; font-size: 0.95rem; <?= $b['stok_saat_ini'] <= $b['stok_minimum'] ? 'color: #f87171;' : 'color: #34d399;' ?>">
+                <?= formatStok($b['stok_saat_ini']) ?>
+              </td>
+              <td style="text-align: right; color: var(--text-muted);"><?= formatStok($b['stok_minimum']) ?></td>
+              <td><span style="font-size: 0.8rem;"><?= htmlspecialchars($b['lokasi_rak'] ?: '-') ?></span></td>
+              <td style="text-align: center;">
+                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('barang.php?action=hapus&id=<?= $b['id'] ?>', '<?= htmlspecialchars($b['nama_barang']) ?>')">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <tr><td colspan="9" style="text-align: center; color: var(--text-dim); padding: 18px;">Belum ada master barang terdaftar.</td></tr>
+        <?php endif; ?>
       </tbody>
     </table>
   </div>

@@ -1,5 +1,5 @@
 <?php
-// keluar.php - Input Pengeluaran Barang (Stock Out)
+// keluar.php - Input Pengeluaran Barang (Stock Out) Ala iPhone UI
 $pageTitle = "Input Barang Keluar";
 require_once __DIR__ . '/config/database.php';
 
@@ -32,7 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     try {
         $pdo->beginTransaction();
 
-        // 1. Cek Ketersediaan Stok Tiap Barang
         $stmtCek = $pdo->prepare("SELECT nama_barang, stok_saat_ini FROM barang WHERE id = ? FOR UPDATE");
         for ($i = 0; $i < count($items_barang); $i++) {
             $bId = (int) $items_barang[$i];
@@ -60,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             }
         }
 
-        // 2. Simpan Header Pengeluaran
         $stmtOut = $pdo->prepare("
             INSERT INTO transaksi_keluar (no_keluar, id_pic, keperluan, jenis_pengeluaran, tanggal_keluar, total_item, total_qty, catatan, id_user)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -68,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $stmtOut->execute([$no_keluar, $id_pic, $keperluan, $jenis_pengeluaran, $tanggal_keluar, $totalItem, $totalQty, $catatan, getUserId()]);
         $idTransKeluar = $pdo->lastInsertId();
 
-        // 3. Simpan Detail & Kurangi Stok Realtime
         $stmtDetail = $pdo->prepare("
             INSERT INTO detail_transaksi_keluar (id_transaksi_keluar, id_barang, qty, id_satuan, keterangan)
             VALUES (?, ?, ?, ?, ?)
@@ -150,101 +147,106 @@ $recentKeluar = $pdo->query("
     SELECT tk.*, p.nama_pic, p.departemen 
     FROM transaksi_keluar tk 
     JOIN pic p ON tk.id_pic = p.id 
-    ORDER BY tk.id DESC LIMIT 8
+    ORDER BY tk.id DESC LIMIT 6
 ")->fetchAll();
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-  <div>
-    <h2 style="font-size: 1.25rem; font-weight: 800; color: #f87171; display: flex; align-items: center; gap: 8px;">
-      <i class="bi bi-box-arrow-up-right"></i> Input Pengeluaran Barang / Tools (Stock Out)
-    </h2>
-    <p style="font-size: 0.78rem; color: var(--text-muted);">Catat peralatan kerja & material yang diambil oleh PIC teknisi</p>
+<!-- iPhone Style Navigation Header -->
+<div class="ios-nav-header">
+  <a href="index.php" class="ios-back-btn">
+    <i class="bi bi-chevron-left"></i> Kembali
+  </a>
+  <div class="ios-header-center">
+    <h1 class="ios-header-title">Barang Keluar</h1>
+    <p class="ios-header-subtitle">Pengeluaran Tools & Part ke PIC Teknisi</p>
   </div>
-  <a href="index.php" class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i> Dashboard</a>
+  <span class="badge badge-danger" style="font-size: 0.7rem;">STOCK OUT</span>
 </div>
 
 <form action="keluar.php" method="POST" id="formKeluar">
   <input type="hidden" name="action" value="simpan_keluar">
 
-  <!-- Header PIC & Keperluan Card -->
-  <div class="glass-card">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-      <div class="form-group">
-        <label class="form-label">No. Transaksi Keluar</label>
-        <input type="text" name="no_keluar" class="form-control" value="<?= htmlspecialchars($autoNoKeluar) ?>" readonly style="background: rgba(0,0,0,0.3); font-weight: 700; color: #f87171;">
+  <!-- Group 1: Informasi Dokumen & PIC Pengambil -->
+  <div class="ios-form-card">
+    <div class="ios-group-title">
+      <i class="bi bi-person-badge"></i> DOKUMEN & PIC PENGAMBIL
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+      <div>
+        <label class="ios-label">No. Transaksi</label>
+        <input type="text" name="no_keluar" class="ios-input" value="<?= htmlspecialchars($autoNoKeluar) ?>" readonly style="background: rgba(0,0,0,0.25); color: #f87171; font-weight: 700;">
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Tanggal Keluar <span style="color: #ef4444;">*</span></label>
-        <input type="date" name="tanggal_keluar" class="form-control" value="<?= date('Y-m-d') ?>" required>
+      <div>
+        <label class="ios-label">Tanggal Keluar <span style="color: #ef4444;">*</span></label>
+        <input type="date" name="tanggal_keluar" class="ios-input" value="<?= date('Y-m-d') ?>" required>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">PIC / Teknisi Pengambil <span style="color: #ef4444;">*</span></label>
-        <div style="display: flex; gap: 6px;">
-          <select name="id_pic" class="form-select" required>
+      <div>
+        <label class="ios-label">PIC / Teknisi Pengambil <span style="color: #ef4444;">*</span></label>
+        <div style="display: flex; gap: 8px;">
+          <select name="id_pic" class="ios-select" required>
             <option value="">-- Pilih PIC / Karyawan --</option>
             <?php foreach ($pics as $p): ?>
               <option value="<?= $p['id'] ?>">
-                <?= htmlspecialchars($p['nama_pic']) ?> [<?= htmlspecialchars($p['departemen']) ?> - <?= htmlspecialchars($p['jabatan']) ?>]
+                <?= htmlspecialchars($p['nama_pic']) ?> [<?= htmlspecialchars($p['departemen']) ?>]
               </option>
             <?php endforeach; ?>
           </select>
-          <a href="pic.php" class="btn btn-secondary btn-sm" title="Tambah PIC Baru" style="flex-shrink: 0;">+</a>
+          <a href="pic.php" class="btn btn-secondary btn-sm" title="Tambah PIC Baru" style="border-radius: 12px; padding: 0 14px;">+</a>
         </div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Jenis Pengeluaran</label>
-        <select name="jenis_pengeluaran" class="form-select">
+      <div>
+        <label class="ios-label">Jenis Pemakaian</label>
+        <select name="jenis_pengeluaran" class="ios-select">
           <option value="habis_pakai">Barang Habis Pakai (Consumable)</option>
-          <option value="peminjaman_tools">Peminjaman Tools / Perkakas Kerja</option>
+          <option value="peminjaman_tools">Peminjaman Tools / Alat Kerja</option>
         </select>
       </div>
     </div>
 
-    <div class="form-group" style="margin-top: 4px; margin-bottom: 0;">
-      <label class="form-label">Keperluan Pengambilan / Lokasi Kerja <span style="color: #ef4444;">*</span></label>
-      <input type="text" name="keperluan" class="form-control" placeholder="Contoh: Perbaikan Mesin Line 2, Pengelasan Frame Proyek B..." required autocomplete="off">
+    <div style="margin-top: 14px;">
+      <label class="ios-label">Keperluan / Lokasi Kerja <span style="color: #ef4444;">*</span></label>
+      <input type="text" name="keperluan" class="ios-input" placeholder="Contoh: Perbaikan Mesin Line 2, Pengelasan Frame..." required autocomplete="off">
     </div>
   </div>
 
-  <!-- Detail Multi-Item Barang Keluar -->
-  <div class="glass-card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-      <div>
-        <h3 style="font-size: 1rem; font-weight: 700; color: #ffffff;">Daftar Barang & Part Number yang Diambil</h3>
-        <p style="font-size: 0.72rem; color: var(--text-muted);">Jumlah yang diambil otomatis mengurangi stok gudang realtime</p>
+  <!-- Group 2: Daftar Item Barang yang Diambil -->
+  <div class="ios-form-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+      <div class="ios-group-title" style="margin-bottom: 0;">
+        <i class="bi bi-box-arrow-up-right"></i> DAFTAR BARANG YANG DIKELUARKAN
       </div>
-      <button type="button" id="btnAddRowOut" class="btn btn-secondary btn-sm">
-        <i class="bi bi-plus-circle-fill text-danger"></i> + Tambah Baris Barang
+      <button type="button" id="btnAddRowOut" class="btn btn-secondary btn-sm" style="border-radius: 999px; padding: 6px 14px; font-size: 0.78rem;">
+        <i class="bi bi-plus-lg text-danger"></i> Tambah Item
       </button>
     </div>
 
     <div id="itemsContainerOut" style="display: flex; flex-direction: column; gap: 12px;">
       <!-- Row 1 -->
-      <div class="item-row" style="background: rgba(15, 23, 42, 0.5); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px; display: grid; grid-template-columns: 3.5fr 1.2fr 1.5fr 2fr 40px; gap: 10px; align-items: end;">
+      <div class="item-row" style="background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 14px; display: grid; grid-template-columns: 3.5fr 1.2fr 1.5fr 2fr 38px; gap: 10px; align-items: end;">
         <div>
-          <label class="form-label">Pilih Barang & Part Number <span style="color: #ef4444;">*</span></label>
-          <select name="id_barang[]" class="form-select select-barang" required onchange="updateRowDetails(this)">
-            <option value="">-- Pilih Barang / P/N --</option>
+          <label class="ios-label">Pilih Barang & Part Number <span style="color: #ef4444;">*</span></label>
+          <select name="id_barang[]" class="ios-select select-barang" required onchange="updateRowDetails(this)">
+            <option value="">-- Cari Barang / P/N --</option>
             <?php foreach ($barangs as $b): ?>
               <option value="<?= $b['id'] ?>" data-satuan="<?= $b['def_satuan'] ?>" data-stok="<?= $b['stok_saat_ini'] ?>" <?= $preselectedBarangId == $b['id'] ? 'selected' : '' ?>>
-                <?= htmlspecialchars($b['nama_barang']) ?> [P/N: <?= htmlspecialchars($b['part_number'] ?: '-') ?>] (Sisa: <?= formatStok($b['stok_saat_ini']) ?> <?= htmlspecialchars($b['singkatan']) ?>)
+                <?= htmlspecialchars($b['nama_barang']) ?> [P/N: <?= htmlspecialchars($b['part_number'] ?: '-') ?>] (Sisa: <?= formatStok($b['stok_saat_ini']) ?>)
               </option>
             <?php endforeach; ?>
           </select>
         </div>
 
         <div>
-          <label class="form-label">Jumlah Keluar <span style="color: #ef4444;">*</span></label>
-          <input type="number" step="any" min="0.01" name="qty[]" class="form-control text-right" placeholder="0" required style="text-align: right; font-weight: 700;">
+          <label class="ios-label">Jumlah Keluar <span style="color: #ef4444;">*</span></label>
+          <input type="number" step="any" min="0.01" name="qty[]" class="ios-input" placeholder="0" required style="text-align: right; font-weight: 700;">
         </div>
 
         <div>
-          <label class="form-label">Satuan</label>
-          <select name="id_satuan[]" class="form-select select-satuan">
+          <label class="ios-label">Satuan</label>
+          <select name="id_satuan[]" class="ios-select select-satuan">
             <?php foreach ($satuans as $s): ?>
               <option value="<?= $s['id'] ?>"><?= htmlspecialchars($s['singkatan']) ?> (<?= htmlspecialchars($s['nama_satuan']) ?>)</option>
             <?php endforeach; ?>
@@ -252,12 +254,12 @@ $recentKeluar = $pdo->query("
         </div>
 
         <div>
-          <label class="form-label">Catatan Tambahan (Opsional)</label>
-          <input type="text" name="item_keterangan[]" class="form-control" placeholder="Kondisi pinjam / nomor mesin..." autocomplete="off">
+          <label class="ios-label">Catatan Tambahan</label>
+          <input type="text" name="item_keterangan[]" class="ios-input" placeholder="No. mesin / kondisi..." autocomplete="off">
         </div>
 
         <div style="text-align: center;">
-          <button type="button" class="btn btn-danger btn-sm btn-remove-row" style="padding: 10px; width: 38px; height: 38px;" onclick="removeRowOut(this)">
+          <button type="button" class="btn btn-danger btn-sm" style="border-radius: 10px; width: 38px; height: 38px;" onclick="removeRowOut(this)">
             <i class="bi bi-trash"></i>
           </button>
         </div>
@@ -265,24 +267,24 @@ $recentKeluar = $pdo->query("
     </div>
 
     <div style="margin-top: 16px;">
-      <label class="form-label">Catatan Pengeluaran / Instruksi Khusus (Opsional)</label>
-      <textarea name="catatan" class="form-control" rows="2" placeholder="Catatan persetujuan supervisor, estimasi pengembalian tools, dll..."></textarea>
+      <label class="ios-label">Instruksi Khusus / Catatan Tambahan (Opsional)</label>
+      <input type="text" name="catatan" class="ios-input" placeholder="Persetujuan spv, perkiraan pengembalian tools...">
     </div>
 
-    <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-      <a href="index.php" class="btn btn-secondary">Batal</a>
-      <button type="submit" class="btn btn-danger" style="padding: 12px 24px; font-size: 0.95rem;">
-        <i class="bi bi-check2-circle"></i> Simpan Pengeluaran Barang Keluar
+    <div style="margin-top: 22px;">
+      <button type="submit" class="ios-btn-primary ios-btn-red">
+        <i class="bi bi-check2-circle" style="font-size: 1.1rem;"></i> Simpan Pengeluaran Barang Keluar
       </button>
     </div>
   </div>
 </form>
 
-<!-- Riwayat Pengeluaran Terakhir -->
-<div class="glass-card">
-  <h3 style="font-size: 1rem; font-weight: 700; color: #ffffff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
-    <i class="bi bi-clock-history text-danger"></i> Riwayat Pengeluaran Terbaru
-  </h3>
+<!-- Group 3: Riwayat Pengeluaran Terakhir -->
+<div class="ios-form-card">
+  <div class="ios-group-title">
+    <i class="bi bi-clock-history"></i> RIWAYAT PENGELUARAN TERBARU
+  </div>
+
   <div class="table-responsive">
     <table class="modern-table">
       <thead>
@@ -307,16 +309,14 @@ $recentKeluar = $pdo->query("
               <td><span style="font-size: 0.8rem; color: #cbd5e1;"><?= htmlspecialchars($rk['keperluan']) ?></span></td>
               <td style="text-align: right; color: #f87171; font-weight: 700;">-<?= formatStok($rk['total_qty']) ?> item</td>
               <td style="text-align: center;">
-                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('keluar.php?action=hapus&id=<?= $rk['id'] ?>', 'Transaksi <?= $rk['no_keluar'] ?>')" title="Batalkan Transaksi & Kembalikan Stok">
+                <button type="button" class="btn btn-danger btn-sm" style="border-radius: 8px;" onclick="confirmDelete('keluar.php?action=hapus&id=<?= $rk['id'] ?>', 'Transaksi <?= $rk['no_keluar'] ?>')" title="Batalkan & Kembalikan Stok">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
             </tr>
           <?php endforeach; ?>
         <?php else: ?>
-          <tr>
-            <td colspan="7" style="text-align: center; color: var(--text-dim); padding: 16px;">Belum ada riwayat pengeluaran.</td>
-          </tr>
+          <tr><td colspan="7" style="text-align: center; color: var(--text-dim); padding: 16px;">Belum ada riwayat pengeluaran.</td></tr>
         <?php endif; ?>
       </tbody>
     </table>
@@ -334,9 +334,7 @@ function createRowHtmlOut() {
   container.appendChild(newRow);
 }
 
-document.getElementById('btnAddRowOut').addEventListener('click', () => {
-  createRowHtmlOut();
-});
+document.getElementById('btnAddRowOut').addEventListener('click', createRowHtmlOut);
 
 function removeRowOut(btn) {
   const container = document.getElementById('itemsContainerOut');

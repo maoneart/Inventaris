@@ -3,9 +3,16 @@
 $flash = getFlash();
 $currPage = basename($_SERVER['PHP_SELF'], '.php');
 ?>
+
+<!-- iOS Minimalist Copyright Footer -->
+<footer class="ios-footer-copyright">
+  <p>© <?= date('Y') ?> <strong>MaoneArt</strong> · <a href="https://maoneart.my.id" target="_blank" rel="noopener">Maoneart.my.id</a></p>
+  <p class="ios-footer-tagline">Sistem Manajemen Stok & Pergudangan Modern</p>
+</footer>
+
 </main> <!-- End .main-wrapper -->
 
-<!-- Mobile Bottom Dock (Optimal untuk Tampilan Layar HP / APK Gudang) -->
+<!-- Mobile Bottom Dock (Khusus Layar HP) -->
 <nav class="mobile-dock">
   <a href="index.php" class="dock-item <?= in_array($currPage, ['index', '']) ? 'active' : '' ?>">
     <i class="bi bi-grid-1x2-fill"></i>

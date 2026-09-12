@@ -55,54 +55,80 @@ $pics = $pdo->query("
 ")->fetchAll();
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-  <div>
-    <h2 style="font-size: 1.25rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
-      <i class="bi bi-people-fill text-primary"></i> Master Data PIC / Peminta Barang
-    </h2>
-    <p style="font-size: 0.78rem; color: var(--text-muted);">Daftar teknisi, operator, dan penanggung jawab yang berwenang mengambil tools/material</p>
+<!-- iPhone Style Navigation Header -->
+<div class="ios-nav-header">
+  <a href="index.php" class="ios-back-btn">
+    <i class="bi bi-chevron-left"></i> Kembali
+  </a>
+  <div class="ios-header-center">
+    <h1 class="ios-header-title">Data PIC & Peminta</h1>
+    <p class="ios-header-subtitle">Teknisi & Karyawan Pengambil Barang</p>
   </div>
-  <a href="index.php" class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i> Dashboard</a>
+  <span class="badge badge-purple" style="font-size: 0.7rem;">PIC / USER</span>
 </div>
 
-<div class="glass-card">
-  <h3 style="font-size: 1rem; font-weight: 700; color: #60a5fa; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
-    <i class="bi bi-person-plus-fill"></i> Tambah PIC Baru
-  </h3>
-  <form action="pic.php" method="POST">
-    <input type="hidden" name="action" value="tambah_pic">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
-      <div class="form-group">
-        <label class="form-label">NIP / NIK / ID Karyawan</label>
-        <input type="text" name="nip_nik" class="form-control" placeholder="Contoh: PIC-106">
+<form action="pic.php" method="POST" id="formPic">
+  <input type="hidden" name="action" value="tambah_pic">
+
+  <!-- Group 1: Identitas PIC -->
+  <div class="ios-form-card">
+    <div class="ios-group-title">
+      <i class="bi bi-person-badge"></i> PROFIL & IDENTITAS KARYAWAN
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+      <div>
+        <label class="ios-label">NIP / NIK / ID Karyawan</label>
+        <input type="text" name="nip_nik" class="ios-input" placeholder="Contoh: PIC-106 / 2024001">
       </div>
-      <div class="form-group">
-        <label class="form-label">Nama Lengkap PIC <span style="color: #ef4444;">*</span></label>
-        <input type="text" name="nama_pic" class="form-control" placeholder="Nama karyawan / teknisi" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Departemen / Divisi <span style="color: #ef4444;">*</span></label>
-        <input type="text" name="departemen" class="form-control" placeholder="Contoh: Maintenance, Produksi, QA" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Jabatan</label>
-        <input type="text" name="jabatan" class="form-control" placeholder="Contoh: Teknisi, Leader, Spv">
-      </div>
-      <div class="form-group">
-        <label class="form-label">No. HP / WhatsApp</label>
-        <input type="text" name="no_hp" class="form-control" placeholder="0812-xxxx-xxxx">
+
+      <div style="grid-column: span 2;">
+        <label class="ios-label">Nama Lengkap PIC <span style="color: #ef4444;">*</span></label>
+        <input type="text" name="nama_pic" class="ios-input" placeholder="Nama karyawan / teknisi lapangan" required>
       </div>
     </div>
-    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-      <button type="submit" class="btn btn-primary">
-        <i class="bi bi-save-fill"></i> Simpan PIC
+  </div>
+
+  <!-- Group 2: Departemen & Kontak -->
+  <div class="ios-form-card">
+    <div class="ios-group-title">
+      <i class="bi bi-briefcase"></i> DIVISI & KONTAK
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+      <div>
+        <label class="ios-label">Departemen / Divisi <span style="color: #ef4444;">*</span></label>
+        <input type="text" name="departemen" class="ios-input" placeholder="Contoh: Maintenance, Produksi, QA" required>
+      </div>
+
+      <div>
+        <label class="ios-label">Jabatan / Role</label>
+        <input type="text" name="jabatan" class="ios-input" placeholder="Contoh: Teknisi, Leader, Spv">
+      </div>
+
+      <div>
+        <label class="ios-label">No. HP / WhatsApp</label>
+        <input type="text" name="no_hp" class="ios-input" placeholder="Contoh: 0812-xxxx-xxxx">
+      </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <button type="submit" class="ios-btn-primary ios-btn-blue">
+        <i class="bi bi-check-circle-fill"></i> Daftarkan PIC Baru
       </button>
     </div>
-  </form>
-</div>
+  </div>
+</form>
 
-<div class="glass-card">
-  <h3 style="font-size: 1rem; font-weight: 700; color: #ffffff; margin-bottom: 14px;">Daftar PIC Terdaftar</h3>
+<!-- Daftar PIC Terdaftar -->
+<div class="ios-form-card" style="padding: 18px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 12px; flex-wrap: wrap;">
+    <div class="ios-group-title" style="margin-bottom: 0;">
+      <i class="bi bi-people-fill"></i> DAFTAR PIC TERDAFTAR (<?= count($pics) ?> ORANG)
+    </div>
+    <input type="text" id="tableSearchInput" class="ios-input" placeholder="🔍 Cari nama / NIP / divisi..." style="max-width: 280px; padding: 8px 12px; font-size: 0.8rem;">
+  </div>
+
   <div class="table-responsive">
     <table class="modern-table">
       <thead>
@@ -117,21 +143,33 @@ $pics = $pdo->query("
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($pics as $p): ?>
-          <tr>
-            <td><strong style="color: #60a5fa;"><?= htmlspecialchars($p['nip_nik'] ?: '-') ?></strong></td>
-            <td><strong style="color: #ffffff;"><?= htmlspecialchars($p['nama_pic']) ?></strong></td>
-            <td><span class="badge badge-purple"><?= htmlspecialchars($p['departemen']) ?></span></td>
-            <td><?= htmlspecialchars($p['jabatan'] ?: '-') ?></td>
-            <td><?= htmlspecialchars($p['no_hp'] ?: '-') ?></td>
-            <td style="text-align: center;"><span class="badge badge-danger"><?= $p['total_pengambilan'] ?> Transaksi</span></td>
-            <td style="text-align: center;">
-              <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('pic.php?action=hapus&id=<?= $p['id'] ?>', '<?= htmlspecialchars($p['nama_pic']) ?>')">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          </tr>
-        <?php endforeach; ?>
+        <?php if (count($pics) > 0): ?>
+          <?php foreach ($pics as $p): ?>
+            <tr>
+              <td><strong style="color: #60a5fa;"><?= htmlspecialchars($p['nip_nik'] ?: '-') ?></strong></td>
+              <td><strong style="color: #ffffff;"><?= htmlspecialchars($p['nama_pic']) ?></strong></td>
+              <td><span class="badge badge-purple"><?= htmlspecialchars($p['departemen']) ?></span></td>
+              <td><?= htmlspecialchars($p['jabatan'] ?: '-') ?></td>
+              <td>
+                <?php if ($p['no_hp']): ?>
+                  <a href="https://wa.me/<?= preg_replace('/[^0-9]/', '', $p['no_hp']) ?>" target="_blank" style="color: #34d399; text-decoration: none;">
+                    <i class="bi bi-whatsapp"></i> <?= htmlspecialchars($p['no_hp']) ?>
+                  </a>
+                <?php else: ?>
+                  <span style="color: var(--text-dim);">-</span>
+                <?php endif; ?>
+              </td>
+              <td style="text-align: center;"><span class="badge badge-danger"><?= $p['total_pengambilan'] ?> Transaksi</span></td>
+              <td style="text-align: center;">
+                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('pic.php?action=hapus&id=<?= $p['id'] ?>', '<?= htmlspecialchars($p['nama_pic']) ?>')">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <tr><td colspan="7" style="text-align: center; color: var(--text-dim); padding: 18px;">Belum ada PIC terdaftar.</td></tr>
+        <?php endif; ?>
       </tbody>
     </table>
   </div>

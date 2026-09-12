@@ -42,89 +42,101 @@ $totalQtyKeluar = array_sum(array_column($listKeluar, 'total_qty'));
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-  <div>
-    <h2 style="font-size: 1.25rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
-      <i class="bi bi-file-earmark-text-fill text-primary"></i> Laporan Arus Barang & Mutasi Stok
-    </h2>
-    <p style="font-size: 0.78rem; color: var(--text-muted);">Rekapitulasi penerimaan barang dari supplier & pengeluaran ke PIC teknisi</p>
+<!-- iPhone Style Navigation Header -->
+<div class="ios-nav-header">
+  <a href="index.php" class="ios-back-btn">
+    <i class="bi bi-chevron-left"></i> Kembali
+  </a>
+  <div class="ios-header-center">
+    <h1 class="ios-header-title">Laporan Mutasi</h1>
+    <p class="ios-header-subtitle">Rekapitulasi Arus Barang Masuk & Keluar</p>
   </div>
-  <div style="display: flex; gap: 8px;">
-    <a href="export.php?type=laporan_excel&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" class="btn btn-secondary btn-sm">
-      <i class="bi bi-file-earmark-excel-fill text-success"></i> Ekspor Excel
+  <div style="display: flex; gap: 6px;">
+    <a href="export.php?type=laporan_excel&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" class="btn btn-secondary btn-sm" title="Ekspor Excel" style="border-radius: 999px; padding: 6px 12px; font-size: 0.75rem; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399;">
+      <i class="bi bi-file-earmark-excel-fill"></i> Excel
     </a>
-    <a href="export.php?type=laporan_pdf&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" target="_blank" class="btn btn-secondary btn-sm">
-      <i class="bi bi-printer-fill text-danger"></i> Cetak / PDF
+    <a href="export.php?type=laporan_pdf&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" target="_blank" class="btn btn-secondary btn-sm" title="Cetak PDF" style="border-radius: 999px; padding: 6px 12px; font-size: 0.75rem; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171;">
+      <i class="bi bi-printer-fill"></i> PDF
     </a>
   </div>
 </div>
 
-<!-- Filter Bar Card -->
-<div class="glass-card" style="padding: 16px 20px;">
-  <form action="laporan.php" method="GET" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: end;">
-    <div class="form-group" style="margin-bottom: 0;">
-      <label class="form-label">Dari Tanggal</label>
-      <input type="date" name="tgl_mulai" class="form-control" value="<?= htmlspecialchars($tglMulai) ?>">
+<!-- Group 1: Filter Bar Inset Card -->
+<div class="ios-form-card">
+  <div class="ios-group-title">
+    <i class="bi bi-funnel"></i> FILTER PERIODE & TIPE MUTASI
+  </div>
+
+  <form action="laporan.php" method="GET" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; align-items: end;">
+    <div>
+      <label class="ios-label">Dari Tanggal</label>
+      <input type="date" name="tgl_mulai" class="ios-input" value="<?= htmlspecialchars($tglMulai) ?>">
     </div>
-    <div class="form-group" style="margin-bottom: 0;">
-      <label class="form-label">Sampai Tanggal</label>
-      <input type="date" name="tgl_selesai" class="form-control" value="<?= htmlspecialchars($tglSelesai) ?>">
+
+    <div>
+      <label class="ios-label">Sampai Tanggal</label>
+      <input type="date" name="tgl_selesai" class="ios-input" value="<?= htmlspecialchars($tglSelesai) ?>">
     </div>
-    <div class="form-group" style="margin-bottom: 0;">
-      <label class="form-label">Jenis Laporan</label>
-      <select name="tipe" class="form-select">
+
+    <div>
+      <label class="ios-label">Jenis Mutasi</label>
+      <select name="tipe" class="ios-select">
         <option value="semua" <?= $tipe === 'semua' ? 'selected' : '' ?>>Semua (Masuk & Keluar)</option>
         <option value="masuk" <?= $tipe === 'masuk' ? 'selected' : '' ?>>Barang Masuk Saja (Supplier)</option>
         <option value="keluar" <?= $tipe === 'keluar' ? 'selected' : '' ?>>Barang Keluar Saja (PIC)</option>
       </select>
     </div>
+
     <div>
-      <button type="submit" class="btn btn-primary w-full" style="width: 100%;">
-        <i class="bi bi-funnel-fill"></i> Terapkan Filter
+      <button type="submit" class="ios-btn-primary ios-btn-blue">
+        <i class="bi bi-funnel-fill"></i> Tampilkan
       </button>
     </div>
   </form>
 </div>
 
 <!-- Ringkasan Periode Grid -->
-<div class="stats-grid">
-  <div class="stat-box">
+<div class="stats-grid" style="margin-bottom: 18px;">
+  <div class="stat-box" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25);">
     <div class="stat-icon green">
       <i class="bi bi-arrow-down-left-circle-fill"></i>
     </div>
     <div class="stat-info">
-      <div class="stat-label">Total Masuk (Periode Ini)</div>
+      <div class="stat-label">Total Masuk (Supplier)</div>
       <div class="stat-value" style="color: #34d399;">+<?= formatStok($totalQtyMasuk) ?></div>
     </div>
   </div>
 
-  <div class="stat-box">
+  <div class="stat-box" style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25);">
     <div class="stat-icon red">
       <i class="bi bi-arrow-up-right-circle-fill"></i>
     </div>
     <div class="stat-info">
-      <div class="stat-label">Total Keluar (Periode Ini)</div>
+      <div class="stat-label">Total Keluar (Teknisi)</div>
       <div class="stat-value" style="color: #f87171;">-<?= formatStok($totalQtyKeluar) ?></div>
     </div>
   </div>
 
-  <div class="stat-box">
+  <div class="stat-box" style="background: rgba(37, 99, 235, 0.08); border: 1px solid rgba(37, 99, 235, 0.25);">
     <div class="stat-icon blue">
       <i class="bi bi-arrow-left-right"></i>
     </div>
     <div class="stat-info">
-      <div class="stat-label">Selisih Arus Barang</div>
-      <div class="stat-value"><?= formatStok($totalQtyMasuk - $totalQtyKeluar) ?></div>
+      <div class="stat-label">Net Selisih Arus</div>
+      <div class="stat-value" style="color: <?= ($totalQtyMasuk - $totalQtyKeluar) >= 0 ? '#34d399' : '#f87171' ?>;">
+        <?= formatStok($totalQtyMasuk - $totalQtyKeluar) ?>
+      </div>
     </div>
   </div>
 </div>
 
 <?php if ($tipe === 'semua' || $tipe === 'masuk'): ?>
 <!-- Tabel Pemasukan Barang -->
-<div class="glass-card">
-  <h3 style="font-size: 1.05rem; font-weight: 700; color: #34d399; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-    <i class="bi bi-box-arrow-in-down"></i> Rincian Pemasukan Barang (<?= count($listMasuk) ?> Pengiriman)
-  </h3>
+<div class="ios-form-card" style="padding: 18px;">
+  <div class="ios-group-title" style="color: #34d399; margin-bottom: 14px;">
+    <i class="bi bi-box-arrow-in-down"></i> RINCIAN BARANG MASUK (<?= count($listMasuk) ?> TRANSAKSI)
+  </div>
+
   <div class="table-responsive">
     <table class="modern-table">
       <thead>
@@ -162,10 +174,11 @@ require_once __DIR__ . '/includes/header.php';
 
 <?php if ($tipe === 'semua' || $tipe === 'keluar'): ?>
 <!-- Tabel Pengeluaran Barang -->
-<div class="glass-card">
-  <h3 style="font-size: 1.05rem; font-weight: 700; color: #f87171; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-    <i class="bi bi-box-arrow-up-right"></i> Rincian Pengeluaran Barang (<?= count($listKeluar) ?> Pengambilan)
-  </h3>
+<div class="ios-form-card" style="padding: 18px;">
+  <div class="ios-group-title" style="color: #f87171; margin-bottom: 14px;">
+    <i class="bi bi-box-arrow-up-right"></i> RINCIAN BARANG KELUAR (<?= count($listKeluar) ?> PENGAMBILAN)
+  </div>
+
   <div class="table-responsive">
     <table class="modern-table">
       <thead>
