@@ -143,13 +143,6 @@ $satuans = $pdo->query("SELECT * FROM satuan ORDER BY kategori ASC, nama_satuan 
 
 $autoNoKeluar = generateNoTransaksi('OUT');
 $preselectedBarangId = (int) ($_GET['id_barang'] ?? 0);
-
-$recentKeluar = $pdo->query("
-    SELECT tk.*, p.nama_pic, p.departemen 
-    FROM transaksi_keluar tk 
-    JOIN pic p ON tk.id_pic = p.id 
-    ORDER BY tk.id DESC LIMIT 6
-")->fetchAll();
 ?>
 
 <!-- iOS Minimalist Header Ala iPhone -->
@@ -311,50 +304,6 @@ $recentKeluar = $pdo->query("
     </div>
   </div>
 </form>
-
-<!-- Group 3: Riwayat Pengeluaran Terakhir -->
-<div class="ios-form-card">
-  <div class="ios-group-title">
-    <i class="bi bi-clock-history"></i> RIWAYAT PENGELUARAN TERBARU
-  </div>
-
-  <div class="table-responsive">
-    <table class="modern-table">
-      <thead>
-        <tr>
-          <th>No. Transaksi</th>
-          <th>Tanggal</th>
-          <th>PIC Pengambil</th>
-          <th>Departemen</th>
-          <th>Keperluan</th>
-          <th style="text-align: right;">Total Qty</th>
-          <th style="text-align: center;">Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php if (!empty($recentKeluar)): ?>
-          <?php foreach ($recentKeluar as $rk): ?>
-            <tr>
-              <td><strong class="text-primary"><?= htmlspecialchars($rk['no_keluar']) ?></strong></td>
-              <td><?= date('d/m/Y', strtotime($rk['tanggal_keluar'])) ?></td>
-              <td><strong style="color: var(--text-main);"><?= htmlspecialchars($rk['nama_pic']) ?></strong></td>
-              <td><span class="badge badge-purple"><?= htmlspecialchars($rk['departemen']) ?></span></td>
-              <td><span style="font-size: 0.8rem; color: var(--text-muted);"><?= htmlspecialchars($rk['keperluan']) ?></span></td>
-              <td style="text-align: right; color: var(--danger); font-weight: 700;">-<?= formatStok($rk['total_qty']) ?> item</td>
-              <td style="text-align: center;">
-                <button type="button" class="btn btn-danger btn-sm" style="border-radius: 8px;" onclick="confirmDelete('keluar.php?action=hapus&id=<?= $rk['id'] ?>', 'Transaksi <?= $rk['no_keluar'] ?>')" title="Batalkan & Kembalikan Stok">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <tr><td colspan="7" style="text-align: center; color: var(--text-dim); padding: 16px;">Belum ada riwayat pengeluaran.</td></tr>
-        <?php endif; ?>
-      </tbody>
-    </table>
-  </div>
-</div>
 
 <script>
 // Data Master Barang untuk Client-Side Live Search & Stok Real-time

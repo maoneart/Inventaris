@@ -139,13 +139,6 @@ if ($preselectedBarangId > 0) {
         }
     }
 }
-
-$recentMasuk = $pdo->query("
-    SELECT tm.*, s.nama_supplier 
-    FROM transaksi_masuk tm 
-    JOIN supplier s ON tm.id_supplier = s.id 
-    ORDER BY tm.id DESC LIMIT 6
-")->fetchAll();
 ?>
 
 <!-- iOS Minimalist Header Ala iPhone -->
@@ -292,48 +285,6 @@ $recentMasuk = $pdo->query("
     </div>
   </div>
 </form>
-
-<!-- Group 3: Riwayat Penerimaan Terakhir -->
-<div class="ios-form-card">
-  <div class="ios-group-title">
-    <i class="bi bi-clock-history"></i> RIWAYAT PENERIMAAN TERBARU
-  </div>
-
-  <div class="table-responsive">
-    <table class="modern-table">
-      <thead>
-        <tr>
-          <th>No. Transaksi</th>
-          <th>Tanggal</th>
-          <th>Supplier</th>
-          <th>No. Surat Jalan</th>
-          <th style="text-align: right;">Total Qty</th>
-          <th style="text-align: center;">Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php if (!empty($recentMasuk)): ?>
-          <?php foreach ($recentMasuk as $rm): ?>
-            <tr>
-              <td><strong class="text-primary"><?= htmlspecialchars($rm['no_masuk']) ?></strong></td>
-              <td><?= date('d/m/Y', strtotime($rm['tanggal_masuk'])) ?></td>
-              <td><strong style="color: var(--text-main);"><?= htmlspecialchars($rm['nama_supplier']) ?></strong></td>
-              <td><?= htmlspecialchars($rm['no_surat_jalan_po'] ?: '-') ?></td>
-              <td style="text-align: right; color: var(--success); font-weight: 700;">+<?= formatStok($rm['total_qty']) ?> item</td>
-              <td style="text-align: center;">
-                <button type="button" class="btn btn-danger btn-sm" style="border-radius: 8px;" onclick="confirmDelete('masuk.php?action=hapus&id=<?= $rm['id'] ?>', 'Transaksi <?= $rm['no_masuk'] ?>')" title="Batalkan & Kembalikan Stok">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 16px;">Belum ada riwayat penerimaan.</td></tr>
-        <?php endif; ?>
-      </tbody>
-    </table>
-  </div>
-</div>
 
 <script>
 // Data Master Barang untuk Client-Side Live Search & Supplier Filtering
