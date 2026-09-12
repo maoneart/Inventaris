@@ -60,8 +60,10 @@ CREATE TABLE IF NOT EXISTS barang (
     id INT AUTO_INCREMENT PRIMARY KEY,
     kode_barang VARCHAR(50) NOT NULL UNIQUE,
     barcode VARCHAR(100),
+    part_number VARCHAR(100),
     nama_barang VARCHAR(200) NOT NULL,
     id_kategori INT NOT NULL,
+    id_supplier INT,
     id_satuan INT NOT NULL,
     stok_saat_ini DECIMAL(12,2) NOT NULL DEFAULT 0.00,
     stok_minimum DECIMAL(12,2) NOT NULL DEFAULT 5.00,
@@ -71,6 +73,7 @@ CREATE TABLE IF NOT EXISTS barang (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_kategori) REFERENCES kategori(id) ON DELETE RESTRICT,
+    FOREIGN KEY (id_supplier) REFERENCES supplier(id) ON DELETE SET NULL,
     FOREIGN KEY (id_satuan) REFERENCES satuan(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 

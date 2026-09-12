@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../config/database.php';
 
 $appName = getSetting('nama_aplikasi', 'MaoneArt Stock & Inventory');
+$namaGudang = getSetting('nama_gudang', 'Gudang Pusat');
 $currPage = basename($_SERVER['PHP_SELF'], '.php');
 ?>
 <!DOCTYPE html>
@@ -28,54 +29,147 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
 </head>
 <body>
 
+<!-- Backdrop Overlay Sidebar -->
+<div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+<!-- Slide-Left Sidebar Drawer -->
+<aside id="sidebarDrawer" class="sidebar-drawer">
+  <!-- Sidebar Header -->
+  <div class="sidebar-header">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div class="brand-icon" style="width: 34px; height: 34px; font-size: 1.1rem;">
+        <i class="bi bi-box-seam-fill"></i>
+      </div>
+      <div>
+        <div style="font-weight: 800; font-size: 0.95rem; color: #ffffff; letter-spacing: -0.01em;">MaoneArt Gudang</div>
+        <div style="font-size: 0.68rem; color: #60a5fa;"><i class="bi bi-geo-alt-fill"></i> <?= htmlspecialchars($namaGudang) ?></div>
+      </div>
+    </div>
+    <button type="button" id="btnCloseSidebar" class="sidebar-close-btn" title="Tutup Menu">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <!-- Sidebar Navigation Body -->
+  <div class="sidebar-body">
+    <!-- Group 1: Dashboard -->
+    <div>
+      <div class="sidebar-section-title">Dashboard & Monitoring</div>
+      <a href="index.php" class="sidebar-link <?= in_array($currPage, ['index', '']) ? 'active' : '' ?>">
+        <i class="bi bi-grid-1x2-fill text-primary"></i>
+        <span>Aktual Stok Realtime</span>
+      </a>
+    </div>
+
+    <!-- Group 2: Transaksi Gudang -->
+    <div>
+      <div class="sidebar-section-title">Arus Transaksi</div>
+      <a href="masuk.php" class="sidebar-link <?= $currPage === 'masuk' ? 'active' : '' ?>">
+        <i class="bi bi-box-arrow-in-down text-success"></i>
+        <span>Input Barang Masuk</span>
+      </a>
+      <a href="keluar.php" class="sidebar-link <?= $currPage === 'keluar' ? 'active' : '' ?>">
+        <i class="bi bi-box-arrow-up-right text-danger"></i>
+        <span>Input Barang Keluar</span>
+      </a>
+    </div>
+
+    <!-- Group 3: Master Data -->
+    <div>
+      <div class="sidebar-section-title">Master Data & Supplier</div>
+      <a href="barang.php" class="sidebar-link <?= $currPage === 'barang' ? 'active' : '' ?>">
+        <i class="bi bi-boxes text-info"></i>
+        <span>Barang & Part Number</span>
+      </a>
+      <a href="supplier.php" class="sidebar-link <?= $currPage === 'supplier' ? 'active' : '' ?>">
+        <i class="bi bi-truck text-warning"></i>
+        <span>Data Rekanan Supplier</span>
+      </a>
+      <a href="pic.php" class="sidebar-link <?= $currPage === 'pic' ? 'active' : '' ?>">
+        <i class="bi bi-people-fill text-purple"></i>
+        <span>Data PIC / Peminta Tools</span>
+      </a>
+    </div>
+
+    <!-- Group 4: Laporan & AI -->
+    <div>
+      <div class="sidebar-section-title">Laporan & Kecerdasan Buatan</div>
+      <a href="laporan.php" class="sidebar-link <?= $currPage === 'laporan' ? 'active' : '' ?>">
+        <i class="bi bi-file-earmark-text-fill text-primary"></i>
+        <span>Rekapitulasi Mutasi</span>
+      </a>
+      <a href="tanya_ai.php" class="sidebar-link highlight <?= $currPage === 'tanya_ai' ? 'active' : '' ?>">
+        <i class="bi bi-robot"></i>
+        <span>Tanya Si-nya (AI Assistant)</span>
+      </a>
+    </div>
+
+    <!-- Group 5: Akses Khusus -->
+    <div>
+      <div class="sidebar-section-title">Aplikasi Mobile</div>
+      <a href="app.php" class="sidebar-link <?= $currPage === 'app' ? 'active' : '' ?>">
+        <i class="bi bi-phone-fill text-info"></i>
+        <span>Mode Khusus APK HP</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Sidebar Footer -->
+  <div class="sidebar-footer">
+    <span>v1.0.0 Enterprise</span>
+    <span style="color: #34d399;"><i class="bi bi-wifi"></i> Online Local</span>
+  </div>
+</aside>
+
 <!-- Top Glass Navbar -->
 <header class="top-navbar">
   <div class="top-nav-inner">
-    <a href="index.php" class="brand-badge">
-      <div class="brand-icon">
-        <i class="bi bi-box-seam-fill"></i>
-      </div>
-      <div class="brand-text">
-        <h1><?= htmlspecialchars($appName) ?></h1>
-        <p><i class="bi bi-geo-alt-fill text-primary"></i> <?= htmlspecialchars(getSetting('nama_gudang', 'Gudang Pusat')) ?></p>
-      </div>
-    </a>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <!-- Hamburger Button (Pemicu Slide Kiri) -->
+      <button type="button" id="btnOpenSidebar" class="btn-hamburger" title="Buka Menu Navigasi">
+        <i class="bi bi-list"></i>
+      </button>
 
-    <!-- Desktop Navigation Menu -->
+      <a href="index.php" class="brand-badge">
+        <div class="brand-icon">
+          <i class="bi bi-box-seam-fill"></i>
+        </div>
+        <div class="brand-text">
+          <h1><?= htmlspecialchars($appName) ?></h1>
+          <p><i class="bi bi-geo-alt-fill text-primary"></i> <?= htmlspecialchars($namaGudang) ?></p>
+        </div>
+      </a>
+    </div>
+
+    <!-- Desktop Menu Shortcut Pills -->
     <nav class="desktop-menu">
       <a href="index.php" class="nav-pill <?= in_array($currPage, ['index', '']) ? 'active' : '' ?>">
-        <i class="bi bi-grid-1x2-fill"></i> Monitoring
+        <i class="bi bi-grid-1x2-fill"></i> Stok
       </a>
       <a href="masuk.php" class="nav-pill <?= $currPage === 'masuk' ? 'active' : '' ?>">
-        <i class="bi bi-box-arrow-in-down"></i> Barang Masuk
+        <i class="bi bi-box-arrow-in-down text-success"></i> Masuk
       </a>
       <a href="keluar.php" class="nav-pill <?= $currPage === 'keluar' ? 'active' : '' ?>">
-        <i class="bi bi-box-arrow-up-right"></i> Barang Keluar
+        <i class="bi bi-box-arrow-up-right text-danger"></i> Keluar
       </a>
       <a href="barang.php" class="nav-pill <?= $currPage === 'barang' ? 'active' : '' ?>">
-        <i class="bi bi-boxes"></i> Data Barang
+        <i class="bi bi-boxes text-info"></i> Barang & P/N
       </a>
       <a href="supplier.php" class="nav-pill <?= $currPage === 'supplier' ? 'active' : '' ?>">
-        <i class="bi bi-truck"></i> Supplier
+        <i class="bi bi-truck text-warning"></i> Supplier
       </a>
       <a href="pic.php" class="nav-pill <?= $currPage === 'pic' ? 'active' : '' ?>">
-        <i class="bi bi-people-fill"></i> Data PIC
-      </a>
-      <a href="laporan.php" class="nav-pill <?= $currPage === 'laporan' ? 'active' : '' ?>">
-        <i class="bi bi-file-earmark-text-fill"></i> Laporan
-      </a>
-      <a href="tanya_ai.php" class="nav-pill <?= $currPage === 'tanya_ai' ? 'active' : '' ?>" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); color: #c084fc;">
-        <i class="bi bi-robot"></i> Tanya Si-nya
+        <i class="bi bi-people-fill text-purple"></i> PIC
       </a>
     </nav>
 
-    <!-- User Action / Quick Links -->
+    <!-- Quick Action / AI Button -->
     <div style="display: flex; align-items: center; gap: 8px;">
-      <a href="app.php" class="btn btn-secondary btn-sm" title="Mode APK Input Lapangan">
-        <i class="bi bi-phone-fill text-info"></i> Mode APK
+      <a href="app.php" class="btn btn-secondary btn-sm" title="Mode APK Petugas">
+        <i class="bi bi-phone-fill text-info"></i> <span style="display: inline-block;">APK</span>
       </a>
       <a href="tanya_ai.php" class="btn btn-primary btn-sm" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
-        <i class="bi bi-stars"></i> Tanya AI
+        <i class="bi bi-robot"></i> <span>Tanya AI</span>
       </a>
     </div>
   </div>

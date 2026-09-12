@@ -34,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $totalItem = 0;
         $totalQty = 0;
 
-        // Hitung total
         for ($i = 0; $i < count($items_barang); $i++) {
             $bId = (int) $items_barang[$i];
             $qty = (float) $items_qty[$i];
@@ -88,13 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 }
 
-// Hapus Transaksi Masuk (Stok dikembalikan / dikurangi)
+// Hapus Transaksi Masuk
 if (isset($_GET['action']) && $_GET['action'] === 'hapus' && isset($_GET['id'])) {
     $delId = (int) $_GET['id'];
     try {
         $pdo->beginTransaction();
 
-        // Ambil detail barang untuk kurangi kembali stoknya
         $stmtGet = $pdo->prepare("SELECT id_barang, qty FROM detail_transaksi_masuk WHERE id_transaksi_masuk = ?");
         $stmtGet->execute([$delId]);
         $details = $stmtGet->fetchAll();
@@ -104,7 +102,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'hapus' && isset($_GET['id']))
             $stmtRevert->execute([$d['qty'], $d['id_barang']]);
         }
 
-        // Hapus Header (Cascade detail)
         $stmtDel = $pdo->prepare("DELETE FROM transaksi_masuk WHERE id = ?");
         $stmtDel->execute([$delId]);
 
@@ -120,15 +117,20 @@ if (isset($_GET['action']) && $_GET['action'] === 'hapus' && isset($_GET['id']))
 
 require_once __DIR__ . '/includes/header.php';
 
-// Ambil Data Master untuk Dropdown
+// Ambil Data Master
 $suppliers = $pdo->query("SELECT * FROM supplier ORDER BY nama_supplier ASC")->fetchAll();
-$barangs = $pdo->query("SELECT b.*, s.singkatan, s.id as def_satuan FROM barang b LEFT JOIN satuan s ON b.id_satuan = s.id ORDER BY b.nama_barang ASC")->fetchAll();
+$barangs = $pdo->query("
+    SELECT b.*, s.singkatan, s.id as def_satuan, sup.nama_supplier 
+    FROM barang b 
+    LEFT JOIN satuan s ON b.id_satuan = s.id 
+    LEFT JOIN supplier sup ON b.id_supplier = sup.id
+    ORDER BY b.nama_barang ASC
+")->fetchAll();
 $satuans = $pdo->query("SELECT * FROM satuan ORDER BY kategori ASC, nama_satuan ASC")->fetchAll();
 
 $autoNoMasuk = generateNoTransaksi('IN');
 $preselectedBarangId = (int) ($_GET['id_barang'] ?? 0);
 
-// Riwayat Masuk Terbaru
 $recentMasuk = $pdo->query("
     SELECT tm.*, s.nama_supplier 
     FROM transaksi_masuk tm 
@@ -137,12 +139,12 @@ $recentMasuk = $pdo->query("
 ")->fetchAll();
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
   <div>
     <h2 style="font-size: 1.25rem; font-weight: 800; color: #34d399; display: flex; align-items: center; gap: 8px;">
       <i class="bi bi-box-arrow-in-down"></i> Input Penerimaan Barang Masuk (Stock In)
     </h2>
-    <p style="font-size: 0.78rem; color: var(--text-muted);">Catat kiriman barang dari supplier dan perbarui stok gudang secara instan</p>
+    <p style="font-size: 0.78rem; color: var(--text-muted);">Catat kiriman dari supplier, periksa Part Number (P/N), & tambah stok aktual</p>
   </div>
   <a href="index.php" class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i> Dashboard</a>
 </div>
@@ -167,7 +169,7 @@ $recentMasuk = $pdo->query("
         <label class="form-label">Supplier Pengirim <span style="color: #ef4444;">*</span></label>
         <div style="display: flex; gap: 6px;">
           <select name="id_supplier" class="form-select" required>
-            <option value="">-- Pilih Supplier --</option>
+            <option value="">-- Pilih Supplier Pengirim --</option>
             <?php foreach ($suppliers as $sup): ?>
               <option value="<?= $sup['id'] ?>"><?= htmlspecialchars($sup['nama_supplier']) ?> (<?= htmlspecialchars($sup['kode_supplier']) ?>)</option>
             <?php endforeach; ?>
@@ -187,8 +189,8 @@ $recentMasuk = $pdo->query("
   <div class="glass-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
       <div>
-        <h3 style="font-size: 1rem; font-weight: 700; color: #ffffff;">Daftar Barang yang Diterima</h3>
-        <p style="font-size: 0.72rem; color: var(--text-muted);">Bisa input lebih dari 1 barang sekaligus dalam 1 pengiriman</p>
+        <h3 style="font-size: 1rem; font-weight: 700; color: #ffffff;">Daftar Barang & Part Number yang Diterima</h3>
+        <p style="font-size: 0.72rem; color: var(--text-muted);">Bisa input banyak barang sekaligus dalam 1 nota penerimaan</p>
       </div>
       <button type="button" id="btnAddRow" class="btn btn-secondary btn-sm">
         <i class="bi bi-plus-circle-fill text-success"></i> + Tambah Baris Barang
@@ -197,14 +199,14 @@ $recentMasuk = $pdo->query("
 
     <div id="itemsContainer" style="display: flex; flex-direction: column; gap: 12px;">
       <!-- Row 1 -->
-      <div class="item-row" style="background: rgba(15, 23, 42, 0.5); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px; display: grid; grid-template-columns: 3fr 1.2fr 1.5fr 2fr 40px; gap: 10px; align-items: end;">
+      <div class="item-row" style="background: rgba(15, 23, 42, 0.5); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px; display: grid; grid-template-columns: 3.5fr 1.2fr 1.5fr 2fr 40px; gap: 10px; align-items: end;">
         <div>
-          <label class="form-label">Pilih Barang <span style="color: #ef4444;">*</span></label>
+          <label class="form-label">Pilih Barang & Part Number <span style="color: #ef4444;">*</span></label>
           <select name="id_barang[]" class="form-select select-barang" required onchange="updateSatuanRow(this)">
-            <option value="">-- Cari Barang --</option>
+            <option value="">-- Cari Barang / P/N --</option>
             <?php foreach ($barangs as $b): ?>
               <option value="<?= $b['id'] ?>" data-satuan="<?= $b['def_satuan'] ?>" <?= $preselectedBarangId == $b['id'] ? 'selected' : '' ?>>
-                <?= htmlspecialchars($b['nama_barang']) ?> [<?= htmlspecialchars($b['kode_barang']) ?>] (Stok: <?= formatStok($b['stok_saat_ini']) ?>)
+                <?= htmlspecialchars($b['nama_barang']) ?> [P/N: <?= htmlspecialchars($b['part_number'] ?: '-') ?>] (Stok: <?= formatStok($b['stok_saat_ini']) ?>)
               </option>
             <?php endforeach; ?>
           </select>
@@ -239,7 +241,7 @@ $recentMasuk = $pdo->query("
 
     <div style="margin-top: 16px;">
       <label class="form-label">Catatan Pengiriman Keseluruhan (Opsional)</label>
-      <textarea name="catatan" class="form-control" rows="2" placeholder="Catatan sopir, kondisi packaging, dll..."></textarea>
+      <textarea name="catatan" class="form-control" rows="2" placeholder="Catatan sopir supplier, kondisi segel, dll..."></textarea>
     </div>
 
     <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
@@ -295,13 +297,11 @@ $recentMasuk = $pdo->query("
 </div>
 
 <script>
-// Template baris barang baru
 function createRowHtml() {
   const container = document.getElementById('itemsContainer');
   const firstRow = container.querySelector('.item-row');
   const newRow = firstRow.cloneNode(true);
 
-  // Reset values
   newRow.querySelectorAll('input').forEach(inp => inp.value = '');
   newRow.querySelector('.select-barang').value = '';
   container.appendChild(newRow);

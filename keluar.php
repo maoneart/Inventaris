@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 }
 
-// Hapus Transaksi Keluar (Stok dikembalikan / ditambah kembali)
+// Hapus Transaksi Keluar
 if (isset($_GET['action']) && $_GET['action'] === 'hapus' && isset($_GET['id'])) {
     $delId = (int) $_GET['id'];
     try {
@@ -135,7 +135,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'hapus' && isset($_GET['id']))
 require_once __DIR__ . '/includes/header.php';
 
 $pics = $pdo->query("SELECT * FROM pic ORDER BY departemen ASC, nama_pic ASC")->fetchAll();
-$barangs = $pdo->query("SELECT b.*, s.singkatan, s.id as def_satuan FROM barang b LEFT JOIN satuan s ON b.id_satuan = s.id ORDER BY b.nama_barang ASC")->fetchAll();
+$barangs = $pdo->query("
+    SELECT b.*, s.singkatan, s.id as def_satuan 
+    FROM barang b 
+    LEFT JOIN satuan s ON b.id_satuan = s.id 
+    ORDER BY b.nama_barang ASC
+")->fetchAll();
 $satuans = $pdo->query("SELECT * FROM satuan ORDER BY kategori ASC, nama_satuan ASC")->fetchAll();
 
 $autoNoKeluar = generateNoTransaksi('OUT');
@@ -149,12 +154,12 @@ $recentKeluar = $pdo->query("
 ")->fetchAll();
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
   <div>
     <h2 style="font-size: 1.25rem; font-weight: 800; color: #f87171; display: flex; align-items: center; gap: 8px;">
       <i class="bi bi-box-arrow-up-right"></i> Input Pengeluaran Barang / Tools (Stock Out)
     </h2>
-    <p style="font-size: 0.78rem; color: var(--text-muted);">Catat barang atau peralatan kerja yang diambil oleh PIC / Karyawan / Teknisi</p>
+    <p style="font-size: 0.78rem; color: var(--text-muted);">Catat peralatan kerja & material yang diambil oleh PIC teknisi</p>
   </div>
   <a href="index.php" class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i> Dashboard</a>
 </div>
@@ -201,7 +206,7 @@ $recentKeluar = $pdo->query("
 
     <div class="form-group" style="margin-top: 4px; margin-bottom: 0;">
       <label class="form-label">Keperluan Pengambilan / Lokasi Kerja <span style="color: #ef4444;">*</span></label>
-      <input type="text" name="keperluan" class="form-control" placeholder="Contoh: Perbaikan Mesin Injection Line 2, Pengelasan Frame Proyek B..." required autocomplete="off">
+      <input type="text" name="keperluan" class="form-control" placeholder="Contoh: Perbaikan Mesin Line 2, Pengelasan Frame Proyek B..." required autocomplete="off">
     </div>
   </div>
 
@@ -209,7 +214,7 @@ $recentKeluar = $pdo->query("
   <div class="glass-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
       <div>
-        <h3 style="font-size: 1rem; font-weight: 700; color: #ffffff;">Daftar Barang / Tools yang Diambil</h3>
+        <h3 style="font-size: 1rem; font-weight: 700; color: #ffffff;">Daftar Barang & Part Number yang Diambil</h3>
         <p style="font-size: 0.72rem; color: var(--text-muted);">Jumlah yang diambil otomatis mengurangi stok gudang realtime</p>
       </div>
       <button type="button" id="btnAddRowOut" class="btn btn-secondary btn-sm">
@@ -219,14 +224,14 @@ $recentKeluar = $pdo->query("
 
     <div id="itemsContainerOut" style="display: flex; flex-direction: column; gap: 12px;">
       <!-- Row 1 -->
-      <div class="item-row" style="background: rgba(15, 23, 42, 0.5); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px; display: grid; grid-template-columns: 3fr 1.2fr 1.5fr 2fr 40px; gap: 10px; align-items: end;">
+      <div class="item-row" style="background: rgba(15, 23, 42, 0.5); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px; display: grid; grid-template-columns: 3.5fr 1.2fr 1.5fr 2fr 40px; gap: 10px; align-items: end;">
         <div>
-          <label class="form-label">Pilih Barang / Alat <span style="color: #ef4444;">*</span></label>
+          <label class="form-label">Pilih Barang & Part Number <span style="color: #ef4444;">*</span></label>
           <select name="id_barang[]" class="form-select select-barang" required onchange="updateRowDetails(this)">
-            <option value="">-- Pilih Barang --</option>
+            <option value="">-- Pilih Barang / P/N --</option>
             <?php foreach ($barangs as $b): ?>
               <option value="<?= $b['id'] ?>" data-satuan="<?= $b['def_satuan'] ?>" data-stok="<?= $b['stok_saat_ini'] ?>" <?= $preselectedBarangId == $b['id'] ? 'selected' : '' ?>>
-                <?= htmlspecialchars($b['nama_barang']) ?> (Sisa: <?= formatStok($b['stok_saat_ini']) ?> <?= htmlspecialchars($b['singkatan']) ?>)
+                <?= htmlspecialchars($b['nama_barang']) ?> [P/N: <?= htmlspecialchars($b['part_number'] ?: '-') ?>] (Sisa: <?= formatStok($b['stok_saat_ini']) ?> <?= htmlspecialchars($b['singkatan']) ?>)
               </option>
             <?php endforeach; ?>
           </select>
@@ -248,7 +253,7 @@ $recentKeluar = $pdo->query("
 
         <div>
           <label class="form-label">Catatan Tambahan (Opsional)</label>
-          <input type="text" name="item_keterangan[]" class="form-control" placeholder="Kondisi pinjam / nomor part..." autocomplete="off">
+          <input type="text" name="item_keterangan[]" class="form-control" placeholder="Kondisi pinjam / nomor mesin..." autocomplete="off">
         </div>
 
         <div style="text-align: center;">

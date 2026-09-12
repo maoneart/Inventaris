@@ -165,3 +165,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+/* ==========================================================================
+   SLIDE-LEFT SIDEBAR DRAWER CONTROLLER
+   ========================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  const drawer = document.getElementById('sidebarDrawer');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const btnOpen = document.getElementById('btnOpenSidebar');
+  const btnClose = document.getElementById('btnCloseSidebar');
+
+  function openSidebar() {
+    if (drawer) drawer.classList.add('active');
+    if (backdrop) backdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    if (drawer) drawer.classList.remove('active');
+    if (backdrop) backdrop.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (btnOpen) btnOpen.addEventListener('click', openSidebar);
+  if (btnClose) btnClose.addEventListener('click', closeSidebar);
+  if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+  // Close on ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer && drawer.classList.contains('active')) {
+      closeSidebar();
+    }
+  });
+
+  // Simple swipe left gesture on mobile
+  let touchStartX = 0;
+  if (drawer) {
+    drawer.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    drawer.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) {
+        closeSidebar();
+      }
+    }, { passive: true });
+  }
+});

@@ -21,17 +21,18 @@ try {
     $stmt4 = $pdo->query("SELECT COALESCE(SUM(total_qty), 0) FROM transaksi_keluar WHERE MONTH(tanggal_keluar) = MONTH(CURRENT_DATE()) AND YEAR(tanggal_keluar) = YEAR(CURRENT_DATE())");
     $keluarBulanIni = $stmt4->fetchColumn();
 
-    // 5. Data Barang dengan Join Kategori & Satuan
+    // 5. Data Barang dengan Join Kategori, Satuan, & Supplier
     $stmtBarang = $pdo->query("
-        SELECT b.*, k.nama_kategori, s.nama_satuan, s.singkatan
+        SELECT b.*, k.nama_kategori, s.nama_satuan, s.singkatan, sup.nama_supplier
         FROM barang b
         LEFT JOIN kategori k ON b.id_kategori = k.id
         LEFT JOIN satuan s ON b.id_satuan = s.id
+        LEFT JOIN supplier sup ON b.id_supplier = sup.id
         ORDER BY (b.stok_saat_ini <= b.stok_minimum) DESC, b.nama_barang ASC
     ");
     $listBarang = $stmtBarang->fetchAll();
 
-    // 6. Transaksi Terbaru (5 Masuk & 5 Keluar)
+    // 6. Transaksi Terbaru
     $stmtRecentIn = $pdo->query("
         SELECT tm.*, sup.nama_supplier 
         FROM transaksi_masuk tm
@@ -134,12 +135,12 @@ try {
   <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px;">
     <div>
       <h2 style="font-size: 1.15rem; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px;">
-        <i class="bi bi-broadcast text-primary"></i> Aktual Stok Realtime
+        <i class="bi bi-broadcast text-primary"></i> Aktual Stok Realtime & Part Number
       </h2>
-      <p style="font-size: 0.75rem; color: var(--text-muted);">Status stok fisik langsung terupdate tiap kali ada transaksi</p>
+      <p style="font-size: 0.75rem; color: var(--text-muted);">Status stok fisik langsung terupdate tiap kali ada mutasi masuk/keluar</p>
     </div>
-    <div style="display: flex; gap: 8px; flex: 1; max-width: 360px;">
-      <input type="text" id="tableSearchInput" class="form-control" placeholder="🔍 Cari nama / kode / rak..." style="padding: 8px 12px; font-size: 0.82rem;">
+    <div style="display: flex; gap: 8px; flex: 1; max-width: 400px; flex-wrap: wrap;">
+      <input type="text" id="tableSearchInput" class="form-control" placeholder="🔍 Cari nama / P/N / supplier / rak..." style="padding: 8px 12px; font-size: 0.82rem; flex: 1; min-width: 160px;">
       <a href="export.php?type=stok_excel" class="btn btn-secondary btn-sm" title="Download Excel">
         <i class="bi bi-file-earmark-excel-fill text-success"></i> Excel
       </a>
@@ -153,8 +154,9 @@ try {
     <table class="modern-table">
       <thead>
         <tr>
-          <th>Kode & Barcode</th>
+          <th>Kode & Part Number</th>
           <th>Nama Barang</th>
+          <th>Supplier Rekanan</th>
           <th>Kategori</th>
           <th>Lokasi Rak</th>
           <th style="text-align: right;">Stok Aktual</th>
@@ -172,14 +174,21 @@ try {
             <tr>
               <td>
                 <strong style="color: #60a5fa;"><?= htmlspecialchars($b['kode_barang']) ?></strong>
-                <?php if ($b['barcode']): ?>
-                  <div style="font-size: 0.7rem; color: var(--text-dim);"><i class="bi bi-upc"></i> <?= htmlspecialchars($b['barcode']) ?></div>
+                <?php if ($b['part_number']): ?>
+                  <div style="font-size: 0.75rem; color: #93c5fd; font-weight: 700;"><i class="bi bi-tag-fill"></i> <?= htmlspecialchars($b['part_number']) ?></div>
                 <?php endif; ?>
               </td>
               <td>
                 <div style="font-weight: 700; color: #ffffff;"><?= htmlspecialchars($b['nama_barang']) ?></div>
                 <?php if ($b['spesifikasi']): ?>
-                  <div style="font-size: 0.72rem; color: var(--text-muted); max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?= htmlspecialchars($b['spesifikasi']) ?></div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted); max-width: 240px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?= htmlspecialchars($b['spesifikasi']) ?></div>
+                <?php endif; ?>
+              </td>
+              <td>
+                <?php if ($b['nama_supplier']): ?>
+                  <span class="badge badge-success"><i class="bi bi-truck"></i> <?= htmlspecialchars($b['nama_supplier']) ?></span>
+                <?php else: ?>
+                  <span style="font-size: 0.72rem; color: var(--text-dim);">-</span>
                 <?php endif; ?>
               </td>
               <td>
@@ -217,8 +226,8 @@ try {
           <?php endforeach; ?>
         <?php else: ?>
           <tr>
-            <td colspan="8" style="text-align: center; padding: 24px; color: var(--text-muted);">
-              Belum ada data barang. Silakan tambahkan di menu <a href="barang.php" style="color: #60a5fa;">Data Barang</a>.
+            <td colspan="9" style="text-align: center; padding: 24px; color: var(--text-muted);">
+              Belum ada data barang. Silakan daftarkan di menu <a href="barang.php" style="color: #60a5fa;">Data Barang</a>.
             </td>
           </tr>
         <?php endif; ?>
@@ -227,13 +236,13 @@ try {
   </div>
 </div>
 
-<!-- Recent Transactions Feed (2 Kolom) -->
+<!-- Recent Transactions Feed -->
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
   <!-- Masuk Terakhir -->
   <div class="glass-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
       <h3 style="font-size: 0.95rem; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 6px;">
-        <i class="bi bi-arrow-down-left-circle-fill"></i> Pemasukan Terakhir
+        <i class="bi bi-arrow-down-left-circle-fill"></i> Pemasukan Terakhir (Dari Supplier)
       </h3>
       <a href="laporan.php?tipe=masuk" style="font-size: 0.75rem; color: #60a5fa; text-decoration: none;">Lihat Semua</a>
     </div>
@@ -261,7 +270,7 @@ try {
   <div class="glass-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
       <h3 style="font-size: 0.95rem; font-weight: 700; color: #f87171; display: flex; align-items: center; gap: 6px;">
-        <i class="bi bi-arrow-up-right-circle-fill"></i> Pengeluaran Terakhir
+        <i class="bi bi-arrow-up-right-circle-fill"></i> Pengeluaran Terakhir (Ke PIC)
       </h3>
       <a href="laporan.php?tipe=keluar" style="font-size: 0.75rem; color: #60a5fa; text-decoration: none;">Lihat Semua</a>
     </div>
