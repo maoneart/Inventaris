@@ -7,11 +7,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$host     = '127.0.0.1'; // 127.0.0.1 (TCP/IP) kompatibel di Termux & Komputer Kantor (XAMPP/Laragon)
-$port     = '3306';
-$dbname   = 'db_inventory';
-$username = 'root';
-$password = '';
+$configFile = __DIR__ . '/db_config.php';
+$dbCfg = file_exists($configFile) ? require $configFile : [];
+
+$host            = $dbCfg['host'] ?? '127.0.0.1';
+$port            = $dbCfg['port'] ?? '3306';
+$dbname          = $dbCfg['dbname'] ?? 'db_inventory';
+$username        = $dbCfg['username'] ?? 'root';
+$password        = $dbCfg['password'] ?? '';
+$customServerUrl = $dbCfg['server_url'] ?? '';
 
 try {
     $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password, [
@@ -38,6 +42,38 @@ try {
             $db_error = $e->getMessage() . " | " . $e2->getMessage() . " | " . $e3->getMessage();
         }
     }
+}
+
+/**
+ * Helper untuk Menguji Koneksi Database
+ */
+function testDbConnection($testHost, $testPort, $testDbname, $testUser, $testPass) {
+    try {
+        $testPdo = new PDO("mysql:host=$testHost;port=$testPort;dbname=$testDbname;charset=utf8mb4", $testUser, $testPass, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_TIMEOUT => 4,
+        ]);
+        return ['success' => true, 'pdo' => $testPdo, 'error' => ''];
+    } catch (PDOException $e) {
+        return ['success' => false, 'pdo' => null, 'error' => $e->getMessage()];
+    }
+}
+
+/**
+ * Helper untuk Menyimpan Konfigurasi Database ke File
+ */
+function saveDbConfig($newHost, $newPort, $newDbname, $newUser, $newPass, $newServerUrl) {
+    $configFile = __DIR__ . '/db_config.php';
+    $export = [
+        'host' => trim($newHost),
+        'port' => trim($newPort),
+        'dbname' => trim($newDbname),
+        'username' => trim($newUser),
+        'password' => (string)$newPass,
+        'server_url' => trim($newServerUrl),
+    ];
+    $content = "<?php\n// config/db_config.php\n// Konfigurasi dinamis koneksi database & server URL\nreturn " . var_export($export, true) . ";\n";
+    return file_put_contents($configFile, $content) !== false;
 }
 
 /**

@@ -199,10 +199,14 @@ $recentMasuk = $pdo->query("
       </button>
     </div>
 
-    <div id="itemsContainer" style="display: flex; flex-direction: column; gap: 12px;">
+    <div id="itemsContainer" style="display: flex; flex-direction: column; gap: 14px;">
       <!-- Row 1 -->
-      <div class="item-row" style="border-radius: 16px; padding: 14px; display: grid; grid-template-columns: 3.5fr 1.2fr 1.5fr 2fr 38px; gap: 10px; align-items: end;">
-        <div>
+      <div class="ios-item-card">
+        <div class="item-card-header">
+          <span class="item-num-badge"><i class="bi bi-box-seam"></i> Item #1</span>
+        </div>
+
+        <div class="item-barang-field">
           <label class="ios-label">Pilih Barang & Part Number <span style="color: #ef4444;">*</span></label>
           <select name="id_barang[]" class="ios-select select-barang" required onchange="updateSatuanRow(this)">
             <option value="">-- Cari Barang / P/N --</option>
@@ -214,27 +218,29 @@ $recentMasuk = $pdo->query("
           </select>
         </div>
 
-        <div>
-          <label class="ios-label">Jumlah (Qty) <span style="color: #ef4444;">*</span></label>
-          <input type="number" step="any" min="0.01" name="qty[]" class="ios-input" placeholder="0" required style="text-align: right; font-weight: 700;">
+        <div class="item-qty-satuan-grid">
+          <div>
+            <label class="ios-label">Jumlah (Qty) <span style="color: #ef4444;">*</span></label>
+            <input type="number" step="any" min="0.01" name="qty[]" class="ios-input" placeholder="0" required style="text-align: right; font-weight: 700;">
+          </div>
+
+          <div>
+            <label class="ios-label">Satuan</label>
+            <select name="id_satuan[]" class="ios-select select-satuan">
+              <?php foreach ($satuans as $s): ?>
+                <option value="<?= $s['id'] ?>"><?= htmlspecialchars($s['singkatan']) ?> (<?= htmlspecialchars($s['nama_satuan']) ?>)</option>
+              <?php endforeach; ?>
+            </select>
+          </div>
         </div>
 
-        <div>
-          <label class="ios-label">Satuan</label>
-          <select name="id_satuan[]" class="ios-select select-satuan">
-            <?php foreach ($satuans as $s): ?>
-              <option value="<?= $s['id'] ?>"><?= htmlspecialchars($s['singkatan']) ?> (<?= htmlspecialchars($s['nama_satuan']) ?>)</option>
-            <?php endforeach; ?>
-          </select>
-        </div>
+        <div class="item-bottom-action-row">
+          <div class="item-notes-field">
+            <label class="ios-label">Rak Simpan / Lokasi</label>
+            <input type="text" name="item_keterangan[]" class="ios-input" placeholder="Rak simpan / kondisi..." autocomplete="off">
+          </div>
 
-        <div>
-          <label class="ios-label">Rak Simpan / Catatan</label>
-          <input type="text" name="item_keterangan[]" class="ios-input" placeholder="Rak / kondisi..." autocomplete="off">
-        </div>
-
-        <div style="text-align: center;">
-          <button type="button" class="btn btn-danger btn-sm" style="border-radius: 10px; width: 38px; height: 38px;" onclick="removeRow(this)">
+          <button type="button" class="item-trash-btn" onclick="removeRow(this)" title="Hapus Baris Ini">
             <i class="bi bi-trash"></i>
           </button>
         </div>
@@ -299,11 +305,18 @@ $recentMasuk = $pdo->query("
 <script>
 function createRowHtml() {
   const container = document.getElementById('itemsContainer');
-  const firstRow = container.querySelector('.item-row');
+  const firstRow = container.querySelector('.ios-item-card');
   const newRow = firstRow.cloneNode(true);
 
   newRow.querySelectorAll('input').forEach(inp => inp.value = '');
   newRow.querySelector('.select-barang').value = '';
+  
+  const rows = container.querySelectorAll('.ios-item-card');
+  const badge = newRow.querySelector('.item-num-badge');
+  if (badge) {
+    badge.innerHTML = '<i class="bi bi-box-seam"></i> Item #' + (rows.length + 1);
+  }
+
   container.appendChild(newRow);
 }
 
@@ -311,7 +324,7 @@ document.getElementById('btnAddRow').addEventListener('click', createRowHtml);
 
 function removeRow(btn) {
   const container = document.getElementById('itemsContainer');
-  const rows = container.querySelectorAll('.item-row');
+  const rows = container.querySelectorAll('.ios-item-card');
   if (rows.length <= 1) {
     showAlertModal({
       title: 'Perhatian',
@@ -320,14 +333,20 @@ function removeRow(btn) {
     });
     return;
   }
-  btn.closest('.item-row').remove();
+  btn.closest('.ios-item-card').remove();
+  
+  // Re-number badges
+  container.querySelectorAll('.ios-item-card').forEach((row, idx) => {
+    const badge = row.querySelector('.item-num-badge');
+    if (badge) badge.innerHTML = '<i class="bi bi-box-seam"></i> Item #' + (idx + 1);
+  });
 }
 
 function updateSatuanRow(selectElem) {
   const selectedOption = selectElem.options[selectElem.selectedIndex];
   const satuanId = selectedOption.getAttribute('data-satuan');
   if (satuanId) {
-    const row = selectElem.closest('.item-row');
+    const row = selectElem.closest('.ios-item-card') || selectElem.closest('.item-row');
     const satuanSelect = row.querySelector('.select-satuan');
     if (satuanSelect) {
       satuanSelect.value = satuanId;

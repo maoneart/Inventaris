@@ -226,7 +226,7 @@ ON DUPLICATE KEY UPDATE id=id;
 
 -- Seed App Settings
 INSERT INTO app_settings (key_name, key_value) VALUES
-('nama_aplikasi', 'MaoneArt Stock & Inventory System'),
+('nama_aplikasi', 'Inventory'),
 ('nama_gudang', 'Gudang Pusat & Workshop Logistik'),
 ('nama_kantor', 'PT MaoneArt Teknologi Presisi'),
 ('alamat_kantor', 'Kawasan Industri Mandiri, Jl. Wijaya Kusuma No. 88'),

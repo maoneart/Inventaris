@@ -1231,6 +1231,122 @@ body:not(.page-index) .main-wrapper {
   color: #ffffff;
 }
 
+/* ==========================================================================
+   MOBILE-FIRST FORM ITEM ENTRY ROW (BARANG MASUK & KELUAR)
+   Ultra-clean card layout on mobile, automatically fluid on desktop
+   ========================================================================== */
+.ios-item-card {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .ios-item-card {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.ios-item-card:hover {
+  border-color: rgba(37, 99, 235, 0.35);
+}
+
+.item-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: -2px;
+}
+
+.item-num-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #60a5fa;
+  background: rgba(37, 99, 235, 0.15);
+  padding: 2px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+[data-theme="light"] .item-num-badge {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.item-qty-satuan-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 10px;
+}
+
+.item-bottom-action-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.item-notes-field {
+  flex: 1;
+}
+
+.item-trash-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  font-size: 1.15rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.item-trash-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.item-trash-btn:active {
+  transform: scale(0.9);
+}
+
+@media (min-width: 992px) {
+  .ios-item-card {
+    display: grid;
+    grid-template-columns: 3.5fr 1.2fr 1.5fr 2fr 44px;
+    align-items: end;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  .item-card-header {
+    display: none;
+  }
+  .item-barang-field {
+    display: block;
+  }
+  .item-qty-satuan-grid {
+    display: contents;
+  }
+  .item-bottom-action-row {
+    display: contents;
+  }
+  .item-notes-field {
+    display: block;
+  }
+}
+
 /* iOS Clean Footer Copyright */
 .ios-footer-copyright {
   text-align: center;

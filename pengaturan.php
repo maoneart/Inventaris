@@ -40,6 +40,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         exit;
     }
 
+    // Simpan Konfigurasi Koneksi Database & Server URL
+    if ($_POST['action'] === 'simpan_koneksi') {
+        $newHost      = trim($_POST['db_host'] ?? '127.0.0.1');
+        $newPort      = trim($_POST['db_port'] ?? '3306');
+        $newDbname    = trim($_POST['db_name'] ?? 'db_inventory');
+        $newUser      = trim($_POST['db_user'] ?? 'root');
+        $newPass      = (string)($_POST['db_pass'] ?? '');
+        $newServerUrl = trim($_POST['server_url'] ?? '');
+
+        // Uji koneksi terlebih dahulu
+        $test = testDbConnection($newHost, $newPort, $newDbname, $newUser, $newPass);
+        if ($test['success']) {
+            saveDbConfig($newHost, $newPort, $newDbname, $newUser, $newPass, $newServerUrl);
+            setFlash('success', 'Koneksi Berhasil Disimpan', "Berhasil terhubung ke database '$newDbname' di host '$newHost:$newPort'.");
+        } else {
+            if (!empty($_POST['force_save'])) {
+                saveDbConfig($newHost, $newPort, $newDbname, $newUser, $newPass, $newServerUrl);
+                setFlash('info', 'Konfigurasi Disimpan (Offline)', "Konfigurasi berhasil disimpan, namun saat ini database di $newHost:$newPort belum merespon (" . $test['error'] . ").");
+            } else {
+                setFlash('danger', 'Gagal Menghubungkan ke Database', "Koneksi ke $newHost:$newPort gagal: " . $test['error'] . ". Pastikan server database aktif dan port terbuka.");
+            }
+        }
+
+        header('Location: pengaturan.php');
+        exit;
+    }
+
     // Reset Data Transaksi (Maintenance)
     if ($_POST['action'] === 'reset_transaksi') {
         try {
@@ -139,40 +166,80 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   </div>
 </div>
 
-<!-- Group 1: Koneksi Server & Jaringan Kantor -->
+<!-- Group 1: Koneksi Server & Database (Mudah Pindah HP <-> Laptop / Server) -->
 <div class="ios-form-card">
-  <div class="ios-group-title">
-    <i class="bi bi-hdd-network-fill"></i> KONEKSI SERVER & JARINGAN KANTOR
+  <div class="ios-group-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+    <span><i class="bi bi-hdd-network-fill"></i> KONEKSI SERVER & DATABASE</span>
+    <span class="badge <?= $pdo ? 'badge-success' : 'badge-danger' ?>" style="font-size: 0.68rem; padding: 4px 8px;">
+      <i class="bi bi-circle-fill" style="font-size: 0.5rem;"></i> <?= $pdo ? 'Terhubung (' . htmlspecialchars($host) . ')' : 'Terputus' ?>
+    </span>
   </div>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
-    <div>
-      <label class="ios-label">Status Server Local</label>
-      <div class="server-status-box">
-        <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; display: inline-block; box-shadow: 0 0 10px #10b981;"></span>
-        Online Apache Port 8085
+  <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
+    Atur alamat akses web dan host database MySQL. Anda dapat dengan mudah mengalihkan sistem dari database lokal HP (Termux) ke komputer laptop / server kantor.
+  </p>
+
+  <!-- Pilihan Mode Cepat (Presets) -->
+  <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+    <button type="button" class="btn btn-secondary btn-sm" onclick="setPresetMode('hp')" style="border-radius: 10px; font-size: 0.78rem; font-weight: 700;">
+      📱 Mode HP (127.0.0.1)
+    </button>
+    <button type="button" class="btn btn-secondary btn-sm" onclick="setPresetMode('laptop')" style="border-radius: 10px; font-size: 0.78rem; font-weight: 700;">
+      💻 Mode Laptop / Server Kantor
+    </button>
+  </div>
+
+  <form action="pengaturan.php" method="POST" id="formKoneksi">
+    <input type="hidden" name="action" value="simpan_koneksi">
+
+    <div style="margin-bottom: 14px;">
+      <label class="ios-label">Alamat Akses Saat Ini (Web / APK Base URL) <span style="color: #ef4444;">*</span></label>
+      <input type="text" name="server_url" id="inputServerUrl" class="ios-input" value="<?= htmlspecialchars($customServerUrl ?: "http://$serverHost/inventory") ?>" placeholder="http://192.168.1.100:8085/inventory" required style="color: #2563eb; font-weight: 700;">
+      <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">
+        URL ini dipakai browser dan APK untuk menghubungkan transaksi ke server.
       </div>
     </div>
 
-    <div>
-      <label class="ios-label">Alamat Akses Saat Ini</label>
-      <input type="text" class="ios-input" value="http://<?= htmlspecialchars($serverHost) ?>/Inventory" readonly>
-    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 14px;">
+      <div>
+        <label class="ios-label">Host Database (IP Server / Laptop) <span style="color: #ef4444;">*</span></label>
+        <input type="text" name="db_host" id="inputDbHost" class="ios-input" value="<?= htmlspecialchars($host) ?>" placeholder="127.0.0.1 atau 192.168.x.x" required style="font-weight: 700;">
+      </div>
 
-    <div>
-      <label class="ios-label">Database MySQL / MariaDB</label>
-      <div class="db-status-box">
-        <i class="bi bi-database-check text-primary"></i> db_inventory (Port 3306)
+      <div>
+        <label class="ios-label">Port MySQL / MariaDB</label>
+        <input type="number" name="db_port" id="inputDbPort" class="ios-input" value="<?= htmlspecialchars($port) ?>" placeholder="3306" required>
+      </div>
+
+      <div>
+        <label class="ios-label">Nama Database</label>
+        <input type="text" name="db_name" id="inputDbName" class="ios-input" value="<?= htmlspecialchars($dbname) ?>" placeholder="db_inventory" required>
+      </div>
+
+      <div>
+        <label class="ios-label">Username Database</label>
+        <input type="text" name="db_user" id="inputDbUser" class="ios-input" value="<?= htmlspecialchars($username) ?>" placeholder="root" required>
+      </div>
+
+      <div style="grid-column: span 2;">
+        <label class="ios-label">Password Database (Opsional)</label>
+        <input type="password" name="db_pass" id="inputDbPass" class="ios-input" value="<?= htmlspecialchars($password) ?>" placeholder="Kosongkan jika tanpa password (standar XAMPP)">
       </div>
     </div>
-  </div>
 
-  <div class="info-guide-box">
-    💡 <strong>Cara Pakai di Komputer & WiFi Kantor:</strong><br>
-    1. Pastikan Komputer Kantor dan HP terhubung pada WiFi yang sama.<br>
-    2. Cek IP Komputer Kantor (misal: <code>192.168.1.100</code>).<br>
-    3. Di HP atau aplikasi APK, ganti Server URL menjadi: <code>http://192.168.1.100:8085/Inventory</code>.<br>
-    4. Seluruh mutasi stok otomatis tersinkronisasi realtime ke server kantor!
+    <div style="margin-top: 18px;">
+      <button type="submit" class="ios-btn-primary ios-btn-blue" style="height: 46px;">
+        <i class="bi bi-arrow-repeat"></i> Simpan & Hubungkan Database
+      </button>
+    </div>
+  </form>
+
+  <div class="info-guide-box" style="margin-top: 16px;">
+    💡 <strong>Cara Pindah ke Database Laptop / Server:</strong><br>
+    1. Pastikan Komputer/Laptop dan HP terhubung pada WiFi yang sama.<br>
+    2. Klik tombol <strong>Mode Laptop / Server Kantor</strong> di atas.<br>
+    3. Masukkan IP Komputer Kantor (misal <code>192.168.1.50</code>) pada kolom <strong>Host Database</strong>.<br>
+    4. Klik <strong>Simpan & Hubungkan</strong>. Seluruh mutasi di HP otomatis membaca & menulis langsung ke server kantor!
   </div>
 </div>
 
@@ -425,6 +492,42 @@ function saveGeminiToken() {
     message: 'Token Gemini AI berhasil disimpan di penyimpanan aman browser/HP Anda.',
     type: 'success'
   });
+}
+
+function setPresetMode(mode) {
+  const hostInp = document.getElementById('inputDbHost');
+  const portInp = document.getElementById('inputDbPort');
+  const nameInp = document.getElementById('inputDbName');
+  const userInp = document.getElementById('inputDbUser');
+  const passInp = document.getElementById('inputDbPass');
+  const urlInp  = document.getElementById('inputServerUrl');
+
+  if (mode === 'hp') {
+    if (hostInp) hostInp.value = '127.0.0.1';
+    if (portInp) portInp.value = '3306';
+    if (nameInp) nameInp.value = 'db_inventory';
+    if (userInp) userInp.value = 'root';
+    if (passInp) passInp.value = '';
+    if (urlInp)  urlInp.value  = 'http://localhost:8085/inventory';
+    showAlertModal({
+      title: 'Preset Mode HP (Local)',
+      message: 'Parameter diisi untuk database lokal Termux (127.0.0.1). Klik "Simpan & Hubungkan Database" untuk menerapkan.',
+      type: 'info'
+    });
+  } else if (mode === 'laptop') {
+    const currentHost = (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') ? window.location.hostname : '192.168.1.100';
+    if (hostInp) hostInp.value = currentHost;
+    if (portInp) portInp.value = '3306';
+    if (nameInp) nameInp.value = 'db_inventory';
+    if (userInp) userInp.value = 'root';
+    if (passInp) passInp.value = '';
+    if (urlInp)  urlInp.value  = 'http://' + currentHost + ':8085/inventory';
+    showAlertModal({
+      title: 'Preset Mode Laptop / Server',
+      message: 'Parameter disiapkan untuk server kantor/laptop. Silakan sesuaikan IP (' + currentHost + ') jika berbeda, lalu klik "Simpan & Hubungkan Database".',
+      type: 'info'
+    });
+  }
 }
 
 function clearGeminiToken() {
