@@ -1,15 +1,14 @@
-name: Build MaoneArt Gudang APK
+name: Build MaoneArt Gudang Flutter APK
 
 on:
   push:
     branches:
       - main
-      - master
   workflow_dispatch:
 
 jobs:
   build:
-    name: Build Android Release APK
+    name: Build Android Release APK (Flutter)
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -24,51 +23,48 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
 
-      - name: Grant Execute Permission for Gradlew
+      - name: Install Dependencies
         run: |
-          cd android
-          gradle wrapper
-          chmod +x gradlew
+          cd flutter_app
+          flutter pub get
 
-      - name: Build Android Release APK
+      - name: Build Universal Release APK
         run: |
-          cd android
-          ./gradlew assembleRelease --stacktrace
-
-      - name: Rename & Prepare APK
-        run: |
-          mkdir -p output_apk
-          cp android/app/build/outputs/apk/release/app-release.apk output_apk/MaoneArt-Gudang-Release.apk || cp android/app/build/outputs/apk/debug/app-debug.apk output_apk/MaoneArt-Gudang-Release.apk
+          cd flutter_app
+          flutter build apk --release --android-skip-build-dependency-validation
 
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: MaoneArt-Gudang-APK
-          path: output_apk/MaoneArt-Gudang-Release.apk
+          path: flutter_app/build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
           retention-days: 30
 
-      - name: Create GitHub Release
+      - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/master')
+        if: startsWith(github.ref, 'refs/heads/main')
         with:
           tag_name: v1.0.0
-          name: 'MaoneArt Gudang v1.0.0 (APK Release)'
+          name: 'MaoneArt Gudang v1.0.0 (Flutter Release)'
           body: |
-            ## 📦 MaoneArt Inventaris & Gudang - Android Release APK
+            ## 📦 MaoneArt Inventaris & Gudang - Android APK
             
-            Aplikasi mobile petugas lapangan untuk input cepat barang masuk & keluar langsung terhubung ke server kantor!
+            Aplikasi mobile petugas lapangan berbasis **Flutter** dengan tampilan minimalis, bersih, dan cepat.
             
             ### ✨ Fitur Aplikasi:
-            - **Input Barang Masuk**: Pilih supplier, nota surat jalan, multi-item barang.
-            - **Input Barang Keluar**: Pilih PIC pengambil, divisi & keperluan, proteksi sisa stok.
-            - **Tanya Si-nya (AI)**: Analisa stok realtime & minta draf laporan Excel/PDF.
-            - **Konfigurasi Server URL**: Tekan lama (long-press) layar untuk ubah IP Server Kantor.
+            - **Desain Minimalis & Bersih**: Sederhana, fokus pada input lapangan tanpa ornamen ramai.
+            - **2 Aksi Utama**: Tombol simetris **Barang Masuk (Stock In)** & **Barang Keluar (Stock Out)**.
+            - **Part Number & Supplier**: Informasi detail part number dan rekanan pengirim.
+            - **Konfigurasi IP Server Fleksibel**: Klik ikon gerigi (pengaturan) untuk mengubah alamat IP server WiFi kantor.
             
-            📥 **Download APK di bawah ini dan instal di HP Android Anda!**
-          files: output_apk/MaoneArt-Gudang-Release.apk
+            📥 **Download file APK di bawah ini dan pasang langsung di HP Android Anda!**
+          files: flutter_app/build/app/outputs/flutter-apk/app-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
