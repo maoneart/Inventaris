@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'webview_screen.dart';
 import 'intro_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -98,62 +100,14 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _showConfigDialog() {
-    final controller = TextEditingController(text: _serverUrl);
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1E293B),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Row(
-          children: [
-            Icon(Icons.wifi_tethering, color: Color(0xFF00AA13), size: 20),
-            SizedBox(width: 8),
-            Text('IP Server Kantor', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
-          ],
+  void _openSettings() {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => SettingsScreen(
+          initialServerUrl: _serverUrl,
+          onServerUrlChanged: _saveServerUrl,
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Masukkan alamat IP Server Komputer Kantor:',
-              style: TextStyle(fontSize: 12, color: Color(0xFF94A3B8)),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: controller,
-              decoration: InputDecoration(
-                hintText: 'http://192.168.1.50:8085/Inventory',
-                hintStyle: const TextStyle(fontSize: 12, color: Color(0xFF64748B)),
-                filled: true,
-                fillColor: const Color(0xFF0F172A),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-              ),
-              style: const TextStyle(fontSize: 13, color: Colors.white),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Batal', style: TextStyle(color: Color(0xFF94A3B8))),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF00AA13),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            ),
-            onPressed: () {
-              if (controller.text.isNotEmpty) {
-                _saveServerUrl(controller.text);
-              }
-              Navigator.pop(ctx);
-            },
-            child: const Text('Simpan & Konek', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-          ),
-        ],
       ),
     );
   }
@@ -274,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(width: 8),
           InkWell(
-            onTap: _showConfigDialog,
+            onTap: _openSettings,
             borderRadius: BorderRadius.circular(20),
             child: Container(
               width: 40,
@@ -748,7 +702,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _buildNavTabItem(icon: Icons.input_rounded, label: 'Masuk', active: false, onTap: () => _openPage('masuk.php', 'Input Masuk')),
           _buildNavTabItem(icon: Icons.smart_toy_rounded, label: 'Tanya AI', active: false, onTap: () => _openPage('tanya_ai.php', 'Tanya AI')),
           _buildNavTabItem(icon: Icons.output_rounded, label: 'Keluar', active: false, onTap: () => _openPage('keluar.php', 'Input Keluar')),
-          _buildNavTabItem(icon: Icons.settings_rounded, label: 'Pengaturan', active: false, onTap: () => _openPage('pengaturan.php', 'Pengaturan')),
+          _buildNavTabItem(icon: Icons.settings_rounded, label: 'Pengaturan', active: false, onTap: _openSettings),
         ],
       ),
     );

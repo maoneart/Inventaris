@@ -115,7 +115,7 @@ class _IntroScreenState extends State<IntroScreen> {
                           border: Border.all(color: const Color(0xFF334155)),
                         ),
                         child: const Icon(
-                          Icons.box_rounded,
+                          Icons.inventory_2_rounded,
                           color: Color(0xFF38BDF8),
                           size: 18,
                         ),
