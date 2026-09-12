@@ -75,16 +75,17 @@ $currAlamat       = getSetting('alamat_kantor', 'Kawasan Industri Mandiri, Jl. W
 $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
 ?>
 
-<!-- iPhone Style Navigation Header -->
-<div class="ios-nav-header">
+<!-- Header: Cuma Tombol Back Saja -->
+<div class="ios-nav-header-simple">
   <a href="index.php" class="ios-back-btn">
     <i class="bi bi-chevron-left"></i> Kembali
   </a>
-  <div class="ios-header-center">
-    <h1 class="ios-header-title">Pengaturan</h1>
-    <p class="ios-header-subtitle">Server Kantor, AI Gemini & Profil Gudang</p>
-  </div>
-  <span class="badge badge-info" style="font-size: 0.7rem;">SETTINGS</span>
+</div>
+
+<!-- Judul di Dalam Konten -->
+<div class="page-title-box">
+  <h1 class="page-title">Pengaturan</h1>
+  <p class="page-subtitle">Server kantor, AI Gemini & profil gudang</p>
 </div>
 
 <!-- Group 1: Koneksi Server & Jaringan Kantor -->

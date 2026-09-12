@@ -408,7 +408,7 @@ $recentActivity = $pdo->query("
       <div class="gojek-circle-icon icon-gobarang">
         <i class="bi bi-boxes"></i>
       </div>
-      <div class="service-title">Katalog P/N</div>
+      <div class="service-title">Barang</div>
     </a>
 
     <!-- 4. GoSupplier -->

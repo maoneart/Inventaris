@@ -4,18 +4,20 @@ $pageTitle = "Tanya Si-nya (AI Gudang)";
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- iPhone Style Navigation Header -->
-<div class="ios-nav-header">
+<!-- Header: Cuma Tombol Back Saja -->
+<div class="ios-nav-header-simple">
   <a href="index.php" class="ios-back-btn">
     <i class="bi bi-chevron-left"></i> Kembali
   </a>
-  <div class="ios-header-center">
-    <h1 class="ios-header-title">Tanya Si-nya</h1>
-    <p class="ios-header-subtitle">Asisten AI Logistik & Inventaris</p>
-  </div>
-  <button type="button" id="btnOpenTokenModal" class="btn btn-secondary btn-sm" style="border-radius: 999px; font-size: 0.75rem; padding: 6px 12px; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); color: #c084fc;">
+  <button type="button" id="btnOpenTokenModal" class="btn btn-secondary btn-sm" style="border-radius: 999px; font-size: 0.75rem; padding: 6px 14px; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); color: #c084fc;">
     <i class="bi bi-key-fill text-warning"></i> <span id="tokenStatusText">Atur Token</span>
   </button>
+</div>
+
+<!-- Judul di Dalam Konten -->
+<div class="page-title-box">
+  <h1 class="page-title">Tanya Si-nya</h1>
+  <p class="page-subtitle">Asisten AI logistik & konsultasi stok realtime</p>
 </div>
 
 <!-- Modal Atur Token Gemini Manual (Aman, Tidak Masuk Kodingan / GitHub) -->

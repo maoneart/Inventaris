@@ -62,16 +62,17 @@ $nextCount = count($suppliers) + 1;
 $saranKodeSup = 'SUP-' . str_pad($nextCount, 3, '0', STR_PAD_LEFT);
 ?>
 
-<!-- iPhone Style Navigation Header -->
-<div class="ios-nav-header">
+<!-- Header: Cuma Tombol Back Saja -->
+<div class="ios-nav-header-simple">
   <a href="index.php" class="ios-back-btn">
     <i class="bi bi-chevron-left"></i> Kembali
   </a>
-  <div class="ios-header-center">
-    <h1 class="ios-header-title">Data Supplier</h1>
-    <p class="ios-header-subtitle">Vendor & Rekanan Pemasok Material</p>
-  </div>
-  <span class="badge badge-success" style="font-size: 0.7rem;">SUPPLIER</span>
+</div>
+
+<!-- Judul di Dalam Konten -->
+<div class="page-title-box">
+  <h1 class="page-title">Data Supplier</h1>
+  <p class="page-subtitle">Vendor & rekanan pemasok material gudang</p>
 </div>
 
 <form action="supplier.php" method="POST" id="formSupplier">

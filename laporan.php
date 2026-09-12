@@ -42,20 +42,24 @@ $totalQtyKeluar = array_sum(array_column($listKeluar, 'total_qty'));
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- iPhone Style Navigation Header -->
-<div class="ios-nav-header">
+<!-- Header: Cuma Tombol Back Saja -->
+<div class="ios-nav-header-simple">
   <a href="index.php" class="ios-back-btn">
     <i class="bi bi-chevron-left"></i> Kembali
   </a>
-  <div class="ios-header-center">
-    <h1 class="ios-header-title">Laporan Mutasi</h1>
-    <p class="ios-header-subtitle">Rekapitulasi Arus Barang Masuk & Keluar</p>
+</div>
+
+<!-- Judul di Dalam Konten -->
+<div class="page-title-box" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;">
+  <div>
+    <h1 class="page-title">Laporan Mutasi</h1>
+    <p class="page-subtitle">Rekapitulasi arus barang masuk & keluar</p>
   </div>
   <div style="display: flex; gap: 6px;">
-    <a href="export.php?type=laporan_excel&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" class="btn btn-secondary btn-sm" title="Ekspor Excel" style="border-radius: 999px; padding: 6px 12px; font-size: 0.75rem; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399;">
+    <a href="export.php?type=laporan_excel&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" class="btn btn-secondary btn-sm" title="Ekspor Excel" style="border-radius: 999px; padding: 6px 14px; font-size: 0.75rem; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399;">
       <i class="bi bi-file-earmark-excel-fill"></i> Excel
     </a>
-    <a href="export.php?type=laporan_pdf&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" target="_blank" class="btn btn-secondary btn-sm" title="Cetak PDF" style="border-radius: 999px; padding: 6px 12px; font-size: 0.75rem; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171;">
+    <a href="export.php?type=laporan_pdf&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" target="_blank" class="btn btn-secondary btn-sm" title="Cetak PDF" style="border-radius: 999px; padding: 6px 14px; font-size: 0.75rem; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171;">
       <i class="bi bi-printer-fill"></i> PDF
     </a>
   </div>

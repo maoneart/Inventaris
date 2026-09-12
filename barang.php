@@ -99,20 +99,20 @@ $nextNum = $stmtNext->fetchColumn();
 $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
 ?>
 
-<!-- iPhone Style Navigation Header -->
-<div class="ios-nav-header">
+<!-- Header: Cuma Tombol Back Saja -->
+<div class="ios-nav-header-simple">
   <a href="index.php" class="ios-back-btn">
     <i class="bi bi-chevron-left"></i> Kembali
   </a>
-  <div class="ios-header-center">
-    <h1 class="ios-header-title">Master Barang</h1>
-    <p class="ios-header-subtitle">Katalog Barang, Part Number & Rekanan Supplier</p>
-  </div>
-  <div style="display: flex; gap: 6px;">
-    <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('modalSatuan').style.display='flex'" style="border-radius: 999px; font-size: 0.75rem; padding: 6px 12px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b;">
-      <i class="bi bi-tag-fill"></i> + Satuan
-    </button>
-  </div>
+  <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('modalSatuan').style.display='flex'" style="border-radius: 999px; font-size: 0.75rem; padding: 6px 14px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b;">
+    <i class="bi bi-tag-fill"></i> + Satuan
+  </button>
+</div>
+
+<!-- Judul di Dalam Konten -->
+<div class="page-title-box">
+  <h1 class="page-title">Data Barang</h1>
+  <p class="page-subtitle">Pendaftaran barang, part number & stok fisik gudang</p>
 </div>
 
 <form action="barang.php" method="POST" id="formBarang">
@@ -264,13 +264,13 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
   </div>
 </div>
 
-<!-- Daftar Master Barang & Part Number -->
+<!-- Daftar Barang -->
 <div class="ios-form-card" style="padding: 18px;">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 12px; flex-wrap: wrap;">
     <div class="ios-group-title" style="margin-bottom: 0;">
-      <i class="bi bi-boxes"></i> KATALOG MASTER BARANG & PART NUMBER (<?= count($barangs) ?> ITEM)
+      <i class="bi bi-boxes"></i> DAFTAR BARANG (<?= count($barangs) ?> ITEM)
     </div>
-    <input type="text" id="tableSearchInput" class="ios-input" placeholder="🔍 Cari P/N / nama / supplier..." style="max-width: 280px; padding: 8px 12px; font-size: 0.8rem;">
+    <input type="text" id="tableSearchInput" class="ios-input" placeholder="🔍 Cari barang..." style="max-width: 280px; padding: 8px 12px; font-size: 0.8rem;">
   </div>
 
   <div class="table-responsive">

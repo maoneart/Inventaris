@@ -418,11 +418,11 @@ class _HomeScreenState extends State<HomeScreen> {
         'targetTitle': 'Input Barang Keluar',
       },
       {
-        'title': 'Katalog P/N',
+        'title': 'Barang',
         'icon': Icons.layers_rounded,
         'color': const Color(0xFF0081A0), // Gojek Blue
         'target': 'barang.php',
-        'targetTitle': 'Data Barang & Part Number',
+        'targetTitle': 'Data Barang',
       },
       {
         'title': 'Supplier',

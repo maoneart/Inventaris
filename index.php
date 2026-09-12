@@ -148,7 +148,7 @@ try {
         <div class="gojek-circle-icon-web" style="background: #0081a0; color: #ffffff;">
           <i class="bi bi-boxes"></i>
         </div>
-        <div style="font-size: 0.72rem; font-weight: 700; color: #f1f5f9; text-align: center;">Katalog P/N</div>
+        <div style="font-size: 0.72rem; font-weight: 700; color: #f1f5f9; text-align: center;">Barang</div>
       </a>
 
       <!-- 4. GoSupplier -->

@@ -79,7 +79,7 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
       <div class="sidebar-section-title">Master Data & Supplier</div>
       <a href="barang.php" class="sidebar-link <?= $currPage === 'barang' ? 'active' : '' ?>">
         <i class="bi bi-boxes text-info"></i>
-        <span>Barang & Part Number</span>
+        <span>Data Barang</span>
       </a>
       <a href="supplier.php" class="sidebar-link <?= $currPage === 'supplier' ? 'active' : '' ?>">
         <i class="bi bi-truck text-warning"></i>
@@ -157,7 +157,7 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
         <i class="bi bi-box-arrow-up-right text-danger"></i> Keluar
       </a>
       <a href="barang.php" class="nav-pill <?= $currPage === 'barang' ? 'active' : '' ?>">
-        <i class="bi bi-boxes text-info"></i> Barang & P/N
+        <i class="bi bi-boxes text-info"></i> Barang
       </a>
       <a href="supplier.php" class="nav-pill <?= $currPage === 'supplier' ? 'active' : '' ?>">
         <i class="bi bi-truck text-warning"></i> Supplier

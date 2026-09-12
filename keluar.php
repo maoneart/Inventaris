@@ -151,16 +151,17 @@ $recentKeluar = $pdo->query("
 ")->fetchAll();
 ?>
 
-<!-- iPhone Style Navigation Header -->
-<div class="ios-nav-header">
+<!-- Header: Cuma Tombol Back Saja -->
+<div class="ios-nav-header-simple">
   <a href="index.php" class="ios-back-btn">
     <i class="bi bi-chevron-left"></i> Kembali
   </a>
-  <div class="ios-header-center">
-    <h1 class="ios-header-title">Barang Keluar</h1>
-    <p class="ios-header-subtitle">Pengeluaran Tools & Part ke PIC Teknisi</p>
-  </div>
-  <span class="badge badge-danger" style="font-size: 0.7rem;">STOCK OUT</span>
+</div>
+
+<!-- Judul di Dalam Konten -->
+<div class="page-title-box">
+  <h1 class="page-title">Barang Keluar</h1>
+  <p class="page-subtitle">Pengeluaran tools & part ke PIC teknisi</p>
 </div>
 
 <form action="keluar.php" method="POST" id="formKeluar">
