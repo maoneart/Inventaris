@@ -1,0 +1,19 @@
+# Environment & Sensitive Credentials
+*.env
+*.key
+credentials.json
+
+# Android Build artifacts
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+android/.idea/
+*.apk
+*.aab
+output_apk/
+
+# Logs & Temporary Files
+*.log
+uploads/temp/
+.DS_Store
