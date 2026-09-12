@@ -1,415 +1,586 @@
 <?php
-// app.php - Tampilan Dashboard APK Ala Gojek (Tanpa Slide Drawer Kiri)
-$pageTitle = "MaoneArt Gudang APK";
+// app.php - Tampilan Dashboard APK Pixel-Perfect Ala Gojek Superapp
+$pageTitle = "MaoneArt Gudang (Gojek Style)";
 require_once __DIR__ . '/config/database.php';
 
 $totalKritis = $pdo->query("SELECT COUNT(*) FROM barang WHERE stok_saat_ini <= stok_minimum")->fetchColumn();
 $totalItems = $pdo->query("SELECT COUNT(*) FROM barang")->fetchColumn();
 $namaGudang = getSetting('nama_gudang', 'Gudang Pusat Logistik');
+
+// Ambil 3 Transaksi Terakhir
+$recentActivity = $pdo->query("
+    (SELECT 'masuk' as tipe, tm.no_masuk as no_trx, s.nama_supplier as pihak, tm.total_qty as qty, tm.tanggal_masuk as tgl, tm.created_at
+     FROM transaksi_masuk tm JOIN supplier s ON tm.id_supplier = s.id)
+    UNION ALL
+    (SELECT 'keluar' as tipe, tk.no_keluar as no_trx, p.nama_pic as pihak, tk.total_qty as qty, tk.tanggal_keluar as tgl, tk.created_at
+     FROM transaksi_keluar tk JOIN pic p ON tk.id_pic = p.id)
+    ORDER BY created_at DESC LIMIT 3
+")->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>MaoneArt Gudang APK</title>
+  <title>MaoneArt Gudang</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#00aa13">
   <style>
+    :root {
+      --gojek-green: #00aa13;
+      --gojek-dark: #0f172a;
+      --gojek-card: #1e293b;
+      --gojek-border: rgba(255, 255, 255, 0.08);
+      --font: 'Plus Jakarta Sans', sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font);
+      -webkit-tap-highlight-color: transparent;
+    }
     body {
       background-color: #0b0f19;
-      padding-bottom: 30px;
+      color: #ffffff;
+      padding-bottom: 75px;
     }
-    .gojek-app-wrapper {
-      max-width: 480px;
+    .gojek-wrapper {
+      max-width: 440px;
       margin: 0 auto;
       padding: 0 16px;
     }
-    /* Top Bar Ala Gojek */
-    .gojek-top-bar {
+
+    /* 1. Header & Search Bar Ala Gojek */
+    .gojek-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 12px 16px 10px;
+      margin: 0 -16px 12px -16px;
+      border-bottom: 1px solid var(--gojek-border);
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 14px 0 10px;
     }
-    .gojek-search-box {
+    .gojek-search-pill {
       flex: 1;
-      height: 42px;
+      height: 40px;
       background: #1e293b;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
       display: flex;
       align-items: center;
       padding: 0 14px;
-      gap: 8px;
+      gap: 10px;
       text-decoration: none;
       color: #94a3b8;
       font-size: 0.82rem;
     }
-    .gojek-btn-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: #1e293b;
-      border: 1px solid rgba(255,255,255,0.08);
+    .gojek-avatar-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00aa13, #10b981);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #60a5fa;
-      text-decoration: none;
+      color: #ffffff;
       font-size: 1.1rem;
+      text-decoration: none;
+      flex-shrink: 0;
     }
 
-    /* Iklan Slider / Banner Carousel */
-    .carousel-container {
-      position: relative;
-      overflow: hidden;
+    /* 2. Kartu Saldo / GoPay Wallet Style */
+    .gopay-wallet-card {
+      background: #162033;
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 18px;
-      margin: 10px 0 14px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
-    .carousel-track {
+      padding: 14px 16px;
       display: flex;
-      transition: transform 0.4s ease-in-out;
-      width: 400%;
-    }
-    .carousel-slide {
-      width: 25%;
-      padding: 20px 18px;
-      display: flex;
+      align-items: center;
       justify-content: space-between;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    }
+    .gopay-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      padding-right: 14px;
+      min-width: 125px;
+    }
+    .gopay-title {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #60a5fa;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .gopay-value {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .gopay-sub {
+      font-size: 0.65rem;
+      color: #34d399;
+      font-weight: 600;
+    }
+    .gopay-actions {
+      display: flex;
+      gap: 12px;
+      flex: 1;
+      justify-content: space-around;
+      padding-left: 8px;
+    }
+    .gopay-action-btn {
+      display: flex;
+      flex-direction: column;
       align-items: center;
       text-decoration: none;
       color: #ffffff;
+      gap: 4px;
     }
-    .slide-in {
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-    }
-    .slide-out {
-      background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-    }
-    .slide-ai {
-      background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
-    }
-    .slide-rep {
-      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-    }
-    .carousel-dots {
+    .gopay-btn-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(37, 99, 235, 0.2);
+      border: 1px solid rgba(37, 99, 235, 0.4);
       display: flex;
+      align-items: center;
       justify-content: center;
-      gap: 5px;
-      margin-bottom: 20px;
+      font-size: 0.95rem;
+      color: #60a5fa;
     }
-    .carousel-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 3px;
-      background: #334155;
-      transition: all 0.3s;
-    }
-    .carousel-dot.active {
-      width: 20px;
-      background: #60a5fa;
+    .gopay-action-btn span {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #cbd5e1;
     }
 
-    /* Grid Menu Ala Gojek (4 Kolom) */
-    .gojek-grid {
+    /* 3. Grid 8 Tombol Ikon Layanan Ala Gojek */
+    .gojek-services-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px 8px;
+      gap: 18px 10px;
       margin-bottom: 24px;
     }
-    .gojek-item {
+    .gojek-service-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-decoration: none;
       gap: 6px;
     }
-    .gojek-icon-box {
+    .gojek-circle-icon {
       width: 52px;
       height: 52px;
-      border-radius: 16px;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.45rem;
-      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 1.5rem;
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
-    .gojek-item:active .gojek-icon-box {
-      transform: scale(0.92);
+    .gojek-service-item:active .gojek-circle-icon {
+      transform: scale(0.9);
     }
-    .gojek-icon-box.green { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
-    .gojek-icon-box.red { background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
-    .gojek-icon-box.blue { background: rgba(37, 99, 235, 0.18); color: #60a5fa; border: 1px solid rgba(37, 99, 235, 0.35); }
-    .gojek-icon-box.amber { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
-    .gojek-icon-box.cyan { background: rgba(6, 182, 212, 0.18); color: #38bdf8; border: 1px solid rgba(6, 182, 212, 0.35); }
-    .gojek-icon-box.purple { background: rgba(139, 92, 246, 0.18); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.35); }
-    .gojek-icon-box.slate { background: rgba(100, 116, 139, 0.18); color: #cbd5e1; border: 1px solid rgba(100, 116, 139, 0.35); }
-    .gojek-icon-box.indigo { background: rgba(79, 70, 229, 0.18); color: #818cf8; border: 1px solid rgba(79, 70, 229, 0.35); }
+    /* Warna Ikon Khas Layanan Gojek */
+    .icon-gomasuk { background: #00aa13; color: #ffffff; }     /* Gojek Green */
+    .icon-gokeluar { background: #ee2737; color: #ffffff; }    /* Gojek Red */
+    .icon-gobarang { background: #0081a0; color: #ffffff; }    /* Gojek Blue */
+    .icon-gosupplier { background: #df6b00; color: #ffffff; }  /* Gojek Orange */
+    .icon-gopic { background: #00a3a6; color: #ffffff; }       /* Teal */
+    .icon-goai { background: #8b5cf6; color: #ffffff; }        /* Purple */
+    .icon-golaporan { background: #475569; color: #ffffff; }   /* Slate */
+    .icon-goweb { background: #1e293b; color: #60a5fa; border: 1px solid rgba(255,255,255,0.15); }
 
-    .gojek-label {
+    .service-title {
       font-size: 0.72rem;
       font-weight: 700;
-      color: #ffffff;
+      color: #f1f5f9;
       text-align: center;
       line-height: 1.2;
     }
-    .gojek-sub {
-      font-size: 0.62rem;
-      color: #94a3b8;
-      text-align: center;
+
+    /* 4. Iklan Slider / Carousel Banner Ala Gojek */
+    .gojek-carousel-wrap {
+      margin-bottom: 24px;
+    }
+    .carousel-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    .carousel-slider-track {
+      display: flex;
+      transition: transform 0.4s ease;
+      width: 400%;
+    }
+    .carousel-slide-item {
+      width: 25%;
+      padding: 18px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      color: #ffffff;
+    }
+    .c-slide-1 { background: linear-gradient(135deg, #00aa13 0%, #059669 100%); }
+    .c-slide-2 { background: linear-gradient(135deg, #ee2737 0%, #b91c1c 100%); }
+    .c-slide-3 { background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); }
+    .c-slide-4 { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); }
+
+    .carousel-dot-row {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    .c-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 3px;
+      background: #334155;
+      transition: all 0.3s;
+    }
+    .c-dot.active {
+      width: 18px;
+      background: #00aa13;
     }
 
-    /* Gopay Style Status Card */
-    .gopay-card {
-      background: #161f30;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      padding: 14px 16px;
+    /* 5. Feed Aktivitas Terkini (Gojek Feed) */
+    .gojek-feed-section {
+      background: #162033;
+      border: 1px solid var(--gojek-border);
+      border-radius: 18px;
+      padding: 16px;
       margin-bottom: 20px;
     }
-    .gopay-row {
+    .feed-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .feed-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .feed-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    /* 6. Bottom Navigation Bar Ala Gojek (Dock) */
+    .gojek-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 62px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--gojek-border);
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      z-index: 100;
+      max-width: 440px;
+      margin: 0 auto;
     }
-    .gopay-stat {
+    .nav-tab {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-decoration: none;
-      color: #ffffff;
-      gap: 2px;
+      color: #64748b;
+      font-size: 0.65rem;
+      font-weight: 700;
+      gap: 3px;
     }
-    .gopay-stat i {
-      font-size: 1.1rem;
+    .nav-tab i {
+      font-size: 1.3rem;
+    }
+    .nav-tab.active {
+      color: #00aa13;
     }
   </style>
 </head>
 <body>
 
-<div class="gojek-app-wrapper">
+<div class="gojek-wrapper">
 
-  <!-- 1. Top Bar Ala Gojek -->
-  <div class="gojek-top-bar">
-    <div style="width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-      📦
-    </div>
-    <a href="index.php" class="gojek-search-box">
-      <i class="bi bi-search"></i>
-      <span>Cari barang / P/N / rak gudang...</span>
+  <!-- 1. Header & Search Bar Ala Gojek -->
+  <header class="gojek-header">
+    <a href="index.php" class="gojek-search-pill">
+      <i class="bi bi-search" style="color: #64748b; font-size: 1rem;"></i>
+      <span>Cari part number, barang, supplier...</span>
     </a>
-    <a href="index.php" class="gojek-btn-icon" title="Buka Web Dashboard">
-      <i class="bi bi-laptop"></i>
+    <a href="index.php" class="gojek-avatar-btn" title="Mode Web Portal">
+      <i class="bi bi-person-fill"></i>
     </a>
-  </div>
+  </header>
 
-  <!-- 2. Iklan Slider / Banner Carousel Ala Gojek -->
-  <div class="carousel-container">
-    <div class="carousel-track" id="carouselTrack">
-      <!-- Slide 1: Barang Masuk -->
-      <a href="masuk.php" class="carousel-slide slide-in">
-        <div>
-          <span style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.25); padding: 2px 7px; border-radius: 4px; letter-spacing: 0.05em;">STOCK IN</span>
-          <h2 style="font-size: 1.05rem; font-weight: 800; margin: 6px 0 2px;">Penerimaan Barang Masuk</h2>
-          <p style="font-size: 0.72rem; opacity: 0.9; margin: 0;">Input surat jalan dari supplier lebih cepat & akurat.</p>
+  <!-- 2. Kartu GoPay Wallet Style (Status Stok & Saldo Item) -->
+  <div class="gopay-wallet-card">
+    <div class="gopay-left">
+      <div class="gopay-title">
+        <i class="bi bi-box-seam-fill"></i> STOK GUDANG
+      </div>
+      <div class="gopay-value"><?= number_format($totalItems) ?> Part</div>
+      <div class="gopay-sub">
+        <i class="bi bi-check-circle-fill"></i> Realtime Aktif
+      </div>
+    </div>
+
+    <div class="gopay-actions">
+      <!-- Pintasan 1: Masuk -->
+      <a href="masuk.php" class="gopay-action-btn">
+        <div class="gopay-btn-icon" style="background: rgba(0, 170, 19, 0.15); color: #00aa13; border-color: rgba(0, 170, 19, 0.3);">
+          <i class="bi bi-arrow-down-left"></i>
         </div>
-        <div style="font-size: 2.2rem; opacity: 0.9;"><i class="bi bi-box-arrow-in-down"></i></div>
+        <span>Masuk</span>
       </a>
 
-      <!-- Slide 2: Barang Keluar -->
-      <a href="keluar.php" class="carousel-slide slide-out">
-        <div>
-          <span style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.25); padding: 2px 7px; border-radius: 4px; letter-spacing: 0.05em;">STOCK OUT</span>
-          <h2 style="font-size: 1.05rem; font-weight: 800; margin: 6px 0 2px;">Pengeluaran Tools & Material</h2>
-          <p style="font-size: 0.72rem; opacity: 0.9; margin: 0;">Catat pengambilan oleh teknisi / PIC kerja.</p>
+      <!-- Pintasan 2: Keluar -->
+      <a href="keluar.php" class="gopay-action-btn">
+        <div class="gopay-btn-icon" style="background: rgba(238, 39, 55, 0.15); color: #ee2737; border-color: rgba(238, 39, 55, 0.3);">
+          <i class="bi bi-arrow-up-right"></i>
         </div>
-        <div style="font-size: 2.2rem; opacity: 0.9;"><i class="bi bi-box-arrow-up-right"></i></div>
+        <span>Keluar</span>
       </a>
 
-      <!-- Slide 3: Tanya AI -->
-      <a href="tanya_ai.php" class="carousel-slide slide-ai">
-        <div>
-          <span style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.25); padding: 2px 7px; border-radius: 4px; letter-spacing: 0.05em;">AI ASSISTANT</span>
-          <h2 style="font-size: 1.05rem; font-weight: 800; margin: 6px 0 2px;">Si-nya: Asisten AI Gudang</h2>
-          <p style="font-size: 0.72rem; opacity: 0.9; margin: 0;">Tanya stok natural & buat draf laporan otomatis.</p>
+      <!-- Pintasan 3: Tanya AI -->
+      <a href="tanya_ai.php" class="gopay-action-btn">
+        <div class="gopay-btn-icon" style="background: rgba(139, 92, 246, 0.15); color: #c084fc; border-color: rgba(139, 92, 246, 0.3);">
+          <i class="bi bi-robot"></i>
         </div>
-        <div style="font-size: 2.2rem; opacity: 0.9;"><i class="bi bi-robot"></i></div>
+        <span>Tanya AI</span>
       </a>
 
-      <!-- Slide 4: Laporan Mutasi -->
-      <a href="laporan.php" class="carousel-slide slide-rep">
-        <div>
-          <span style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.25); padding: 2px 7px; border-radius: 4px; letter-spacing: 0.05em;">LAPORAN</span>
-          <h2 style="font-size: 1.05rem; font-weight: 800; margin: 6px 0 2px;">Rekapitulasi Arus Barang</h2>
-          <p style="font-size: 0.72rem; opacity: 0.9; margin: 0;">Cetak format PDF & unduh Excel siap audit.</p>
+      <!-- Pintasan 4: Cetak -->
+      <a href="export.php?type=stok_pdf" target="_blank" class="gopay-action-btn">
+        <div class="gopay-btn-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.3);">
+          <i class="bi bi-printer"></i>
         </div>
-        <div style="font-size: 2.2rem; opacity: 0.9;"><i class="bi bi-file-earmark-text"></i></div>
+        <span>Cetak</span>
       </a>
     </div>
   </div>
 
-  <!-- Carousel Dots Indicator -->
-  <div class="carousel-dots" id="carouselDots">
-    <div class="carousel-dot active"></div>
-    <div class="carousel-dot"></div>
-    <div class="carousel-dot"></div>
-    <div class="carousel-dot"></div>
-  </div>
-
-  <!-- 3. Grid Tombol Menu Ala Gojek (4 Kolom Ikon Bersih) -->
-  <div style="font-size: 0.72rem; font-weight: 800; color: #64748b; letter-spacing: 0.06em; margin-bottom: 12px;">
-    MENU LAYANAN GUDANG
-  </div>
-
-  <div class="gojek-grid">
-    <!-- 1. Barang Masuk -->
-    <a href="masuk.php" class="gojek-item">
-      <div class="gojek-icon-box green">
+  <!-- 3. Grid 8 Tombol Ikon Layanan Persis Gojek (GoMasuk, GoKeluar, dll) -->
+  <div class="gojek-services-grid">
+    <!-- 1. GoMasuk -->
+    <a href="masuk.php" class="gojek-service-item">
+      <div class="gojek-circle-icon icon-gomasuk">
         <i class="bi bi-box-arrow-in-down"></i>
       </div>
-      <div class="gojek-label">Brg Masuk</div>
-      <div class="gojek-sub">Supplier</div>
+      <div class="service-title">Brg Masuk</div>
     </a>
 
-    <!-- 2. Barang Keluar -->
-    <a href="keluar.php" class="gojek-item">
-      <div class="gojek-icon-box red">
+    <!-- 2. GoKeluar -->
+    <a href="keluar.php" class="gojek-service-item">
+      <div class="gojek-circle-icon icon-gokeluar">
         <i class="bi bi-box-arrow-up-right"></i>
       </div>
-      <div class="gojek-label">Brg Keluar</div>
-      <div class="gojek-sub">Ke PIC</div>
+      <div class="service-title">Brg Keluar</div>
     </a>
 
-    <!-- 3. Data Barang & P/N -->
-    <a href="barang.php" class="gojek-item">
-      <div class="gojek-icon-box blue">
+    <!-- 3. GoBarang -->
+    <a href="barang.php" class="gojek-service-item">
+      <div class="gojek-circle-icon icon-gobarang">
         <i class="bi bi-boxes"></i>
       </div>
-      <div class="gojek-label">Data Barang</div>
-      <div class="gojek-sub">Katalog & P/N</div>
+      <div class="service-title">Katalog P/N</div>
     </a>
 
-    <!-- 4. Data Supplier -->
-    <a href="supplier.php" class="gojek-item">
-      <div class="gojek-icon-box amber">
+    <!-- 4. GoSupplier -->
+    <a href="supplier.php" class="gojek-service-item">
+      <div class="gojek-circle-icon icon-gosupplier">
         <i class="bi bi-truck"></i>
       </div>
-      <div class="gojek-label">Supplier</div>
-      <div class="gojek-sub">Rekanan</div>
+      <div class="service-title">Supplier</div>
     </a>
 
-    <!-- 5. Data PIC -->
-    <a href="pic.php" class="gojek-item">
-      <div class="gojek-icon-box cyan">
+    <!-- 5. GoPIC -->
+    <a href="pic.php" class="gojek-service-item">
+      <div class="gojek-circle-icon icon-gopic">
         <i class="bi bi-people-fill"></i>
       </div>
-      <div class="gojek-label">Data PIC</div>
-      <div class="gojek-sub">Peminta Tools</div>
+      <div class="service-title">Data PIC</div>
     </a>
 
-    <!-- 6. Tanya AI -->
-    <a href="tanya_ai.php" class="gojek-item">
-      <div class="gojek-icon-box purple">
+    <!-- 6. GoAI -->
+    <a href="tanya_ai.php" class="gojek-service-item">
+      <div class="gojek-circle-icon icon-goai">
         <i class="bi bi-robot"></i>
       </div>
-      <div class="gojek-label">Tanya AI</div>
-      <div class="gojek-sub">Si-nya Asisten</div>
+      <div class="service-title">Tanya AI</div>
     </a>
 
-    <!-- 7. Laporan Mutasi -->
-    <a href="laporan.php" class="gojek-item">
-      <div class="gojek-icon-box slate">
+    <!-- 7. GoLaporan -->
+    <a href="laporan.php" class="gojek-service-item">
+      <div class="gojek-circle-icon icon-golaporan">
         <i class="bi bi-file-earmark-bar-graph"></i>
       </div>
-      <div class="gojek-label">Laporan</div>
-      <div class="gojek-sub">Mutasi Arus</div>
+      <div class="service-title">Laporan</div>
     </a>
 
-    <!-- 8. Web Portal -->
-    <a href="index.php" class="gojek-item">
-      <div class="gojek-icon-box indigo">
-        <i class="bi bi-grid-1x2-fill"></i>
+    <!-- 8. Lainnya / Web Portal -->
+    <a href="index.php" class="gojek-service-item">
+      <div class="gojek-circle-icon icon-goweb">
+        <i class="bi bi-grid-fill"></i>
       </div>
-      <div class="gojek-label">Web Portal</div>
-      <div class="gojek-sub">Dashboard</div>
+      <div class="service-title">Lainnya</div>
     </a>
   </div>
 
-  <!-- 4. Gopay Style Status Card -->
-  <div class="gopay-card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-      <div style="display: flex; align-items: center; gap: 6px;">
-        <i class="bi bi-geo-alt-fill text-primary"></i>
-        <span style="font-size: 0.82rem; font-weight: 700; color: #ffffff;"><?= htmlspecialchars($namaGudang) ?></span>
+  <!-- 4. Iklan Slider / Carousel Banner Ala Gojek Promo -->
+  <div class="gojek-carousel-wrap">
+    <div class="carousel-card">
+      <div class="carousel-slider-track" id="cTrack">
+        <!-- Banner 1: Masuk -->
+        <a href="masuk.php" class="carousel-slide-item c-slide-1">
+          <div>
+            <div style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.2); display: inline-block; padding: 2px 6px; border-radius: 4px; margin-bottom: 4px;">STOCK IN</div>
+            <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px;">Penerimaan Kiriman</h3>
+            <p style="font-size: 0.72rem; opacity: 0.9;">Catat no surat jalan & multi-item cepat.</p>
+          </div>
+          <i class="bi bi-box-arrow-in-down" style="font-size: 2.2rem; opacity: 0.85;"></i>
+        </a>
+
+        <!-- Banner 2: Keluar -->
+        <a href="keluar.php" class="carousel-slide-item c-slide-2">
+          <div>
+            <div style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.2); display: inline-block; padding: 2px 6px; border-radius: 4px; margin-bottom: 4px;">STOCK OUT</div>
+            <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px;">Pengeluaran Tools & Part</h3>
+            <p style="font-size: 0.72rem; opacity: 0.9;">Otomatis mengurangi stok fisik.</p>
+          </div>
+          <i class="bi bi-box-arrow-up-right" style="font-size: 2.2rem; opacity: 0.85;"></i>
+        </a>
+
+        <!-- Banner 3: AI -->
+        <a href="tanya_ai.php" class="carousel-slide-item c-slide-3">
+          <div>
+            <div style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.2); display: inline-block; padding: 2px 6px; border-radius: 4px; margin-bottom: 4px;">SI-NYA AI</div>
+            <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px;">Asisten Pintar Gudang</h3>
+            <p style="font-size: 0.72rem; opacity: 0.9;">Tanya sisa stok & minta draf laporan.</p>
+          </div>
+          <i class="bi bi-robot" style="font-size: 2.2rem; opacity: 0.85;"></i>
+        </a>
+
+        <!-- Banner 4: Laporan -->
+        <a href="laporan.php" class="carousel-slide-item c-slide-4">
+          <div>
+            <div style="font-size: 0.65rem; font-weight: 800; background: rgba(0,0,0,0.2); display: inline-block; padding: 2px 6px; border-radius: 4px; margin-bottom: 4px;">DOKUMEN</div>
+            <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 2px;">Cetak Dokumen Resmi</h3>
+            <p style="font-size: 0.72rem; opacity: 0.9;">Format Excel & PDF siap audit kantor.</p>
+          </div>
+          <i class="bi bi-printer" style="font-size: 2.2rem; opacity: 0.85;"></i>
+        </a>
       </div>
-      <span class="badge badge-success" style="font-size: 0.65rem;"><i class="bi bi-wifi"></i> SERVER OK</span>
     </div>
 
-    <div class="gopay-row">
-      <a href="index.php" class="gopay-stat">
-        <i class="bi bi-boxes text-info"></i>
-        <span style="font-size: 0.85rem; font-weight: 800;"><?= number_format($totalItems) ?></span>
-        <span style="font-size: 0.65rem; color: #94a3b8;">Total Barang</span>
-      </a>
-
-      <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.08);"></div>
-
-      <a href="tanya_ai.php" class="gopay-stat">
-        <i class="bi bi-exclamation-triangle-fill <?= $totalKritis > 0 ? 'text-danger' : 'text-success' ?>"></i>
-        <span style="font-size: 0.85rem; font-weight: 800; <?= $totalKritis > 0 ? 'color: #f87171;' : '' ?>"><?= number_format($totalKritis) ?></span>
-        <span style="font-size: 0.65rem; color: #94a3b8;">Stok Menipis</span>
-      </a>
-
-      <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.08);"></div>
-
-      <a href="export.php?type=stok_pdf" target="_blank" class="gopay-stat">
-        <i class="bi bi-printer-fill text-warning"></i>
-        <span style="font-size: 0.85rem; font-weight: 800;">PDF/XLS</span>
-        <span style="font-size: 0.65rem; color: #94a3b8;">Unduh Cepat</span>
-      </a>
+    <!-- Dots -->
+    <div class="carousel-dot-row" id="cDots">
+      <div class="c-dot active"></div>
+      <div class="c-dot"></div>
+      <div class="c-dot"></div>
+      <div class="c-dot"></div>
     </div>
   </div>
 
-  <!-- 5. Banner Cepat Tanya AI Bawah -->
-  <a href="tanya_ai.php" style="display: flex; align-items: center; gap: 12px; padding: 14px; background: linear-gradient(135deg, rgba(139,92,246,0.15) 0%, rgba(30,41,59,0.8) 100%); border: 1px solid rgba(139,92,246,0.3); border-radius: 14px; text-decoration: none; color: #ffffff;">
-    <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(139,92,246,0.25); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #c084fc;">
-      🤖
+  <!-- 5. Feed Aktivitas Terakhir (Gojek Feed) -->
+  <div class="gojek-feed-section">
+    <div class="feed-header">
+      <div style="font-size: 0.82rem; font-weight: 800; color: #ffffff;">Aktivitas Terkini Gudang</div>
+      <a href="laporan.php" style="font-size: 0.72rem; color: #00aa13; text-decoration: none; font-weight: 700;">Lihat Semua</a>
     </div>
-    <div style="flex: 1;">
-      <div style="font-weight: 700; font-size: 0.85rem;">Butuh Rekap Cepat?</div>
-      <div style="font-size: 0.72rem; color: #94a3b8;">Tanya Si-nya AI untuk ringkasan barang masuk & keluar</div>
-    </div>
-    <i class="bi bi-chevron-right text-purple"></i>
-  </a>
+
+    <?php if (!empty($recentActivity)): ?>
+      <?php foreach ($recentActivity as $act): 
+        $isIn = $act['tipe'] === 'masuk';
+      ?>
+        <div class="feed-item">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 32px; height: 32px; border-radius: 10px; background: <?= $isIn ? 'rgba(0, 170, 19, 0.2)' : 'rgba(238, 39, 55, 0.2)' ?>; color: <?= $isIn ? '#00aa13' : '#ee2737' ?>; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;">
+              <i class="bi <?= $isIn ? 'bi-box-arrow-in-down' : 'bi-box-arrow-up-right' ?>"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.78rem; font-weight: 700; color: #ffffff;"><?= htmlspecialchars($act['pihak']) ?></div>
+              <div style="font-size: 0.68rem; color: #94a3b8;"><?= htmlspecialchars($act['no_trx']) ?> • <?= date('d M', strtotime($act['tgl'])) ?></div>
+            </div>
+          </div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: <?= $isIn ? '#34d399' : '#f87171' ?>;">
+            <?= $isIn ? '+' : '-' ?><?= formatStok($act['qty']) ?>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <p style="font-size: 0.75rem; color: #64748b; text-align: center; padding: 10px 0;">Belum ada riwayat transaksi.</p>
+    <?php endif; ?>
+  </div>
 
 </div>
 
-<script>
-// Auto Slider Carousel Ala Iklan Gojek
-document.addEventListener('DOMContentLoaded', () => {
-  const track = document.getElementById('carouselTrack');
-  const dots = document.querySelectorAll('.carousel-dot');
-  let currentSlide = 0;
-  const totalSlides = 4;
+<!-- 6. Bottom Navigation Bar Ala Gojek (Dock Bawah) -->
+<nav class="gojek-bottom-nav">
+  <a href="app.php" class="nav-tab active">
+    <i class="bi bi-house-door-fill"></i>
+    <span>Beranda</span>
+  </a>
+  <a href="masuk.php" class="nav-tab">
+    <i class="bi bi-box-arrow-in-down"></i>
+    <span>Masuk</span>
+  </a>
+  <a href="tanya_ai.php" class="nav-tab">
+    <i class="bi bi-robot"></i>
+    <span>Tanya AI</span>
+  </a>
+  <a href="keluar.php" class="nav-tab">
+    <i class="bi bi-box-arrow-up-right"></i>
+    <span>Keluar</span>
+  </a>
+  <a href="index.php" class="nav-tab">
+    <i class="bi bi-grid-1x2-fill"></i>
+    <span>Web</span>
+  </a>
+</nav>
 
-  function goToSlide(index) {
-    currentSlide = index;
-    track.style.transform = `translateX(-${currentSlide * 25}%)`;
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('active', i === currentSlide);
-    });
+<script>
+// Auto Carousel Banner Slider Ala Gojek Promo
+document.addEventListener('DOMContentLoaded', () => {
+  const track = document.getElementById('cTrack');
+  const dots = document.querySelectorAll('.c-dot');
+  let current = 0;
+  const total = 4;
+
+  function setSlide(idx) {
+    current = idx;
+    track.style.transform = `translateX(-${current * 25}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
   }
 
   setInterval(() => {
-    let next = (currentSlide + 1) % totalSlides;
-    goToSlide(next);
+    let next = (current + 1) % total;
+    setSlide(next);
   }, 4000);
 });
 </script>
