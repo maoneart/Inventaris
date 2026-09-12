@@ -361,18 +361,18 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <!-- Section 2: Tampilan & AI -->
   <div class="ios-section-label">TAMPILAN & KECERDASAN BUATAN</div>
   <div class="ios-group-card">
-    <a href="pengaturan.php?sub=tema" class="ios-item-row">
-      <div class="ios-item-icon" style="background: #AF52DE;">
-        <i class="bi bi-palette-fill"></i>
+    <div class="ios-item-row" onclick="toggleWhiteMode()" style="cursor: pointer;">
+      <div class="ios-item-icon" id="themeIconBox" style="background: #AF52DE;">
+        <i class="bi bi-sun-fill" id="themeIcon"></i>
       </div>
       <div class="ios-item-content">
-        <div class="ios-item-title">Tema Tampilan Sistem</div>
-        
+        <div class="ios-item-title">Mode White</div>
       </div>
       <div class="ios-item-trailing">
+        <span id="themeStatusText" style="font-size: 0.88rem; font-weight: 700; color: #007AFF;">On</span>
         <i class="bi bi-chevron-right"></i>
       </div>
-    </a>
+    </div>
 
     <a href="pengaturan.php?sub=ai" class="ios-item-row">
       <div class="ios-item-icon" style="background: #5856D6;">
@@ -984,6 +984,31 @@ function confirmResetTrans() {
   });
 }
 
+
+function toggleWhiteMode() {
+  const currentTheme = localStorage.getItem('maoneart_theme') || 'dark';
+  const newTheme = (currentTheme === 'light') ? 'dark' : 'light';
+  setAppTheme(newTheme);
+  updateThemeStatusDisplay();
+}
+
+function updateThemeStatusDisplay() {
+  const currentTheme = localStorage.getItem('maoneart_theme') || 'dark';
+  const txt = document.getElementById('themeStatusText');
+  const icon = document.getElementById('themeIcon');
+  const iconBox = document.getElementById('themeIconBox');
+  const isLight = (currentTheme === 'light');
+
+  if (txt) {
+    txt.textContent = isLight ? 'On' : 'Off';
+    txt.style.color = isLight ? '#007AFF' : '#8E8E93';
+  }
+  if (icon && iconBox) {
+    icon.className = isLight ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+    iconBox.style.background = isLight ? '#f59e0b' : '#AF52DE';
+  }
+}
+
 function updateThemeVisuals() {
   const currentTheme = localStorage.getItem('maoneart_theme') || 'dark';
   const darkCard = document.getElementById('themeCardDark');
@@ -1001,6 +1026,7 @@ function updateThemeVisuals() {
 document.addEventListener('DOMContentLoaded', () => {
   loadSavedToken();
   updateThemeVisuals();
+  updateThemeStatusDisplay();
 });
 </script>
 

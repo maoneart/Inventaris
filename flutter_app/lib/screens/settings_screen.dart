@@ -23,6 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late String _currentUrl;
   bool _rejectOffline = true;
   bool _stockAlert = true;
+  bool _whiteMode = false;
 
   @override
   void initState() {
@@ -36,6 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       _rejectOffline = prefs.getBool('reject_offline') ?? true;
       _stockAlert = prefs.getBool('stock_alert') ?? true;
+      _whiteMode = prefs.getBool('white_mode') ?? false;
     });
   }
 
@@ -235,6 +237,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 iconBgColor: const Color(0xFF34C759), // iOS Green
                 title: 'Lokasi Operasional',
                 showChevron: true,
+              ),
+              _buildDivider(),
+              _buildIosTile(
+                icon: _whiteMode ? CupertinoIcons.sun_max_fill : CupertinoIcons.moon_stars_fill,
+                iconBgColor: _whiteMode ? const Color(0xFFFF9500) : const Color(0xFFAF52DE),
+                title: 'Mode White',
+                trailingText: _whiteMode ? 'On' : 'Off',
+                showChevron: true,
+                onTap: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  final next = !_whiteMode;
+                  await prefs.setBool('white_mode', next);
+                  setState(() => _whiteMode = next);
+                },
               ),
             ],
           ),
