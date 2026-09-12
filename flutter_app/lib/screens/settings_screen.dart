@@ -226,7 +226,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: CupertinoIcons.wifi,
                 iconBgColor: const Color(0xFF007AFF), // iOS Blue
                 title: 'Pengaturan Jaringan & Server',
-                subtitle: _formatUrlDisplay(_currentUrl),
                 onTap: _openNetworkSettings,
                 showChevron: true,
               ),
@@ -235,7 +234,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: CupertinoIcons.building_2_fill,
                 iconBgColor: const Color(0xFF34C759), // iOS Green
                 title: 'Lokasi Operasional',
-                trailingText: 'Gudang Karang Satria',
+                showChevron: true,
               ),
             ],
           ),
@@ -248,7 +247,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: CupertinoIcons.shield_lefthalf_fill,
                 iconBgColor: const Color(0xFFFF9500), // iOS Orange
                 title: 'Tolak Input Saat Offline',
-                subtitle: 'Cegah tabrakan data jika WiFi putus',
                 value: _rejectOffline,
                 onChanged: _setRejectOffline,
               ),
@@ -257,7 +255,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: CupertinoIcons.bell_fill,
                 iconBgColor: const Color(0xFFFF3B30), // iOS Red
                 title: 'Peringatan Stok Minimum',
-                subtitle: 'Tandai part yang hampir habis',
                 value: _stockAlert,
                 onChanged: _setStockAlert,
               ),
@@ -271,8 +268,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildIosTile(
                 icon: CupertinoIcons.play_rectangle_fill,
                 iconBgColor: const Color(0xFFAF52DE), // iOS Purple
-                title: 'Panduan Aplikasi (3 Slide)',
-                subtitle: 'Lihat kembali intro pengenalan fitur',
+                title: 'Panduan Aplikasi',
                 onTap: () {
                   Navigator.push(
                     context,
@@ -285,8 +281,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildIosTile(
                 icon: CupertinoIcons.info_circle_fill,
                 iconBgColor: const Color(0xFF5856D6), // iOS Indigo
-                title: 'Tentang Aplikasi (About)',
-                subtitle: 'MaoneArt Gudang v1.0.0',
+                title: 'Tentang MaoneArt Inventory',
                 onTap: _showAboutDialog,
                 showChevron: true,
               ),
@@ -450,12 +445,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required IconData icon,
     required Color iconBgColor,
     required String title,
-    required String subtitle,
     required bool value,
     required ValueChanged<bool> onChanged,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       child: Row(
         children: [
           Container(
@@ -469,26 +463,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const SizedBox(width: 14),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF8E8E93),
-                  ),
-                ),
-              ],
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
             ),
           ),
           CupertinoSwitch(

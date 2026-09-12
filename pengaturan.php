@@ -330,9 +330,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
       <div class="ios-item-content">
         <div style="font-size: 1.05rem; font-weight: 700; color: var(--text-main);">Petugas Gudang Pabrik</div>
-        <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
-          Operator Lapangan • <?= htmlspecialchars($currNamaGudang) ?>
-        </div>
+        
       </div>
       <div class="ios-item-trailing">
         <span class="badge <?= $pdo ? 'badge-success' : 'badge-danger' ?>" style="font-size: 0.7rem; padding: 4px 8px;">
@@ -351,10 +349,10 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
       <div class="ios-item-content">
         <div class="ios-item-title">Koneksi Server & Database</div>
-        <div class="ios-item-subtitle"><?= htmlspecialchars($host) ?>:<?= htmlspecialchars($port) ?> • <?= htmlspecialchars($dbname) ?></div>
+        
       </div>
       <div class="ios-item-trailing">
-        <span style="color: #059669; font-weight: 600;"><?= $pdo ? 'Terhubung' : 'Terputus' ?></span>
+        
         <i class="bi bi-chevron-right"></i>
       </div>
     </a>
@@ -369,7 +367,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
       <div class="ios-item-content">
         <div class="ios-item-title">Tema Tampilan Sistem</div>
-        <div class="ios-item-subtitle">Mode Gelap (Dark Navy) & Mode Terang (Clean White)</div>
+        
       </div>
       <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
@@ -382,7 +380,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
       <div class="ios-item-content">
         <div class="ios-item-title">Kecerdasan Buatan (Si-nya AI)</div>
-        <div class="ios-item-subtitle">API Key Google Gemini • Asisten Logistik Lapangan</div>
+        
       </div>
       <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
@@ -399,7 +397,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
       <div class="ios-item-content">
         <div class="ios-item-title">Identitas Gudang & Kantor</div>
-        <div class="ios-item-subtitle"><?= htmlspecialchars($currNamaKantor) ?> • <?= htmlspecialchars($currNamaGudang) ?></div>
+        
       </div>
       <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
@@ -416,7 +414,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
       <div class="ios-item-content">
         <div class="ios-item-title">Panduan Aplikasi (3 Langkah)</div>
-        <div class="ios-item-subtitle">Tutorial cara catat barang masuk, barang keluar & AI</div>
+        
       </div>
       <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
@@ -429,7 +427,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
       <div class="ios-item-content">
         <div class="ios-item-title">Tentang MaoneArt Inventory</div>
-        <div class="ios-item-subtitle">Versi 2.0.0 Enterprise • Pengembang Hermawan</div>
+        
       </div>
       <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
@@ -446,7 +444,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
       </div>
       <div class="ios-item-content">
         <div class="ios-item-title" style="color: #ef4444;">Pemeliharaan & Zona Bahaya</div>
-        <div class="ios-item-subtitle">Backup SQL, phpMyAdmin & Reset Riwayat Data</div>
+        
       </div>
       <div class="ios-item-trailing">
         <i class="bi bi-chevron-right"></i>
