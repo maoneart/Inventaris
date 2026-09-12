@@ -12,17 +12,17 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
 
 </main> <!-- End .main-wrapper -->
 
-<!-- Mobile Bottom Dock (Khusus Layar HP) -->
+<!-- Mobile Bottom Dock (Khusus Layar HP: Home, Masuk, Tanya AI, Keluar, Pengaturan) -->
 <nav class="mobile-dock">
-  <a href="index.php" class="dock-item <?= in_array($currPage, ['index', '']) ? 'active' : '' ?>">
-    <i class="bi bi-grid-1x2-fill"></i>
-    <span>Stok</span>
+  <a href="index.php" class="dock-item <?= in_array($currPage, ['index', 'app', '']) ? 'active' : '' ?>">
+    <i class="bi bi-house-door-fill"></i>
+    <span>Home</span>
   </a>
   <a href="masuk.php" class="dock-item <?= $currPage === 'masuk' ? 'active' : '' ?>">
     <i class="bi bi-box-arrow-in-down"></i>
     <span>Masuk</span>
   </a>
-  <a href="tanya_ai.php" class="dock-item dock-highlight" title="Tanya Si-nya">
+  <a href="tanya_ai.php" class="dock-item <?= $currPage === 'tanya_ai' ? 'active' : '' ?> dock-highlight" title="Tanya Si-nya">
     <i class="bi bi-robot"></i>
     <span>Tanya AI</span>
   </a>
@@ -30,9 +30,9 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
     <i class="bi bi-box-arrow-up-right"></i>
     <span>Keluar</span>
   </a>
-  <a href="barang.php" class="dock-item <?= $currPage === 'barang' ? 'active' : '' ?>">
-    <i class="bi bi-boxes"></i>
-    <span>Barang</span>
+  <a href="pengaturan.php" class="dock-item <?= $currPage === 'pengaturan' ? 'active' : '' ?>">
+    <i class="bi bi-gear-fill"></i>
+    <span>Pengaturan</span>
   </a>
 </nav>
 

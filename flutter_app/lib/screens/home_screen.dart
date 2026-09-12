@@ -721,11 +721,11 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavTabItem(icon: Icons.home_filled, label: 'Beranda', active: true, onTap: () {}),
+          _buildNavTabItem(icon: Icons.home_filled, label: 'Home', active: true, onTap: () {}),
           _buildNavTabItem(icon: Icons.input_rounded, label: 'Masuk', active: false, onTap: () => _openPage('masuk.php', 'Input Masuk')),
           _buildNavTabItem(icon: Icons.smart_toy_rounded, label: 'Tanya AI', active: false, onTap: () => _openPage('tanya_ai.php', 'Tanya AI')),
           _buildNavTabItem(icon: Icons.output_rounded, label: 'Keluar', active: false, onTap: () => _openPage('keluar.php', 'Input Keluar')),
-          _buildNavTabItem(icon: Icons.grid_view_rounded, label: 'Web', active: false, onTap: () => _openPage('index.php', 'Web Portal')),
+          _buildNavTabItem(icon: Icons.settings_rounded, label: 'Pengaturan', active: false, onTap: () => _openPage('pengaturan.php', 'Pengaturan')),
         ],
       ),
     );

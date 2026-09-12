@@ -544,7 +544,7 @@ $recentActivity = $pdo->query("
 <nav class="gojek-bottom-nav">
   <a href="app.php" class="nav-tab active">
     <i class="bi bi-house-door-fill"></i>
-    <span>Beranda</span>
+    <span>Home</span>
   </a>
   <a href="masuk.php" class="nav-tab">
     <i class="bi bi-box-arrow-in-down"></i>
@@ -558,9 +558,9 @@ $recentActivity = $pdo->query("
     <i class="bi bi-box-arrow-up-right"></i>
     <span>Keluar</span>
   </a>
-  <a href="index.php" class="nav-tab">
-    <i class="bi bi-grid-1x2-fill"></i>
-    <span>Web</span>
+  <a href="pengaturan.php" class="nav-tab">
+    <i class="bi bi-gear-fill"></i>
+    <span>Pengaturan</span>
   </a>
 </nav>
 

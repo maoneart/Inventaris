@@ -6,6 +6,22 @@ $type = $_GET['type'] ?? 'stok_excel';
 $namaKantor = getSetting('nama_kantor', 'PT MaoneArt Teknologi Presisi');
 $namaGudang = getSetting('nama_gudang', 'Gudang Pusat & Workshop Logistik');
 
+// 0. Backup Database SQL
+if ($type === 'backup_db') {
+    $sqlFile = __DIR__ . '/db_inventaris.sql';
+    if (file_exists($sqlFile)) {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/sql');
+        header('Content-Disposition: attachment; filename="Backup_db_inventaris_' . date('Ymd_His') . '.sql"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($sqlFile));
+        readfile($sqlFile);
+        exit;
+    }
+}
+
 // 1. Ekspor Stok Aktual ke Excel
 if ($type === 'stok_excel') {
     $filename = "Aktual_Stok_Gudang_" . date('Ymd_His') . ".xls";

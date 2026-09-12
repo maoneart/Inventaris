@@ -104,9 +104,13 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
       </a>
     </div>
 
-    <!-- Group 5: Akses Khusus -->
+    <!-- Group 5: Pengaturan & APK -->
     <div>
-      <div class="sidebar-section-title">Aplikasi Mobile</div>
+      <div class="sidebar-section-title">Sistem & Pengaturan</div>
+      <a href="pengaturan.php" class="sidebar-link <?= $currPage === 'pengaturan' ? 'active' : '' ?>">
+        <i class="bi bi-gear-fill text-warning"></i>
+        <span>Pengaturan Sistem</span>
+      </a>
       <a href="app.php" class="sidebar-link <?= $currPage === 'app' ? 'active' : '' ?>">
         <i class="bi bi-phone-fill text-info"></i>
         <span>Mode Khusus APK HP</span>
@@ -116,7 +120,7 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
 
   <!-- Sidebar Footer -->
   <div class="sidebar-footer">
-    <span>v1.0.0 Enterprise</span>
+    <span>v2.0.0 Enterprise</span>
     <span style="color: #34d399;"><i class="bi bi-wifi"></i> Online Local</span>
   </div>
 </aside>
@@ -144,7 +148,7 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
     <!-- Desktop Menu Shortcut Pills -->
     <nav class="desktop-menu">
       <a href="index.php" class="nav-pill <?= in_array($currPage, ['index', '']) ? 'active' : '' ?>">
-        <i class="bi bi-grid-1x2-fill"></i> Stok
+        <i class="bi bi-grid-1x2-fill"></i> Home
       </a>
       <a href="masuk.php" class="nav-pill <?= $currPage === 'masuk' ? 'active' : '' ?>">
         <i class="bi bi-box-arrow-in-down text-success"></i> Masuk
@@ -160,6 +164,9 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
       </a>
       <a href="pic.php" class="nav-pill <?= $currPage === 'pic' ? 'active' : '' ?>">
         <i class="bi bi-people-fill text-purple"></i> PIC
+      </a>
+      <a href="pengaturan.php" class="nav-pill <?= $currPage === 'pengaturan' ? 'active' : '' ?>">
+        <i class="bi bi-gear-fill"></i> Pengaturan
       </a>
     </nav>
 
