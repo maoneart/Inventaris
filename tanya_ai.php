@@ -9,7 +9,7 @@ require_once __DIR__ . '/includes/header.php';
   <a href="index.php" class="ios-back-btn">
     <i class="bi bi-chevron-left"></i> Kembali
   </a>
-  <button type="button" id="btnOpenTokenModal" class="btn btn-secondary btn-sm" style="border-radius: 999px; font-size: 0.75rem; padding: 6px 14px; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); color: #c084fc;">
+  <button type="button" id="btnOpenTokenModal" class="btn-pill-action btn-pill-purple">
     <i class="bi bi-key-fill text-warning"></i> <span id="tokenStatusText">Atur Token</span>
   </button>
 </div>

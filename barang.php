@@ -104,7 +104,7 @@ $saranKode = 'BRG-' . str_pad($nextNum, 3, '0', STR_PAD_LEFT);
   <a href="index.php" class="ios-back-btn">
     <i class="bi bi-chevron-left"></i> Kembali
   </a>
-  <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('modalSatuan').style.display='flex'" style="border-radius: 999px; font-size: 0.75rem; padding: 6px 14px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b;">
+  <button type="button" class="btn-pill-action btn-pill-amber" onclick="document.getElementById('modalSatuan').style.display='flex'">
     <i class="bi bi-tag-fill"></i> + Satuan
   </button>
 </div>

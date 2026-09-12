@@ -152,7 +152,7 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
     <div>
       <label class="ios-label">Status Server Local</label>
-      <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 11px 14px; display: flex; align-items: center; gap: 8px; font-weight: 700; color: #34d399; font-size: 0.88rem;">
+      <div class="server-status-box">
         <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; display: inline-block; box-shadow: 0 0 10px #10b981;"></span>
         Online Apache Port 8085
       </div>
@@ -160,18 +160,18 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
 
     <div>
       <label class="ios-label">Alamat Akses Saat Ini</label>
-      <input type="text" class="ios-input" value="http://<?= htmlspecialchars($serverHost) ?>/Inventaris" readonly style="background: rgba(0,0,0,0.25); color: #60a5fa; font-weight: 700;">
+      <input type="text" class="ios-input" value="http://<?= htmlspecialchars($serverHost) ?>/Inventaris" readonly>
     </div>
 
     <div>
       <label class="ios-label">Database MySQL / MariaDB</label>
-      <div style="background: rgba(37, 99, 235, 0.12); border: 1px solid rgba(37, 99, 235, 0.3); border-radius: 12px; padding: 11px 14px; font-size: 0.88rem; color: #93c5fd;">
+      <div class="db-status-box">
         <i class="bi bi-database-check text-primary"></i> db_inventaris (Port 3306)
       </div>
     </div>
   </div>
 
-  <div style="margin-top: 14px; background: rgba(30, 41, 59, 0.5); border: 1px dashed rgba(255,255,255,0.15); border-radius: 14px; padding: 14px; font-size: 0.82rem; color: #cbd5e1; line-height: 1.6;">
+  <div class="info-guide-box">
     💡 <strong>Cara Pakai di Komputer & WiFi Kantor:</strong><br>
     1. Pastikan Komputer Kantor dan HP terhubung pada WiFi yang sama.<br>
     2. Cek IP Komputer Kantor (misal: <code>192.168.1.100</code>).<br>

@@ -56,10 +56,10 @@ require_once __DIR__ . '/includes/header.php';
     <p class="page-subtitle">Rekapitulasi arus barang masuk & keluar</p>
   </div>
   <div style="display: flex; gap: 6px;">
-    <a href="export.php?type=laporan_excel&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" class="btn btn-secondary btn-sm" title="Ekspor Excel" style="border-radius: 999px; padding: 6px 14px; font-size: 0.75rem; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399;">
+    <a href="export.php?type=laporan_excel&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" class="btn-pill-action btn-pill-green" title="Ekspor Excel">
       <i class="bi bi-file-earmark-excel-fill"></i> Excel
     </a>
-    <a href="export.php?type=laporan_pdf&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" target="_blank" class="btn btn-secondary btn-sm" title="Cetak PDF" style="border-radius: 999px; padding: 6px 14px; font-size: 0.75rem; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171;">
+    <a href="export.php?type=laporan_pdf&tgl_mulai=<?= $tglMulai ?>&tgl_selesai=<?= $tglSelesai ?>&tipe=<?= $tipe ?>" target="_blank" class="btn-pill-action btn-pill-red" title="Cetak PDF">
       <i class="bi bi-printer-fill"></i> PDF
     </a>
   </div>
