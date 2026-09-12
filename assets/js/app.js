@@ -213,3 +213,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
   }
 });
+
+/* ==========================================================================
+   THEME CONTROLLER (LIGHT & DARK MODE TOGGLE)
+   ========================================================================== */
+function setAppTheme(theme) {
+  const selectedTheme = (theme === 'light') ? 'light' : 'dark';
+  localStorage.setItem('maoneart_theme', selectedTheme);
+  document.documentElement.setAttribute('data-theme', selectedTheme);
+  if (selectedTheme === 'light') {
+    document.documentElement.classList.add('theme-light');
+    if (document.body) {
+      document.body.classList.add('theme-light');
+      document.body.classList.remove('theme-dark');
+    }
+  } else {
+    document.documentElement.classList.remove('theme-light');
+    if (document.body) {
+      document.body.classList.remove('theme-light');
+      document.body.classList.add('theme-dark');
+    }
+  }
+
+  // Update Visual State in Settings if present
+  const darkCard = document.getElementById('themeCardDark');
+  const lightCard = document.getElementById('themeCardLight');
+  if (darkCard && lightCard) {
+    darkCard.classList.toggle('active', selectedTheme === 'dark');
+    lightCard.classList.toggle('active', selectedTheme === 'light');
+  }
+}
+window.setAppTheme = setAppTheme;

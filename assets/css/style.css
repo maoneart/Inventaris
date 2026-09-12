@@ -1138,3 +1138,354 @@ body {
   color: #475569 !important;
   margin-top: 4px !important;
 }
+
+/* ==========================================================================
+   LIGHT MODE / WHITE THEME STYLING (Bukan Cuma Background Tapi Seluruh Tampilan)
+   ========================================================================== */
+
+[data-theme="light"] {
+  --bg-page: #f1f5f9;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(0, 0, 0, 0.08);
+  --glass-header: rgba(255, 255, 255, 0.92);
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-dim: #94a3b8;
+
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+
+  --shadow-subtle: 0 4px 14px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] body,
+body.theme-light {
+  background-color: #f8fafc !important;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.06) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(241, 245, 249, 0.8) 0px, transparent 100%) !important;
+  color: #0f172a !important;
+}
+
+/* Light Top Navbar */
+[data-theme="light"] .top-navbar {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .brand-text h1 {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .btn-hamburger {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .nav-pill {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #475569 !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .nav-pill:hover,
+[data-theme="light"] .nav-pill.active {
+  background: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* Light Sidebar Drawer */
+[data-theme="light"] .sidebar-drawer {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 10px 0 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .sidebar-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .sidebar-header div div {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .sidebar-close-btn {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .sidebar-section-title {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .sidebar-link {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .sidebar-link:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #2563eb !important;
+}
+
+[data-theme="light"] .sidebar-link.active {
+  background: rgba(37, 99, 235, 0.1) !important;
+  color: #2563eb !important;
+}
+
+[data-theme="light"] .sidebar-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+  background: rgba(248, 250, 252, 0.9) !important;
+  color: #64748b !important;
+}
+
+/* Light iOS Form Cards & Glass Cards */
+[data-theme="light"] .ios-form-card,
+[data-theme="light"] .glass-card {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .ios-group-title {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .page-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .page-subtitle {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .ios-label,
+[data-theme="light"] .form-label {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .ios-back-btn {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #2563eb !important;
+}
+
+[data-theme="light"] .ios-back-btn:hover {
+  background: rgba(37, 99, 235, 0.1) !important;
+  color: #1d4ed8 !important;
+}
+
+/* Light Input Controls */
+[data-theme="light"] .ios-input,
+[data-theme="light"] .ios-select,
+[data-theme="light"] .form-control,
+[data-theme="light"] .form-select {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .ios-input:focus,
+[data-theme="light"] .ios-select:focus,
+[data-theme="light"] .form-control:focus,
+[data-theme="light"] .form-select:focus {
+  background: #ffffff !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+[data-theme="light"] .ios-input::placeholder,
+[data-theme="light"] .form-control::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .ios-select option {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .item-row {
+  background: rgba(241, 245, 249, 0.7) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Light Modern Tables */
+[data-theme="light"] .modern-table th {
+  background: rgba(241, 245, 249, 0.85) !important;
+  color: #475569 !important;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .modern-table td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  color: #334155 !important;
+}
+
+[data-theme="light"] .modern-table td strong {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .modern-table tr:hover td {
+  background: rgba(37, 99, 235, 0.04) !important;
+}
+
+/* Light Buttons */
+[data-theme="light"] .btn-secondary {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #334155 !important;
+}
+
+[data-theme="light"] .btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: #0f172a !important;
+}
+
+/* Light Stats & Inset Cards */
+[data-theme="light"] .stat-box {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .stat-label {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .stat-value {
+  color: #0f172a !important;
+}
+
+/* Light Mobile Gojek Elements */
+[data-theme="light"] .mobile-gojek-view,
+[data-theme="light"] .gojek-app-shell {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .gojek-top-search-pill,
+[data-theme="light"] .gojek-search-pill-web {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .gojek-wallet-card,
+[data-theme="light"] .gojek-wallet-card-web {
+  background: linear-gradient(135deg, #ffffff, #f1f5f9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .gojek-wallet-label {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .gojek-wallet-value {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .service-title {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .gojek-feed-section {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .feed-header div {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .feed-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .feed-item div div {
+  color: #1e293b !important;
+}
+
+[data-theme="light"] .feed-item div div:nth-child(2) {
+  color: #64748b !important;
+}
+
+/* Light Navigation Docks */
+[data-theme="light"] .mobile-dock,
+[data-theme="light"] .gojek-bottom-nav {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .dock-item,
+[data-theme="light"] .nav-tab {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .dock-item.active,
+[data-theme="light"] .nav-tab.active {
+  color: #00aa13 !important;
+}
+
+/* Light MaoneArt Glassmorphism Modals */
+[data-theme="light"] .maoneart-modal-card {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.18) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .maoneart-modal-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .maoneart-modal-message {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .maoneart-modal-btn.cancel {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #334155 !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .maoneart-modal-btn.cancel:hover {
+  background: rgba(0, 0, 0, 0.1) !important;
+  color: #0f172a !important;
+}
+
+/* Light AI Chat & Bubbles */
+[data-theme="light"] #aiChatBox > div > div:nth-child(2) {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Theme Switcher Cards in Pengaturan */
+.theme-option-card {
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.theme-option-card:hover {
+  transform: translateY(-2px);
+}
+
+.theme-option-card.active {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25) !important;
+}
+
+[data-theme="light"] .theme-option-card {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}

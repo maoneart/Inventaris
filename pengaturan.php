@@ -85,7 +85,62 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
 <!-- Judul di Dalam Konten -->
 <div class="page-title-box">
   <h1 class="page-title">Pengaturan</h1>
-  <p class="page-subtitle">Server kantor, AI Gemini & profil gudang</p>
+  <p class="page-subtitle">Tampilan, server kantor, AI Gemini & profil gudang</p>
+</div>
+
+<!-- Group 0: Tema Tampilan Sistem (Light & Dark Mode) -->
+<div class="ios-form-card">
+  <div class="ios-group-title">
+    <i class="bi bi-palette-fill"></i> TEMA TAMPILAN SISTEM (THEME MODE)
+  </div>
+
+  <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
+    Pilih gaya tampilan visual sistem. Seluruh warna kartu, form input, tabel, navigasi bar, dan latar belakang akan menyesuaikan secara instan.
+  </p>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+    <!-- Dark Mode Card -->
+    <div id="themeCardDark" class="theme-option-card active" onclick="setAppTheme('dark')" style="background: rgba(15, 23, 42, 0.85);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(30, 41, 59, 0.9); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; color: #60a5fa;">
+            <i class="bi bi-moon-stars-fill"></i>
+          </div>
+          <div>
+            <div style="font-weight: 800; font-size: 0.95rem; color: #ffffff;">Mode Gelap (Dark)</div>
+            <div style="font-size: 0.72rem; color: #94a3b8;">Dark Navy Industrial</div>
+          </div>
+        </div>
+        <i class="bi bi-check-circle-fill check-icon" style="font-size: 1.25rem; color: #2563eb;"></i>
+      </div>
+      <div style="height: 38px; border-radius: 10px; background: #0b0f19; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; padding: 0 12px; gap: 8px;">
+        <div style="width: 16px; height: 7px; border-radius: 99px; background: #2563eb;"></div>
+        <div style="width: 45px; height: 7px; border-radius: 99px; background: rgba(255,255,255,0.25);"></div>
+        <div style="width: 25px; height: 7px; border-radius: 99px; background: rgba(16,185,129,0.4); margin-left: auto;"></div>
+      </div>
+    </div>
+
+    <!-- Light Mode Card -->
+    <div id="themeCardLight" class="theme-option-card" onclick="setAppTheme('light')" style="background: rgba(255, 255, 255, 0.95);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; color: #f59e0b;">
+            <i class="bi bi-sun-fill"></i>
+          </div>
+          <div>
+            <div style="font-weight: 800; font-size: 0.95rem; color: #0f172a;">Mode Terang (White)</div>
+            <div style="font-size: 0.72rem; color: #64748b;">Clean White Modern</div>
+          </div>
+        </div>
+        <i class="bi bi-check-circle-fill check-icon" style="font-size: 1.25rem; color: #2563eb; display: none;"></i>
+      </div>
+      <div style="height: 38px; border-radius: 10px; background: #f8fafc; border: 1px solid rgba(0,0,0,0.1); display: flex; align-items: center; padding: 0 12px; gap: 8px;">
+        <div style="width: 16px; height: 7px; border-radius: 99px; background: #2563eb;"></div>
+        <div style="width: 45px; height: 7px; border-radius: 99px; background: rgba(0,0,0,0.2);"></div>
+        <div style="width: 25px; height: 7px; border-radius: 99px; background: rgba(16,185,129,0.4); margin-left: auto;"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Group 1: Koneksi Server & Jaringan Kantor -->
@@ -331,7 +386,24 @@ function confirmResetTrans() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', loadSavedToken);
+function updateThemeVisuals() {
+  const currentTheme = localStorage.getItem('maoneart_theme') || 'dark';
+  const darkCard = document.getElementById('themeCardDark');
+  const lightCard = document.getElementById('themeCardLight');
+  if (darkCard && lightCard) {
+    darkCard.classList.toggle('active', currentTheme === 'dark');
+    lightCard.classList.toggle('active', currentTheme === 'light');
+    const darkCheck = darkCard.querySelector('.check-icon');
+    const lightCheck = lightCard.querySelector('.check-icon');
+    if (darkCheck) darkCheck.style.display = (currentTheme === 'dark') ? 'inline-block' : 'none';
+    if (lightCheck) lightCheck.style.display = (currentTheme === 'light') ? 'inline-block' : 'none';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadSavedToken();
+  updateThemeVisuals();
+});
 </script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -29,6 +29,17 @@ $recentActivity = $pdo->query("
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#00aa13">
+
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('maoneart_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      if (savedTheme === 'light') {
+        document.documentElement.classList.add('theme-light');
+      }
+    })();
+  </script>
+
   <style>
     :root {
       --gojek-green: #00aa13;
@@ -48,6 +59,60 @@ $recentActivity = $pdo->query("
       background-color: #0b0f19;
       color: #ffffff;
       padding-bottom: 75px;
+    }
+
+    /* Light Theme Adaptation for Gojek View */
+    [data-theme="light"] body,
+    body.theme-light {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+    [data-theme="light"] .gojek-header {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+    [data-theme="light"] .gojek-search-pill {
+      background: #ffffff !important;
+      border: 1px solid rgba(0, 0, 0, 0.1) !important;
+      color: #64748b !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+    }
+    [data-theme="light"] .gojek-wallet-card {
+      background: linear-gradient(135deg, #ffffff, #f1f5f9) !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+    }
+    [data-theme="light"] .wallet-bal-val {
+      color: #0f172a !important;
+    }
+    [data-theme="light"] .service-title {
+      color: #334155 !important;
+    }
+    [data-theme="light"] .gojek-feed-section {
+      background: #ffffff !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+    [data-theme="light"] .feed-header div {
+      color: #0f172a !important;
+    }
+    [data-theme="light"] .feed-item {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    }
+    [data-theme="light"] .feed-item div div {
+      color: #0f172a !important;
+    }
+    [data-theme="light"] .feed-item div div:nth-child(2) {
+      color: #64748b !important;
+    }
+    [data-theme="light"] .gojek-bottom-nav {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+    [data-theme="light"] .nav-tab {
+      color: #64748b !important;
+    }
+    [data-theme="light"] .nav-tab.active {
+      color: #00aa13 !important;
     }
     .gojek-wrapper {
       max-width: 440px;

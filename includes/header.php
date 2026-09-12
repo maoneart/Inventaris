@@ -26,6 +26,17 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
 
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Instant Theme Initializer (Prevent Flash of Dark/Light) -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('maoneart_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      if (savedTheme === 'light') {
+        document.documentElement.classList.add('theme-light');
+      }
+    })();
+  </script>
 </head>
 <body>
 
