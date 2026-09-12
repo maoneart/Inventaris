@@ -24,6 +24,29 @@ $currPage = basename($_SERVER['PHP_SELF'], '.php');
   <meta name="theme-color" content="#0f172a">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
 
+  <!-- Tailwind CSS Engine (Offline Standalone) -->
+  <script src="assets/js/tailwind.js"></script>
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        corePlugins: {
+          preflight: false, // Pertahankan styling iOS & modal dasar tanpa konflik
+        },
+        darkMode: ['selector', '[data-theme="dark"]'],
+        theme: {
+          extend: {
+            colors: {
+              brand: '#2563eb',
+            },
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            }
+          }
+        }
+      };
+    }
+  </script>
+
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="assets/css/style.css">
 
