@@ -84,7 +84,7 @@ body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   background: var(--glass-header);
-  border-bottom: 1px solid var(--card-border);
+  border-bottom: none;
   padding: 12px 20px;
 }
 
@@ -1173,7 +1173,7 @@ body.theme-light {
 /* Light Top Navbar */
 [data-theme="light"] .top-navbar {
   background: rgba(255, 255, 255, 0.92) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-bottom: none !important;
 }
 
 [data-theme="light"] .brand-text h1 {
@@ -1488,4 +1488,15 @@ body.theme-light {
 
 [data-theme="light"] .theme-option-card {
   border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Light Mode About App Modal Specifics */
+[data-theme="light"] #modalAboutApp h3 {
+  color: #0f172a !important;
+}
+[data-theme="light"] #modalAboutApp [style*="background: rgba(15, 23, 42"],
+[data-theme="light"] #modalAboutApp [style*="background: rgba(30, 41, 59"] {
+  background: rgba(241, 245, 249, 0.8) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #334155 !important;
 }

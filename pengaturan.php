@@ -291,18 +291,108 @@ $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost:8085';
   </div>
 </div>
 
-<!-- Group 5: Tentang Aplikasi & Lisensi -->
-<div class="ios-form-card" style="text-align: center; padding: 24px 16px;">
-  <div style="width: 52px; height: 52px; margin: 0 auto 12px; border-radius: 16px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #fff; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);">
-    📦
+<!-- Group 5: Tentang Aplikasi (Interactive Action Card) -->
+<div class="ios-form-card" style="padding: 18px;">
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; color: #fff; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35); flex-shrink: 0;">
+        <i class="bi bi-info-circle-fill"></i>
+      </div>
+      <div>
+        <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-main);">Tentang Aplikasi</div>
+        <div style="font-size: 0.74rem; color: var(--text-muted);">Informasi versi sistem, developer, arsitektur & lisensi resmi</div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-secondary btn-sm" onclick="openAboutModal()" style="border-radius: 12px; padding: 10px 18px; font-weight: 700;">
+      <i class="bi bi-eye-fill"></i> Buka Informasi
+    </button>
   </div>
-  <h3 style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin-bottom: 4px;">MaoneArt Stock & Inventory System</h3>
-  <p style="font-size: 0.78rem; color: #60a5fa; font-weight: 700; margin-bottom: 8px;">Versi 2.0.0 Enterprise Build 2026</p>
-  <p style="font-size: 0.74rem; color: #94a3b8; max-width: 460px; margin: 0 auto 14px; line-height: 1.5;">
-    Dikembangkan secara profesional untuk pencatatan stok gudang modern, integrasi Part Number supplier, penerimaan surat jalan, dan asisten AI.
-  </p>
-  <div style="font-size: 0.8rem; font-weight: 800; color: #cbd5e1;">
-    Official Portal: <a href="https://maoneart.my.id" target="_blank" style="color: #38bdf8; text-decoration: none;">Maoneart.my.id</a>
+</div>
+
+<!-- Modal Full Tentang Aplikasi (MaoneArt Glassmorphism Modal) -->
+<div id="modalAboutApp" class="maoneart-modal-overlay" style="display: none;">
+  <div class="maoneart-modal-card" style="max-width: 520px; text-align: left; max-height: 85vh; display: flex; flex-direction: column;">
+    <!-- Modal Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: #fff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);">
+          📦
+        </div>
+        <div>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: #ffffff; margin: 0;">Tentang Aplikasi</h3>
+          <p style="font-size: 0.72rem; color: #60a5fa; margin: 0;">MaoneArt Stock & Inventory System</p>
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="closeAboutModal()" style="border-radius: 10px; width: 34px; height: 34px; padding: 0; display: flex; align-items: center; justify-content: center;">✕</button>
+    </div>
+
+    <!-- Modal Body (Scrollable) -->
+    <div style="flex: 1; overflow-y: auto; padding-right: 4px;">
+      <!-- Version Pill & Status -->
+      <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+        <span class="badge badge-primary" style="font-size: 0.72rem; padding: 5px 10px;"><i class="bi bi-tag-fill"></i> Versi 2.0.0 Enterprise</span>
+        <span class="badge badge-success" style="font-size: 0.72rem; padding: 5px 10px;"><i class="bi bi-check-circle-fill"></i> Production Ready</span>
+        <span class="badge badge-purple" style="font-size: 0.72rem; padding: 5px 10px;"><i class="bi bi-cpu-fill"></i> Gemini AI Ready</span>
+      </div>
+
+      <!-- App Overview -->
+      <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 0.8rem; color: #cbd5e1; line-height: 1.6;">
+        <p style="margin-bottom: 8px;">
+          <strong>MaoneArt Stock & Inventory</strong> adalah sistem pergudangan modern berarsitektur <em>Hybrid Local-First</em> yang dirancang untuk kecepatan operasional inventaris, pencatatan Part Number pabrik, nomor surat jalan supplier, dan pengeluaran material ke PIC teknisi secara realtime.
+        </p>
+        <p style="margin: 0;">
+          Dapat berjalan mandiri di smartphone (Android Termux) maupun jaringan WiFi kantor (PC/Server lokal) tanpa ketergantungan hosting berbayar.
+        </p>
+      </div>
+
+      <!-- Specifications Grid -->
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px;">
+        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px;">
+          <div style="font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Developer / Creator</div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: #ffffff; margin-top: 2px;">Hermawan (MaoneArt)</div>
+        </div>
+        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px;">
+          <div style="font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Official Portal</div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: #38bdf8; margin-top: 2px;">
+            <a href="https://maoneart.my.id" target="_blank" style="color: #38bdf8; text-decoration: none;">Maoneart.my.id</a>
+          </div>
+        </div>
+        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px;">
+          <div style="font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Stack Teknologi</div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: #ffffff; margin-top: 2px;">PHP 8.5, MariaDB, Flutter</div>
+        </div>
+        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px;">
+          <div style="font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Desain Antarmuka</div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: #ffffff; margin-top: 2px;">Apple iOS & Gojek Superapp</div>
+        </div>
+      </div>
+
+      <!-- Feature Highlights -->
+      <div style="font-size: 0.76rem; color: #94a3b8; line-height: 1.7; margin-bottom: 14px;">
+        <div style="font-weight: 800; color: #ffffff; margin-bottom: 6px;">Fitur Utama Sistem:</div>
+        • 📥 <strong>Barang Masuk</strong>: Multi-item supplier, nomor surat jalan / PO, tambah stok otomatis.<br>
+        • 📤 <strong>Barang Keluar</strong>: Multi-item PIC teknisi, keperluan proyek, validasi stok minimum.<br>
+        • 🏷️ <strong>Katalog Barang</strong>: Manajemen Part Number pabrik, barcode SKU, satuan & lokasi rak.<br>
+        • 🤖 <strong>Tanya Si-nya (AI)</strong>: Asisten AI logistik berbasis Gemini API dengan token client-side aman.<br>
+        • 📊 <strong>Laporan & Ekspor</strong>: Format cetak resmi PDF dan spreadsheet Excel terstandarisasi.<br>
+        • 🌓 <strong>Tema Dinamis</strong>: Mode Terang (Clean White) & Mode Gelap (Dark Navy) instan.
+      </div>
+
+      <!-- Copyright Notice -->
+      <div style="text-align: center; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 0.72rem; color: #64748b;">
+        © 2026 <strong>MaoneArt</strong> · All Rights Reserved · <a href="https://maoneart.my.id" target="_blank" style="color: #60a5fa; text-decoration: none;">Maoneart.my.id</a>
+      </div>
+    </div>
+
+    <!-- Modal Actions (100% Symmetrical 2-Column Grid) -->
+    <div class="maoneart-modal-actions" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px;">
+      <a href="https://maoneart.my.id" target="_blank" class="maoneart-modal-btn cancel" style="text-decoration: none;">
+        <i class="bi bi-globe2"></i> Web Resmi
+      </a>
+      <button type="button" class="maoneart-modal-btn primary" onclick="closeAboutModal()">
+        Tutup
+      </button>
+    </div>
   </div>
 </div>
 
@@ -384,6 +474,22 @@ function confirmResetTrans() {
       document.getElementById('formResetTrans').submit();
     }
   });
+}
+
+function openAboutModal() {
+  const m = document.getElementById('modalAboutApp');
+  if (m) {
+    m.style.display = 'flex';
+    setTimeout(() => m.classList.add('active'), 10);
+  }
+}
+
+function closeAboutModal() {
+  const m = document.getElementById('modalAboutApp');
+  if (m) {
+    m.classList.remove('active');
+    setTimeout(() => m.style.display = 'none', 200);
+  }
 }
 
 function updateThemeVisuals() {

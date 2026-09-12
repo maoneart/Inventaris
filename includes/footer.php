@@ -4,12 +4,6 @@ $flash = getFlash();
 $currPage = basename($_SERVER['PHP_SELF'], '.php');
 ?>
 
-<!-- iOS Minimalist Copyright Footer -->
-<footer class="ios-footer-copyright">
-  <p>© <?= date('Y') ?> <strong>MaoneArt</strong> · <a href="https://maoneart.my.id" target="_blank" rel="noopener">Maoneart.my.id</a></p>
-  <p class="ios-footer-tagline">Sistem Manajemen Stok & Pergudangan Modern</p>
-</footer>
-
 </main> <!-- End .main-wrapper -->
 
 <!-- Mobile Bottom Dock (Khusus Layar HP: Home, Masuk, Tanya AI, Keluar, Pengaturan) -->

@@ -69,7 +69,7 @@ $recentActivity = $pdo->query("
     }
     [data-theme="light"] .gojek-header {
       background: rgba(255, 255, 255, 0.95) !important;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+      border-bottom: none !important;
     }
     [data-theme="light"] .gojek-search-pill {
       background: #ffffff !important;
@@ -129,7 +129,7 @@ $recentActivity = $pdo->query("
       backdrop-filter: blur(12px);
       padding: 12px 16px 10px;
       margin: 0 -16px 12px -16px;
-      border-bottom: 1px solid var(--gojek-border);
+      border-bottom: none;
       display: flex;
       align-items: center;
       gap: 10px;
