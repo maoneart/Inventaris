@@ -94,39 +94,78 @@ $geminiApiKey = !empty($manualApiKey) ? $manualApiKey : getSetting('gemini_api_k
 $reply = '';
 
 if (!empty($geminiApiKey)) {
-    // Model Gemini 1.5 Flash
-    $endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" . urlencode($geminiApiKey);
-    $payload = [
-        'contents' => [
-            [
-                'role' => 'user',
-                'parts' => [
-                    ['text' => $systemPrompt . "\n\nPertanyaan Pengguna: " . $userMessage]
-                ]
+    $cleanToken = trim($geminiApiKey);
+    if (stripos($cleanToken, 'bearer ') === 0) {
+        $cleanToken = trim(substr($cleanToken, 7));
+    }
+
+    $models = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-2.5-flash'];
+    $lastError = '';
+
+    foreach ($models as $modelName) {
+        $endpoints = [];
+        // Format 1: Header x-goog-api-key + URL key
+        $endpoints[] = [
+            'url' => "https://generativelanguage.googleapis.com/v1beta/models/{$modelName}:generateContent?key=" . urlencode($cleanToken),
+            'headers' => [
+                'Content-Type: application/json',
+                'x-goog-api-key: ' . $cleanToken
             ]
-        ],
-        'generationConfig' => [
-            'temperature' => 0.4,
-            'maxOutputTokens' => 1500
-        ]
-    ];
+        ];
+        // Format 2: Authorization Bearer (untuk token model baru AQ... / OAuth)
+        $endpoints[] = [
+            'url' => "https://generativelanguage.googleapis.com/v1beta/models/{$modelName}:generateContent",
+            'headers' => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $cleanToken
+            ]
+        ];
 
-    $ch = curl_init($endpoint);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-    $res = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $payload = [
+            'contents' => [
+                [
+                    'role' => 'user',
+                    'parts' => [
+                        ['text' => $systemPrompt . "\n\nPertanyaan Pengguna: " . $userMessage]
+                    ]
+                ]
+            ],
+            'generationConfig' => [
+                'temperature' => 0.4,
+                'maxOutputTokens' => 1500
+            ]
+        ];
 
-    if ($httpCode === 200 && $res) {
-        $resJson = json_decode($res, true);
-        $reply = $resJson['candidates'][0]['content']['parts'][0]['text'] ?? '';
-    } else {
-        $errJson = json_decode($res, true);
-        $errMsg = $errJson['error']['message'] ?? "Kode HTTP $httpCode";
-        $reply = "⚠️ Kendala API Gemini: $errMsg. Pastikan API Key Gemini yang Anda masukkan aktif.";
+        foreach ($endpoints as $ep) {
+            $ch = curl_init($ep['url']);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $ep['headers']);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 25);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $res = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($httpCode === 200 && $res) {
+                $resJson = json_decode($res, true);
+                $candidateText = $resJson['candidates'][0]['content']['parts'][0]['text'] ?? '';
+                if (!empty($candidateText)) {
+                    $reply = $candidateText;
+                    break 2; // Berhasil! Keluar dari loop model & endpoint
+                }
+            } else if ($res) {
+                $errJson = json_decode($res, true);
+                if (!empty($errJson['error']['message'])) {
+                    $lastError = $errJson['error']['message'];
+                }
+            }
+        }
+    }
+
+    if (empty($reply) && !empty($lastError)) {
+        $reply = "⚠️ Kendala API Gemini: $lastError. Pastikan token/API Key yang Anda masukkan masih aktif.";
     }
 }
 

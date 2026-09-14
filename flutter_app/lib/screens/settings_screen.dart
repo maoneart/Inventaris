@@ -24,6 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _rejectOffline = true;
   bool _stockAlert = true;
   bool _whiteMode = false;
+  String _geminiToken = '';
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _rejectOffline = prefs.getBool('reject_offline') ?? true;
       _stockAlert = prefs.getBool('stock_alert') ?? true;
       _whiteMode = prefs.getBool('white_mode') ?? false;
+      _geminiToken = prefs.getString('gemini_api_key') ?? '';
     });
   }
 
@@ -51,6 +53,95 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('stock_alert', val);
     setState(() => _stockAlert = val);
+  }
+
+  void _openGeminiTokenDialog() async {
+    final prefs = await SharedPreferences.getInstance();
+    final currentToken = prefs.getString('gemini_api_key') ?? '';
+    final controller = TextEditingController(text: currentToken);
+
+    if (!mounted) return;
+    showCupertinoDialog(
+      context: context,
+      builder: (ctx) => CupertinoAlertDialog(
+        title: const Text('Token Asisten AI (Si-nya)'),
+        content: Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '🔒 Token disimpan aman di memori HP Anda (SharedPreferences). Tidak disimpan di server & tidak terunggah ke GitHub.',
+                style: TextStyle(fontSize: 12, color: Color(0xFF8E8E93)),
+              ),
+              const SizedBox(height: 12),
+              CupertinoTextField(
+                controller: controller,
+                placeholder: 'Tempel token di sini (AQ... / AIza...)',
+                style: const TextStyle(fontSize: 13, color: Colors.white),
+                placeholderStyle: const TextStyle(fontSize: 13, color: Color(0xFF636366)),
+                maxLines: 3,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1C1C1E),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFF38383A)),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text('Batal'),
+            onPressed: () => Navigator.pop(ctx),
+          ),
+          if (currentToken.isNotEmpty)
+            CupertinoDialogAction(
+              isDestructiveAction: true,
+              child: const Text('Hapus'),
+              onPressed: () async {
+                await prefs.remove('gemini_api_key');
+                setState(() => _geminiToken = '');
+                if (mounted) {
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Token AI berhasil dihapus'),
+                      backgroundColor: Color(0xFFDC2626),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
+              },
+            ),
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            child: const Text('Simpan'),
+            onPressed: () async {
+              final val = controller.text.trim();
+              if (val.isNotEmpty) {
+                await prefs.setString('gemini_api_key', val);
+                setState(() => _geminiToken = val);
+              } else {
+                await prefs.remove('gemini_api_key');
+                setState(() => _geminiToken = '');
+              }
+              if (mounted) {
+                Navigator.pop(ctx);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Token AI tersimpan di penyimpanan lokal HP'),
+                    backgroundColor: Color(0xFF059669),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   void _openNetworkSettings() async {
@@ -255,7 +346,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           ),
 
-          // 3. Section: Keamanan & Integritas Data
+          // 3. Section: Asisten Cerdas AI
+          _buildSectionHeader('ASISTEN AI & KREDENSIAL LOKAL'),
+          _buildIosGroup(
+            children: [
+              _buildIosTile(
+                icon: CupertinoIcons.sparkles,
+                iconBgColor: const Color(0xFFAF52DE), // iOS Purple
+                title: 'Token Gemini AI (Si-nya)',
+                trailingText: _geminiToken.isNotEmpty ? 'Tersimpan (Lokal) ✓' : 'Belum Diatur',
+                showChevron: true,
+                onTap: _openGeminiTokenDialog,
+              ),
+            ],
+          ),
+
+          // 4. Section: Keamanan & Integritas Data
           _buildSectionHeader('INTEGRITAS STOK & KEAMANAN'),
           _buildIosGroup(
             children: [

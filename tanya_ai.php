@@ -32,8 +32,13 @@ require_once __DIR__ . '/includes/header.php';
     </p>
 
     <div class="form-group">
-      <label class="ios-label">Masukkan API Key Google Gemini</label>
-      <input type="password" id="inputGeminiKey" class="ios-input" placeholder="AIzaSy... atau token Gemini Anda" autocomplete="off">
+      <label class="ios-label">Masukkan API Key / Token Gemini</label>
+      <div style="position: relative;">
+        <input type="password" id="inputGeminiKey" class="ios-input" placeholder="Tempel token di sini (AIzaSy... atau model baru AQ....)" autocomplete="off" style="padding-right: 42px;">
+        <button type="button" id="btnToggleTokenVis" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer;">
+          <i class="bi bi-eye"></i>
+        </button>
+      </div>
     </div>
 
     <div class="maoneart-modal-actions" style="margin-top: 20px;">
@@ -114,6 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   updateTokenStatus();
+
+  const btnToggleTokenVis = document.getElementById('btnToggleTokenVis');
+  if (btnToggleTokenVis) {
+    btnToggleTokenVis.addEventListener('click', () => {
+      const isPass = inputGeminiKey.type === 'password';
+      inputGeminiKey.type = isPass ? 'text' : 'password';
+      btnToggleTokenVis.innerHTML = isPass ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+    });
+  }
 
   btnOpenTokenModal.addEventListener('click', () => {
     tokenModal.style.display = 'flex';

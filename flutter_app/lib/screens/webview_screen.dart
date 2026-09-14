@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
@@ -27,6 +28,23 @@ class _WebViewScreenState extends State<WebViewScreen> {
             setState(() {
               _loadingProgress = progress;
             });
+          },
+          onPageFinished: (url) async {
+            try {
+              final prefs = await SharedPreferences.getInstance();
+              final geminiKey = prefs.getString('gemini_api_key') ?? '';
+              if (geminiKey.isNotEmpty) {
+                final safeKey = geminiKey.replaceAll(r'\', r'\\').replaceAll("'", r"\'").replaceAll('"', r'\"');
+                await _controller.runJavaScript("""
+                  try {
+                    localStorage.setItem('maoneart_gemini_token', '$safeKey');
+                    if (typeof updateTokenStatus === 'function') {
+                      updateTokenStatus();
+                    }
+                  } catch(e) {}
+                """);
+              }
+            } catch (_) {}
           },
         ),
       )
